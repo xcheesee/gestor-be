@@ -121,6 +121,8 @@ Route::put('servicolocal/{id}', [ServicoLocalController::class, 'update']);
 Route::delete('servicolocal/{id}', [ServicoLocalController::class, 'destroy']);
 
 Route::get('subprefeituras', [SubprefeituraController::class, 'index']);
+Route::get('subprefeituras/{regiao}', [SubprefeituraController::class, 'listar_por_regiao']);
+Route::get('regioes', [SubprefeituraController::class, 'listar_regioes']);
 Route::post('subprefeitura', [SubprefeituraController::class, 'store']);
 Route::get('subprefeitura/{id}', [SubprefeituraController::class, 'show']);
 Route::put('subprefeitura/{id}', [SubprefeituraController::class, 'update']);
