@@ -19,6 +19,9 @@ class ServicoLocal extends JsonResource
             'contrato_id' => $this->contrato_id,
             'distrito_id' => $this->distrito_id,
             'subprefeitura_id' => $this->subprefeitura_id,
+            'distrito' => $this->distrito->nome,
+            'regiao' => $this->subprefeitura->regiao,
+            'subprefeitura' => $this->subprefeitura->nome,
         ];
     }
 }
