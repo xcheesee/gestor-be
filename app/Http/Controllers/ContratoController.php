@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContratoFormRequest;
 use App\Models\Contrato as Contrato;
 use App\Http\Resources\Contrato as ContratoResource;
 use Illuminate\Http\Request;
@@ -61,46 +62,62 @@ class ContratoController extends Controller
      * @response 200 {
      *     "data": {
      *         "id": 14,
+     *         "tipo_contratacao_id": 1,
      *         "processo_sei": "0123000134569000",
+     *         "dotacao_orcamentaria": "2122123456789456465456465",
      *         "credor": "Teste Silva",
      *         "cnpj_cpf": "45106963896",
+     *         "tipo_objeto": "serviço",
      *         "objeto": "teste",
      *         "numero_contrato": "2343rbte67b63",
      *         "data_assinatura": "2022-05-20",
-     *         "valor_contrato": 1500,
+     *         "valor_contrato": 1200,
+     *         "valor_mensal_estimativo": 100,
      *         "data_inicio_vigencia": "2022-05-23",
-     *         "data_fim_vigencia": "2023-05-20",
+     *         "data_vencimento": "2023-05-20",
      *         "condicao_pagamento": "Após 10 dias após adimplemento",
-     *         "prazo_contrato_meses": 12,
      *         "prazo_a_partir_de": "A partir do início da vigência",
      *         "data_prazo_maximo": "2023-06-20",
      *         "nome_empresa": "Teste LTDA",
      *         "telefone_empresa": "11913314554",
      *         "email_empresa": "teste@prefeitura.com",
-     *         "outras_informacoes": "Exemplo. Nenhuma outra informação"
+     *         "outras_informacoes": "Exemplo. Nenhuma outra informação",
+     *         "envio_material_tecnico": "2022-06-20",
+     *         "minuta_edital": "2022-06-21",
+     *         "abertura_certame": "2022-06-22",
+     *         "homologacao": "2022-06-23",
+     *         "fonte_recurso": "Tesouro"
      *     }
      * }
      */
-    public function store(Request $request)
+    public function store(ContratoFormRequest $request)
     {
-        $contrato = new Contrato;
+        $contrato = new Contrato();
+        $contrato->tipo_contratacao_id = $request->input('tipo_contratacao_id');
         $contrato->processo_sei = $request->input('processo_sei');
+        $contrato->dotacao_orcamentaria = $request->input('dotacao_orcamentaria');
         $contrato->credor = $request->input('credor');
         $contrato->cnpj_cpf = $request->input('cnpj_cpf');
+        $contrato->tipo_objeto = $request->input('tipo_objeto');
         $contrato->objeto = $request->input('objeto');
         $contrato->numero_contrato = $request->input('numero_contrato');
         $contrato->data_assinatura = $request->input('data_assinatura');
         $contrato->valor_contrato = $request->input('valor_contrato');
+        $contrato->valor_mensal_estimativo = $request->input('valor_mensal_estimativo');
         $contrato->data_inicio_vigencia = $request->input('data_inicio_vigencia');
-        $contrato->data_fim_vigencia = $request->input('data_fim_vigencia');
+        $contrato->data_vencimento = $request->input('data_vencimento');
         $contrato->condicao_pagamento = $request->input('condicao_pagamento');
-        $contrato->prazo_contrato_meses = $request->input('prazo_contrato_meses');
         $contrato->prazo_a_partir_de = $request->input('prazo_a_partir_de');
         $contrato->data_prazo_maximo = $request->input('data_prazo_maximo');
         $contrato->nome_empresa = $request->input('nome_empresa');
         $contrato->telefone_empresa = $request->input('telefone_empresa');
         $contrato->email_empresa = $request->input('email_empresa');
         $contrato->outras_informacoes = str_replace("\n",'<br />', addslashes(htmlspecialchars($request->input('outras_informacoes'))));
+        $contrato->envio_material_tecnico = $request->input('envio_material_tecnico');
+        $contrato->minuta_edital = $request->input('minuta_edital');
+        $contrato->abertura_certame = $request->input('abertura_certame');
+        $contrato->homologacao = $request->input('homologacao');
+        $contrato->fonte_recurso = $request->input('fonte_recurso');
 
         if ($contrato->save()) {
             return new ContratoResource($contrato);

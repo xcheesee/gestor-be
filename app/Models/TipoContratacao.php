@@ -2,19 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RecursoOrcamentario extends Model
+class TipoContratacao extends Model
 {
-    public $timestamps;
+    use HasFactory;
 
-    protected $table = 'recurso_orcamentario';
+    protected $table = 'tipo_contratacoes';
 
     protected $fillable = [
         'contrato_id',
-        'nota_empenho',
-        'saldo_empenho',
-        'dotacao_orcamentaria',
+        'nome',
     ];
 
     public function contrato()

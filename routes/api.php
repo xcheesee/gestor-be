@@ -8,7 +8,6 @@ use App\Http\Controllers\CertidaoController;
 use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\DistritoController;
 use App\Http\Controllers\GarantiaController;
-use App\Http\Controllers\GestaoContratoController;
 use App\Http\Controllers\GestaoFiscalizacaoController;
 use App\Http\Controllers\RecursoOrcamentarioController;
 use App\Http\Controllers\ServicoLocalController;
@@ -91,13 +90,6 @@ Route::post('garantia', [GarantiaController::class, 'store']);
 Route::get('garantia/{id}', [Garantiacontroller::class, 'show']);
 Route::put('garantia/{id}', [GarantiaController::class, 'update']);
 Route::delete('garantia/{id}', [GarantiaController::class, 'destroy']);
-
-Route::get('gestaocontratos', [GestaoContratoController::class, 'index']);
-Route::get('gestaocontratos/{id}', [GestaoContratoController::class, 'listar_por_contrato']);
-Route::post('gestaocontrato', [GestaoContratoController::class, 'store']);
-Route::get('gestaocontrato/{id}', [GestaoContratoController::class, 'show']);
-Route::put('gestaocontrato/{id}', [GestaoContratoController::class, 'update']);
-Route::delete('gestaocontrato/{id}', [GestaoContratoController::class, 'destroy']);
 
 Route::get('gestaofiscalizacoes', [GestaoFiscalizacaoController::class, 'index']);
 Route::get('gestaofiscalizacoes/{id}', [GestaoFiscalizacaoController::class, 'listar_por_contrato']);
