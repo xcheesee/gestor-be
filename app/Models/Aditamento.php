@@ -10,10 +10,9 @@ class Aditamento extends Model
         'contrato_id',
         'tipo_aditamentos',
         'valor_aditamento',
-        'data_fim_vigencia_atualizada',
+        'dias_acrescimo',
         'indice_reajuste',
-        'data_base_reajuste',
-        'valor_reajustado',
+        'pct_reajuste',
     ];
 
     public function contrato()

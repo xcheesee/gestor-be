@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Distrito extends Model
 {
     protected $fillable = [
-        'subprefeitura_id',
         'nome',
+        'subprefeitura_id',
     ];
 
     public function subprefeitura()

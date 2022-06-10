@@ -16,8 +16,8 @@ class ServicoLocalController extends Controller
     /**
      * Lista os serviços locais
      * @authenticated
-     * 
-     * 
+     *
+     *
      */
     public function index()
     {
@@ -38,18 +38,20 @@ class ServicoLocalController extends Controller
     /**
      * Cadastra um serviço local
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @bodyParam contrato_id integer required ID do contrato. Example: 5
      * @bodyParam ditrito_id integer required ID do distrito. Example: 13
      * @bodyParam subprefeitura_id integer required ID da subprefeitura. Example: 5
-     * 
+     * @bodyParam unidade string required Nome da unidade. Example: Unidade exemplo
+     *
      * @response 200 {
      *     "data": {
      *         "id": 1,
      *         "contrato_id": 5,
      *         "distrito_id": 13,
-     *         "subprefeitura_id": 5
+     *         "subprefeitura_id": 5,
+     *         "unidade": "Unidade exemplo"
      *     }
      * }
      */
@@ -59,6 +61,7 @@ class ServicoLocalController extends Controller
         $servicoLocal->contrato_id = $request->input('contrato_id');
         $servicoLocal->distrito_id = $request->input('distrito_id');
         $servicoLocal->subprefeitura_id = $request->input('subprefeitura_id');
+        $servicoLocal->unidade = $request->input('unidade');
 
         if ($servicoLocal->save()) {
             return new ServicoLocalResource($servicoLocal);
@@ -68,16 +71,17 @@ class ServicoLocalController extends Controller
     /**
      * Mostra um serviço local específico
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @urlParam id integer required ID do serviço local. Example: 1
-     * 
+     *
      * @response 200 {
      *     "data": {
      *         "id": 1,
      *         "contrato_id": 5,
      *         "distrito_id": 13,
-     *         "subprefeitura_id": 5
+     *         "subprefeitura_id": 5,
+     *         "unidade": "Unidade exemplo"
      *     }
      * }
      */
@@ -101,20 +105,22 @@ class ServicoLocalController extends Controller
     /**
      * Edita um serviço local
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @urlParam id integer required ID do serviço local que deseja editar. Example: 1
      * 
      * @bodyParam contrato_id integer required ID do contrato. Example: 5
      * @bodyParam distrito_id integer required ID do distrito. Example: 13
-     * @bodyParam subpreeitura_id integer required ID da subprefeitura. Example: 5
-     * 
+     * @bodyParam subprefeitura_id integer required ID da subprefeitura. Example: 5
+     * @bodyParam unidade string required Nome da unidade. Example: Unidade exemplo
+     *
      * @response 200 {
      *     "data": {
      *         "id": 1,
      *         "contrato_id": 5,
      *         "distrito_id": 13,
-     *         "subprefeitura_id": 5
+     *         "subprefeitura_id": 5,
+     *         "unidade": "Unidade exemplo"
      *     }
      * }
      */
@@ -124,6 +130,7 @@ class ServicoLocalController extends Controller
         $servicoLocal->contrato_id = $request->input('contrato_id');
         $servicoLocal->distrito_id = $request->input('distrito_id');
         $servicoLocal->subprefeitura_id = $request->input('subprefeitura_id');
+        $servicoLocal->unidade = $request->input('unidade');
 
         if ($servicoLocal->save()) {
             return new ServicoLocalResource($servicoLocal);
@@ -133,17 +140,18 @@ class ServicoLocalController extends Controller
     /**
      * Deleta um serviço local
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @urlParam id integer required ID do servico local que deseja deletar. Example: 1
-     * 
+     *
      * @response 200 {
      *     "message": "Serviço local deletado com sucesso!",
      *     "data": {
      *         "id": 1,
      *         "contrato_id": 5,
      *         "distrito_id": 13,
-     *         "subprefeitura_id": 5
+     *         "subprefeitura_id": 5,
+     *         "unidade": "Unidade exemplo"
      *     }
      * }
      */
@@ -162,16 +170,17 @@ class ServicoLocalController extends Controller
     /**
      * Lista os serviços locais pelo ID do contrato
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @urlParam id integer required ID do contrato. Example: 5
-     * 
+     *
      * @response 200 {
      *     "data": {
      *         "id": 1,
      *         "contrato_id": 5,
      *         "distrito_id": 13,
-     *         "subprefeitura_id": 5
+     *         "subprefeitura_id": 5,
+     *         "unidade": "Unidade exemplo"
      *     }
      * }
      */

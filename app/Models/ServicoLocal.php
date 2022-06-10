@@ -12,6 +12,7 @@ class ServicoLocal extends Model
         'contrato_id',
         'distrito_id',
         'subprefeitura_id',
+        'unidade',
     ];
 
     public function contrato()
