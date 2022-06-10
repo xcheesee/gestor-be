@@ -11,8 +11,11 @@ class GestaoFiscalizacao extends Model
     protected $fillable = [
         'contrato_id',
         'nome_gestor',
+        'email_gestor',
         'nome_fiscal',
+        'email_fiscal',
         'nome_suplente',
+        'email_suplente'
     ];
 
     public function contrato()

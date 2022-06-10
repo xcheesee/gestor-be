@@ -40,22 +40,22 @@ class DistritoController extends Controller
      * @authenticated
      * 
      * 
-     * @bodyParam subprefeitura_id integer required ID da subprefeitura. Example: 4
      * @bodyParam nome string required Nome do distrito. Example: Exemplo
+     * @bodyParam subprefeitura_id integer required ID da subprefeitura. Example: 4
      *  
      * @response 200 {
      *     "data": {
      *         "id": 102,
-     *         "subprefeitura_id": 4,
-     *         "nome": "Exemplo"
+     *         "nome": "Exemplo",
+     *         "subprefeitura_id": 4
      *     }
      * }
      */
     public function store(Request $request)
     {
         $distrito = new Distrito;
-        $distrito->subprefeitura_id = $request->input('subprefeitura_id');
         $distrito->nome = $request->input('nome');
+        $distrito->subprefeitura_id = $request->input('subprefeitura_id');
 
         if ($distrito->save()) {
             return new DistritoResource($distrito);
@@ -72,8 +72,8 @@ class DistritoController extends Controller
      * @response 200 {
      *     "data": {
      *         "id": 102,
-     *         "subprefeitura_id": 4,
-     *         "nome": "Exemplo"
+     *         "nome": "Exemplo",
+     *         "subprefeitura_id": 4
      *     }
      * }
      */
@@ -102,22 +102,22 @@ class DistritoController extends Controller
      * @urlParam id integer required ID do distrito que deseja editar. Example: 102
      * 
      * 
-     * @bodyParam subprefeitura_id integer required ID da subprefeitura. Example: 3
      * @bodyParam nome string required Nome do distrito. Example: Exemplo
+     * @bodyParam subprefeitura_id integer required ID da subprefeitura. Example: 3
      * 
      * @response 200 {
      *     "data": {
      *         "id": 102,
-     *         "subprefeitura_id": 3,
-     *         "nome": "Exemplo"
+     *         "nome": "Exemplo",
+     *         "subprefeitura_id": 3
      *     }
      * }
      */
     public function update(Request $request, $id)
     {
         $distrito = Distrito::findOrFail($request->id);
-        $distrito->subprefeitura_id = $request->input('subprefeitura_id');
         $distrito->nome = $request->input('nome');
+        $distrito->subprefeitura_id = $request->input('subprefeitura_id');
 
         if ($distrito->save()) {
             return new DistritoResource($distrito);
@@ -135,8 +135,8 @@ class DistritoController extends Controller
      *     "message": "Distrito deletado com sucesso!",
      *     "data": {
      *         "id": 102,
-     *         "subprefeitura_id": 3,
-     *         "nome": "Exemplo"
+     *         "nome": "Exemplo",
+     *         "subprefeitura_id": 3
      *     }
      * }
      */
@@ -163,23 +163,23 @@ class DistritoController extends Controller
      *     "data": [
      *         {
      *             "id": 17,
-     *             "subprefeitura_id": 3,
-     *             "nome": "Campo Limpo"
+     *             "nome": "Campo Limpo",
+     *             "subprefeitura_id": 3
      *         },
      *         {
      *             "id": 19,
-     *             "subprefeitura_id": 3,
-     *             "nome": "Capão Redondo"
+     *             "nome": "Capão Redondo",
+     *             "subprefeitura_id": 3
      *         },
      *         {
      *             "id": 85,
-     *             "subprefeitura_id": 3,
-     *             "nome": "Vila Andrade"
+     *             "nome": "Vila Andrade",
+     *             "subprefeitura_id": 3
      *         },
      *         {
      *             "id": 102,
-     *             "subprefeitura_id": 3,
-     *             "nome": "Exemplo"
+     *             "nome": "Exemplo",
+     *             "subprefeitura_id": 3
      *         }
      *     ]
      * }
