@@ -41,23 +41,30 @@ class ContratoController extends Controller
      * @authenticated
      *
      *
-     * @bodyParam processo_sei string required Processo SEI. Example: 0123000134569000
+     * @bodyParam tipo_contratacao_id integer ID do tipo de contrataçãi. Example: 1
+     * @bodyParam processo_sei string required Processo SEI. Example: 6027.2019/0007357-2
+     * @bodyParam dotacao_orcamentaria string required Número da Dotação Orçamentária Example: 27.10.18.126.3024.2171.33904000.00
      * @bodyParam credor string required Nome do credor. Example: Teste Silva
      * @bodyParam cnpj_cpf string required Cnpj ou Cpf. Example: 45106963896
      * @bodyParam objeto string required Objeto. Example: teste
-     * @bodyParam numero_contrato string required Número do contrato. Example: 2343rbte67b63
+     * @bodyParam numero_contrato string required Número do contrato. Example: 052/SVMA/2019
      * @bodyParam data_assinatura date Data de assinatura do contrato. Example: 2022-05-20
-     * @bodyParam valor_contrato float required Valor do contrato. Example: 1500
+     * @bodyParam valor_contrato float required Valor do contrato. Example: 1200.00
+     * @bodyParam valor_mensal_estimativo float Valor estimnado do contrato a ser executado mensalmente. Example: 100.00
      * @bodyParam data_inicio_vigencia date required Data de inicio da vigência. Example: 2022-05-23
-     * @bodyParam data_fim_vigencia date Data de fim da vigência. Example: 2023-05-20
+     * @bodyParam data_vencimento date Data de vencimento do contrato. Example: 2023-05-20
      * @bodyParam condicao_pagamento string required Condição do pagamento. Example: Em até 10 dias após adimplemento
-     * @bodyParam prazo_contrato_meses integer required Prazo do contrato em meses. Example: 12
      * @bodyParam prazo_a_partir_de string Condição do início do prazo. Example: A partir do início da vigência
      * @bodyParam data_prazo_maximo date O prazo máximo do contrato. Example: 2023-06-20
      * @bodyParam nome_empresa string required Nome da empresa. Example: Teste LTDA
      * @bodyParam telefone_empresa string required Telefone da empresa. Example: 11913314554
      * @bodyParam email_empresa string required E-Mail da empresa. Example: teste@prefeitura.com
      * @bodyParam outras_informacoes text Informações adicionais. Example: Exemplo. Nenhuma outra informação
+     * @bodyParam envio_material_tecnico date O prazo para envio do Material Técnico. Example: 2023-05-20
+     * @bodyParam minuta_edital date O prazo para envio do Material Técnico. Example: 2023-05-21
+     * @bodyParam abertura_certame date O prazo para envio do Material Técnico. Example: 2023-05-21
+     * @bodyParam homologacao date O prazo para envio do Material Técnico. Example: 2023-05-21
+     * @bodyParam fonte_recurso text Local ou Organização fonte do recurso. Example: Tesouro
      *
      * @response 200 {
      *     "data": {
