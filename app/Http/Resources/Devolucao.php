@@ -17,6 +17,7 @@ class Devolucao extends JsonResource
         return [
             'id' => $this->id,
             'contrato_id' => $this->contrato_id,
+            'ano' => $this->ano,
             'data_devolucao' => $this->data_devolucao,
             'numero_devolucao' => $this->numero_devolucao,
             'valor_devolucao' => $this->valor_devolucao,

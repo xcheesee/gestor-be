@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class TipoContratacaoController extends Controller
 {
     /**
-     * Lista certidões
+     * Lista os tipos de contratação disponíveis
      * @authenticated
      *
      *
@@ -36,7 +36,7 @@ class TipoContratacaoController extends Controller
     }
 
     /**
-     * Cadastra uma nova certidão
+     * Cadastra um novo tipo de contratação
      * @authenticated
      *
      *
@@ -59,11 +59,11 @@ class TipoContratacaoController extends Controller
     }
 
     /**
-     * Mostra uma certidão específica
+     * Mostra um tipo de contratação específico
      * @authenticated
      *
      *
-     * @urlParam id integer required ID da certidão. Example: 24
+     * @urlParam id integer required ID do tipo de contratação. Example: 1
      *
      * @response 200 {
      *     "data": {
@@ -90,22 +90,18 @@ class TipoContratacaoController extends Controller
     }
 
     /**
-     * Edita uma certidão
+     * Edita um tipo de contratação
      * @authenticated
      *
      *
-     * @urlParam id integer required ID da certidão que deseja editar. Example: 24
+     * @urlParam id integer required ID do tipo de contratação que deseja editar. Example: 1
      *
-     * @bodyParam contrato_id integer required ID do contrato. Example: 14
-     * @bodyParam tipo_contratacoes string Nome da certidão. Example: Certidão negativa de débitos
-     * @bodyParam validade_tipo_contratacoes date Validade da certidão. Example: 2023-06-21
+     * @bodyParam nome string Nome do tipo de contratação. Example: Manut. Operação de Sist.Inf.Comunic/Serv.TIC PJ
      *
      * @response 200 {
      *     "data": {
-     *         "id": 24,
-     *         "contrato_id": 14,
-     *         "tipo_contratacoes": "Certidão negativa de débitos",
-     *         "validade_tipo_contratacoes": "2023-06-21"
+     *         "id": 1,
+     *         "nome": "Manut. Operação de Sist.Inf.Comunic/Serv.TIC PJ"
      *     }
      * }
      */
@@ -120,19 +116,17 @@ class TipoContratacaoController extends Controller
     }
 
     /**
-     * Deleta uma certidão
+     * Deleta um tipo de contratação
      * @authenticated
      *
      *
      * @urlParam id integer required ID da certidão que deseja deletar. Example: 24
      *
      * @response 200 {
-     *     "message": "Certidão deletada com sucesso!",
+     *     "message": "Tipo Contratação deletado com sucesso!",
      *     "data": {
-     *         "id": 24,
-     *         "contrato_id": 14,
-     *         "tipo_contratacoes": "Certidão negativa para débitos",
-     *         "validade_tipo_contratacoes": "2023-06-21"
+     *         "id": 1,
+     *         "nome": "Manut. Operação de Sist.Inf.Comunic/Serv.TIC PJ"
      *     }
      * }
      */
@@ -142,7 +136,7 @@ class TipoContratacaoController extends Controller
 
         if ($tipo_contratacao->delete()) {
             return response()->json([
-                'message' => 'Tipo Contratação deletada com sucesso!',
+                'message' => 'Tipo Contratação deletado com sucesso!',
                 'data' => new TipoContratacaoResource($tipo_contratacao)
             ]);
         }

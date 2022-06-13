@@ -6,10 +6,12 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\AditamentoController;
 use App\Http\Controllers\CertidaoController;
 use App\Http\Controllers\ContratoController;
+use App\Http\Controllers\DevolucaoController;
 use App\Http\Controllers\DistritoController;
+use App\Http\Controllers\ExecutadaController;
 use App\Http\Controllers\GarantiaController;
 use App\Http\Controllers\GestaoFiscalizacaoController;
-use App\Http\Controllers\RecursoOrcamentarioController;
+use App\Http\Controllers\PlanejadaController;
 use App\Http\Controllers\ServicoLocalController;
 use App\Http\Controllers\SubprefeituraController;
 
@@ -98,12 +100,26 @@ Route::get('gestaofiscalizacao/{id}', [GestaoFiscalizacaoController::class, 'sho
 Route::put('gestaofiscalizacao/{id}', [GestaoFiscalizacaoController::class, 'update']);
 Route::delete('gestaofiscalizacao/{id}', [GestaoFiscalizacaoController::class, 'destroy']);
 
-Route::get('recursoorcamentarios', [RecursoOrcamentarioController::class, 'index']);
-Route::get('recursoorcamentarios/{id}', [RecursoOrcamentarioController::class, 'listar_por_contrato']);
-Route::post('recursoorcamentario', [RecursoOrcamentarioController::class, 'store']);
-Route::get('recursoorcamentario/{id}', [RecursoOrcamentarioController::class, 'show']);
-Route::put('recursoorcamentario/{id}', [RecursoOrcamentarioController::class, 'update']);
-Route::delete('recursoorcamentario/{id}', [RecursoOrcamentarioController::class, 'destroy']);
+Route::get('devolucoes', [DevolucaoController::class, 'index']);
+Route::get('devolucoes/{id}', [DevolucaoController::class, 'listar_por_contrato']);
+Route::post('devolucao', [DevolucaoController::class, 'store']);
+Route::get('devolucao/{id}', [DevolucaoController::class, 'show']);
+Route::put('devolucao/{id}', [DevolucaoController::class, 'update']);
+Route::delete('devolucao/{id}', [DevolucaoController::class, 'destroy']);
+
+Route::get('executadas', [ExecutadaController::class, 'index']);
+Route::get('executadas/{id}', [ExecutadaController::class, 'listar_por_contrato']);
+Route::post('executada', [ExecutadaController::class, 'store']);
+Route::get('executada/{id}', [ExecutadaController::class, 'show']);
+Route::put('executada/{id}', [ExecutadaController::class, 'update']);
+Route::delete('executada/{id}', [ExecutadaController::class, 'destroy']);
+
+Route::get('planejadas', [PlanejadaController::class, 'index']);
+Route::get('planejadas/{id}', [PlanejadaController::class, 'listar_por_contrato']);
+Route::post('planejada', [PlanejadaController::class, 'store']);
+Route::get('planejada/{id}', [PlanejadaController::class, 'show']);
+Route::put('planejada/{id}', [PlanejadaController::class, 'update']);
+Route::delete('planejada/{id}', [PlanejadaController::class, 'destroy']);
 
 Route::get('servicoslocais', [ServicoLocalController::class, 'index']);
 Route::get('servicoslocais/{id}', [ServicoLocalController::class, 'listar_por_contrato']);

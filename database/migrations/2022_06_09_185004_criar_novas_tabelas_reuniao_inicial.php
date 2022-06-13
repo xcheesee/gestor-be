@@ -44,10 +44,10 @@ class CriarNovasTabelasReuniaoInicial extends Migration
             $table->foreignId('contrato_id')->constrained();
             $table->integer('mes');
             $table->integer('ano');
-            $table->enum('tipo_lancamento', ['reserva','empenho']);
-            $table->enum('modalidade', ['normal', 'complementar', 'reajuste']);
+            $table->enum('tipo_lancamento', ['reserva','empenho'])->nullable();
+            $table->enum('modalidade', ['normal', 'complementar', 'reajuste'])->nullable();
             $table->date('data_emissao_planejado')->nullable();
-            $table->date('numero_planejado')->nullable();
+            $table->integer('numero_planejado')->nullable();
             $table->float('valor_planejado',16,2);
             $table->timestamps();
         });
@@ -58,7 +58,7 @@ class CriarNovasTabelasReuniaoInicial extends Migration
             $table->integer('mes');
             $table->integer('ano');
             $table->date('data_emissao_executado')->nullable();
-            $table->date('numero_executado')->nullable();
+            $table->integer('numero_executado')->nullable();
             $table->float('valor_executado',16,2);
             $table->timestamps();
         });

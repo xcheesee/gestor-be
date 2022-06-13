@@ -12,6 +12,7 @@ class Devolucao extends Model
 
     protected $fillable = [
         'contrato_id',
+        'ano',
         'data_devolucao',
         'numero_devolucao',
         'valor_devolucao',
