@@ -108,7 +108,7 @@ class ServicoLocalController extends Controller
      *
      *
      * @urlParam id integer required ID do serviço local que deseja editar. Example: 1
-     * 
+     *
      * @bodyParam contrato_id integer required ID do contrato. Example: 5
      * @bodyParam distrito_id integer required ID do distrito. Example: 13
      * @bodyParam subprefeitura_id integer required ID da subprefeitura. Example: 5

@@ -16,8 +16,8 @@ class GarantiaController extends Controller
     /**
      * Lista as Garantias
      * @authenticated
-     * 
-     * 
+     *
+     *
      */
     public function index()
     {
@@ -38,14 +38,14 @@ class GarantiaController extends Controller
     /**
      * Cadastra uma garantia
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @bodyParam contrato_id integer required ID do contrato. Example: 24
      * @bodyParam instituicao_financeira string Instituição financeira. Example: Exemplo
      * @bodyParam numero_documento string Número do documento. Example: 050013
      * @bodyParam valor_garantia float Valor da garantia. Example: 1000
      * @bodyParam data_validade_garantia date Validade da garantia. Example: 2022-12-30
-     * 
+     *
      * @response 200 {
      *     "data": {
      *         "id": 10,
@@ -53,7 +53,7 @@ class GarantiaController extends Controller
      *         "instituicao_financeira": "Exemplo",
      *         "numero_documento": "050013",
      *         "valor_garantia": 1000,
-     *         "dta_validade_garantia": "2022-12-30",
+     *         "data_validade_garantia": "2022-12-30"
      *     }
      * }
      */
@@ -74,10 +74,10 @@ class GarantiaController extends Controller
     /**
      * Mostra uma garantia específica
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @urlParam id integer required ID da garantia. Example: 10
-     * 
+     *
      * @response 200 {
      *     "data": {
      *         "id": 10,
@@ -109,16 +109,16 @@ class GarantiaController extends Controller
     /**
      * Edita uma garantia
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @urlParam id integer required ID da garantia que deseja editar. Example: 10
-     * 
+     *
      * @bodyParam contrato_id integer required ID do contrato. Example: 24
      * @bodyParam instituicao_financeira string Instituição financeira. Example: Example
      * @bodyParam numero_documento string Número do documento. Example: 050013
      * @bodyParam valor_garantia float Valor da garantia. Example: 2000
      * @bodyParam data_validade_garantia date Validade da garantia. Example: 2023-01-01
-     * 
+     *
      * @response 200 {
      *     "data": {
      *         "id": 10,
@@ -147,10 +147,10 @@ class GarantiaController extends Controller
     /**
      * Deleta uma garantia
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @urlParam id integer required ID da garantia que deseja deletar. Example: 10
-     * 
+     *
      * @response 200 {
      *     "message": "Garantia deletada com sucesso!",
      *     "data": {
@@ -178,10 +178,10 @@ class GarantiaController extends Controller
     /**
      * Lista as garantias pelo ID do contrato
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @urlParam id integer required ID do contrato. Example: 24
-     * 
+     *
      * @response 200 {
      *     "data": {
      *         "id": 10,
