@@ -16,8 +16,8 @@ class DistritoController extends Controller
     /**
      * Lista os distritos
      * @authenticated
-     * 
-     * 
+     *
+     *
      */
     public function index()
     {
@@ -38,11 +38,11 @@ class DistritoController extends Controller
     /**
      * Cadastra um distrito
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @bodyParam nome string required Nome do distrito. Example: Exemplo
      * @bodyParam subprefeitura_id integer required ID da subprefeitura. Example: 4
-     *  
+     *
      * @response 200 {
      *     "data": {
      *         "id": 102,
@@ -65,10 +65,10 @@ class DistritoController extends Controller
     /**
      * Mostra um distrito específico
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @urlParam id integer required ID do distrito. Example: 102
-     * 
+     *
      * @response 200 {
      *     "data": {
      *         "id": 102,
@@ -97,14 +97,14 @@ class DistritoController extends Controller
     /**
      * Edita um distrito
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @urlParam id integer required ID do distrito que deseja editar. Example: 102
-     * 
-     * 
+     *
+     *
      * @bodyParam nome string required Nome do distrito. Example: Exemplo
      * @bodyParam subprefeitura_id integer required ID da subprefeitura. Example: 3
-     * 
+     *
      * @response 200 {
      *     "data": {
      *         "id": 102,
@@ -127,10 +127,10 @@ class DistritoController extends Controller
     /**
      * Deleta um distrito
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @urlParam id integer required ID do distrito que deseja deletar. Example: 102
-     * 
+     *
      * @response 200 {
      *     "message": "Distrito deletado com sucesso!",
      *     "data": {
@@ -155,10 +155,10 @@ class DistritoController extends Controller
     /**
      * Lista os distritos pelo ID da subprefeitura
      * @authenticated
-     * 
-     * 
+     *
+     *
      * @urlParam id integer required ID da subprefeitura. Example: 3
-     * 
+     *
      * @response 200 {
      *     "data": [
      *         {

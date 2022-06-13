@@ -9,7 +9,6 @@ use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\DistritoController;
 use App\Http\Controllers\GarantiaController;
 use App\Http\Controllers\GestaoFiscalizacaoController;
-use App\Http\Controllers\RecursoOrcamentarioController;
 use App\Http\Controllers\ServicoLocalController;
 use App\Http\Controllers\SubprefeituraController;
 
@@ -97,13 +96,6 @@ Route::post('gestaofiscalizacao', [GestaoFiscalizacaoController::class, 'store']
 Route::get('gestaofiscalizacao/{id}', [GestaoFiscalizacaoController::class, 'show']);
 Route::put('gestaofiscalizacao/{id}', [GestaoFiscalizacaoController::class, 'update']);
 Route::delete('gestaofiscalizacao/{id}', [GestaoFiscalizacaoController::class, 'destroy']);
-
-Route::get('recursoorcamentarios', [RecursoOrcamentarioController::class, 'index']);
-Route::get('recursoorcamentarios/{id}', [RecursoOrcamentarioController::class, 'listar_por_contrato']);
-Route::post('recursoorcamentario', [RecursoOrcamentarioController::class, 'store']);
-Route::get('recursoorcamentario/{id}', [RecursoOrcamentarioController::class, 'show']);
-Route::put('recursoorcamentario/{id}', [RecursoOrcamentarioController::class, 'update']);
-Route::delete('recursoorcamentario/{id}', [RecursoOrcamentarioController::class, 'destroy']);
 
 Route::get('servicoslocais', [ServicoLocalController::class, 'index']);
 Route::get('servicoslocais/{id}', [ServicoLocalController::class, 'listar_por_contrato']);

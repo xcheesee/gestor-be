@@ -19,10 +19,9 @@ class Aditamento extends JsonResource
             'contrato_id' => $this->contrato_id,
             'tipo_aditamentos' => $this->tipo_aditamentos,
             'valor_aditamento' => $this->valor_aditamento,
-            'data_fim_vigencia_atualizada' => $this->data_fim_vigencia_atualizada,
+            'dias_reajuste' => $this->dias_reajuste,
             'indice_reajuste' => $this->indice_reajuste,
-            'data_base_reajuste' => $this->data_base_reajuste,
-            'valor_reajustado' => $this->valor_reajustado,
+            'pct_reajuste' => $this->pct_reajuste,
         ];
     }
 }

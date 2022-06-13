@@ -18,8 +18,11 @@ class GestaoFiscalizacao extends JsonResource
             'id' => $this->id,
             'contrato_id' => $this->contrato_id,
             'nome_gestor' => $this->nome_gestor,
+            'email_gestor' => $this->email_gestor,
             'nome_fiscal' => $this->nome_fiscal,
+            'email_fiscal' => $this->email_fiscal,
             'nome_suplente' => $this->nome_suplente,
+            'email_suplente' => $this->email_suplente
         ];
     }
 }
