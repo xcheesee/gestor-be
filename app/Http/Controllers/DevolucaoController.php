@@ -7,6 +7,11 @@ use App\Http\Resources\Devolucao as DevolucaoResource;
 use App\Models\Devolucao;
 use Illuminate\Http\Request;
 
+/**
+ * @group Devolucao
+ *
+ * APIs para listar, cadastrar, editar e remover dados de execuções financeiras planejadas
+ */
 class DevolucaoController extends Controller
 {
     /**

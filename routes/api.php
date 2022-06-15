@@ -14,6 +14,7 @@ use App\Http\Controllers\GestaoFiscalizacaoController;
 use App\Http\Controllers\PlanejadaController;
 use App\Http\Controllers\ServicoLocalController;
 use App\Http\Controllers\SubprefeituraController;
+use App\Http\Controllers\TipoContratacaoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -135,3 +136,9 @@ Route::post('subprefeitura', [SubprefeituraController::class, 'store']);
 Route::get('subprefeitura/{id}', [SubprefeituraController::class, 'show']);
 Route::put('subprefeitura/{id}', [SubprefeituraController::class, 'update']);
 Route::delete('subprefeitura/{id}', [SubprefeituraController::class, 'destroy']);
+
+Route::get('tipocontratacoes',[TipoContratacaoController::class, 'index']);
+Route::post('tipocontratacao', [TipoContratacaoController::class, 'store']);
+Route::get('tipocontratacao/{id}', [TipoContratacaoController::class, 'show']);
+Route::put('tipocontratacao/{id}', [TipoContratacaoController::class, 'update']);
+Route::delete('tipocontratacao/{id}', [TipoContratacaoController::class, 'destroy']);

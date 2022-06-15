@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 /**
  * @group TipoContratacao
  *
- * APIs para listar, cadastrar, editar e remover dados de tipo de contratação
+ * APIs para listar, cadastrar, editar e remover dados de execuções financeiras planejadas
  */
 class TipoContratacaoController extends Controller
 {
