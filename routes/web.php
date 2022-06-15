@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('contratos')->group(function () { //considerando que o projeto estará em subdiretório em homol/prod (TODO: testar uso de env('APP_FOLDER', 'ndtic'))
+Route::prefix(env('APP_FOLDER', 'contratos'))->group(function () { //considerando que o projeto estará em subdiretório em homol/prod (TODO: testar uso de env('APP_FOLDER', 'ndtic'))
     //Custom Login
     Route::get('/entrar', [App\Http\Controllers\Auth\LoginController::class, 'index'])->name('entrar');
     Route::post('/entrar', [App\Http\Controllers\Auth\LoginController::class, 'entrar']);
