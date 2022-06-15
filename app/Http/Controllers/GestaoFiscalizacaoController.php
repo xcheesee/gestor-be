@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GestaoFiscalizacaoFormRequest;
 use App\Models\GestaoFiscalizacao as GestaoFiscalizacao;
 use App\Http\Resources\GestaoFiscalizacao as GestaoFiscalizacaoResource;
 use Illuminate\Http\Request;
@@ -61,7 +62,7 @@ class GestaoFiscalizacaoController extends Controller
      *     }
      * }
      */
-    public function store(Request $request)
+    public function store(GestaoFiscalizacaoFormRequest $request)
     {
         $gestaoFiscalizacao = new GestaoFiscalizacao;
         $gestaoFiscalizacao->contrato_id = $request->input('contrato_id');

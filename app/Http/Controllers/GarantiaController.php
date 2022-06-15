@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GarantiaFormRequest;
 use App\Models\Garantia as Garantia;
 use App\Http\Resources\Garantia as GarantiaResource;
 use Illuminate\Http\Request;
@@ -57,7 +58,7 @@ class GarantiaController extends Controller
      *     }
      * }
      */
-    public function store(Request $request)
+    public function store(GarantiaFormRequest $request)
     {
         $garantia = new Garantia;
         $garantia->contrato_id = $request->input('contrato_id');

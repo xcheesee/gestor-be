@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DistritoFormRequest;
 use App\Models\Distrito as Distrito;
 use App\Http\Resources\Distrito as DistritoResource;
 use Illuminate\Http\Request;
@@ -51,7 +52,7 @@ class DistritoController extends Controller
      *     }
      * }
      */
-    public function store(Request $request)
+    public function store(DistritoFormRequest $request)
     {
         $distrito = new Distrito;
         $distrito->nome = $request->input('nome');

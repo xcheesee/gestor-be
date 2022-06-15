@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CertidaoFormRequest;
 use App\Models\Certidao as Certidao;
 use App\Http\Resources\Certidao as CertidaoResource;
 use Illuminate\Http\Request;
@@ -53,7 +54,7 @@ class CertidaoController extends Controller
      *     }
      * }
      */
-    public function store(Request $request)
+    public function store(CertidaoFormRequest $request)
     {
         $certidao = new Certidao;
         $certidao->contrato_id = $request->input('contrato_id');

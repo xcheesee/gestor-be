@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ServicoLocalFormRequest;
 use App\Models\ServicoLocal as ServicoLocal;
 use App\Http\Resources\ServicoLocal as ServicoLocalResource;
 use Illuminate\Http\Request;
@@ -55,7 +56,7 @@ class ServicoLocalController extends Controller
      *     }
      * }
      */
-    public function store(Request $request)
+    public function store(ServicoLocalFormRequest $request)
     {
         $servicoLocal = new ServicoLocal;
         $servicoLocal->contrato_id = $request->input('contrato_id');

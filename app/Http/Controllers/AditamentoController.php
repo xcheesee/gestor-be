@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AditamentoFormRequest;
 use App\Models\Aditamento as Aditamento;
 use App\Http\Resources\Aditamento as AditamentoResource;
 use Illuminate\Http\Request;
@@ -40,10 +41,10 @@ class AditamentoController extends Controller
      * @authenticated
      *
      *
-     * @bodyParam contranto_id integer required ID do contrato. Example: 5
+     * @bodyParam contrato_id integer required ID do contrato. Example: 5
      * @bodyParam tipo_aditamentos enum Tipo de aditamento('Acréscimo de valor', 'Redução de valor', 'Prorrogação de prazo', 'Supressão de prazo', 'Suspensão', 'Rescisão'). Example: Acréscimo de valor
      * @bodyParam valor_aditamento float Valor do aditamento. Example: 1000
-     * @bodyParam dias_reajuste integer Dias de acréscimo. Example: 60
+     * @bodyParam dias_reajuste integer required Dias de acréscimo. Example: 60
      * @bodyParam indice_reajuste float Taxa de reajuste. Example: Teste
      * @bodyParam pct_reajuste float PCT do reajuste. Example: 184
      *
@@ -59,7 +60,7 @@ class AditamentoController extends Controller
      *     }
      * }
      */
-    public function store(Request $request)
+    public function store(AditamentoFormRequest $request)
     {
         $aditamento = new Aditamento;
         $aditamento->contrato_id = $request->input('contrato_id');
@@ -120,7 +121,7 @@ class AditamentoController extends Controller
      * @bodyParam contranto_id integer required ID do contrato. Example: 5
      * @bodyParam tipo_aditamentos enum Tipo de aditamento('Acréscimo de valor', 'Redução de valor', 'Prorrogação de prazo', 'Supressão de prazo', 'Suspensão', 'Rescisão'). Example: Acréscimo de valor
      * @bodyParam valor_aditamento float Valor do aditamento. Example: 1000
-     * @bodyParam dias_reajuste integer Dias de acréscimo. Example: 60
+     * @bodyParam dias_reajuste integer required Dias de acréscimo. Example: 60
      * @bodyParam indice_reajuste float Taxa de reajuste. Example: Teste
      * @bodyParam pct_reajuste float PCT do reajuste. Example: 184
      *

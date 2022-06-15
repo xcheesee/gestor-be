@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubprefeituraFormRequest;
 use App\Models\Subprefeitura as Subprefeitura;
 use App\Http\Resources\Subprefeitura as SubprefeituraResource;
 use Illuminate\Http\Request;
@@ -51,7 +52,7 @@ class SubprefeituraController extends Controller
      *     }
      * }
      */
-    public function store(Request $request)
+    public function store(SubprefeituraFormRequest $request)
     {
         $subprefeitura = new Subprefeitura;
         $subprefeitura->nome = $request->input('nome');
