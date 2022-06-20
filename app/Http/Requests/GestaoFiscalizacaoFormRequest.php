@@ -26,8 +26,6 @@ class GestaoFiscalizacaoFormRequest extends FormRequest
         return [
             'contrato_id' => 'required',
             'email_gestor' => 'required',
-            'email_fiscal' => 'required',
-            'email_suplente' => 'required'
         ];
     }
 
