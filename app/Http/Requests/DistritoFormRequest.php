@@ -24,8 +24,8 @@ class DistritoFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome' => 'required',
             'subprefeitura_id' => 'required',
+            'nome' => 'required',
         ];
     }
 

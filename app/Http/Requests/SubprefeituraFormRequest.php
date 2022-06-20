@@ -24,7 +24,8 @@ class SubprefeituraFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome' => 'required'
+            'regiao' => 'required',
+            'nome' => 'required',
         ];
     }
 
