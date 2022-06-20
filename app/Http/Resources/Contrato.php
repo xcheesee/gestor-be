@@ -17,6 +17,7 @@ class Contrato extends JsonResource
         return [
             'id' => $this->id,
             'tipo_contratacao_id' => $this->tipo_contratacao_id,
+            'tipo_contratacao' => $this->tipo_contratacao ? $this->tipo_contratacao->nome : null,
             'processo_sei' => $this->processo_sei,
             'dotacao_orcamentaria' => $this->dotacao_orcamentaria,
             'credor' => $this->credor,
@@ -41,6 +42,7 @@ class Contrato extends JsonResource
             'abertura_certame' => $this->abertura_certame,
             'homologacao' => $this->homologacao,
             'fonte_recurso' => $this->fonte_recurso,
+            'execucao_financeira' => $this->execucao_financeira,
         ];
     }
 }

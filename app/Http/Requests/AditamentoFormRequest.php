@@ -25,8 +25,8 @@ class AditamentoFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
-            'tipo_aditamentos' => 'in:Acrésimo de valor,Redução de valor,Prorrogação de prazo,Supressão de prazo,Suspensão,Rescisão',
-            'dias_reajuste' => 'required|integer',
+            'tipo_aditamentos' => 'in:Acréscimo de valor,Redução de valor,Prorrogação de prazo,Supressão de prazo,Suspensão,Rescisão',
+            'dias_reajuste' => 'nullable|integer',
 
         ];
     }

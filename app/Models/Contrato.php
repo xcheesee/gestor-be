@@ -33,4 +33,9 @@ class Contrato extends Model
         'homologacao',
         'fonte_recurso',
     ];
+
+    public function tipo_contratacao()
+    {
+        return $this->belongsTo(TipoContratacao::class);
+    }
 }

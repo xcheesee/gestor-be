@@ -12,12 +12,6 @@ class TipoContratacao extends Model
     protected $table = 'tipo_contratacoes';
 
     protected $fillable = [
-        'contrato_id',
         'nome',
     ];
-
-    public function contrato()
-    {
-        return $this->belongsTo(Contrato::class);
-    }
 }

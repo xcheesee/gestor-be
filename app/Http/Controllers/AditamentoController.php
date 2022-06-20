@@ -137,7 +137,7 @@ class AditamentoController extends Controller
      *     }
      * }
      */
-    public function update(Request $request, $id)
+    public function update(AditamentoFormRequest $request, $id)
     {
         $aditamento = Aditamento::findOrFail($request->id);
         $aditamento->contrato_id = $request->input('contrato_id');
@@ -255,7 +255,7 @@ class AditamentoController extends Controller
         $aditamentos = Aditamento::query()
             ->where('contrato_id','=',$id)
             ->get();
-        
+
         return AditamentoResource::collection($aditamentos);
     }
 }

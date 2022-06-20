@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ContratoFormRequest;
 use App\Models\Contrato as Contrato;
 use App\Http\Resources\Contrato as ContratoResource;
+use App\Models\Planejada;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @group Contrato
@@ -164,7 +166,30 @@ class ContratoController extends Controller
     public function show($id)
     {
         $contrato = Contrato::findOrFail($id);
-        return new ContratoResource($contrato);
+
+        $planejadas = DB::table('planejadas')
+                        ->selectRaw('mes,ano,SUM(valor_planejado) as planejado')
+                        ->where('contrato_id','=',$id)->groupByRaw('ano,mes')->get();
+        $executadas = DB::table('executadas')
+                        ->selectRaw('mes,ano,SUM(valor_executado) as executado')
+                        ->where('contrato_id','=',$id)->groupByRaw('ano,mes')->get();
+
+        $execucao_financeira = array();
+        $meses = array('','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez');
+        foreach($planejadas as $planejada){
+            $execucao_financeira[$planejada->mes.'-'.$planejada->ano]['mes'] = $meses[$planejada->mes].'-'.$planejada->ano;
+            $execucao_financeira[$planejada->mes.'-'.$planejada->ano]['planejado'] = $planejada->planejado;
+            $execucao_financeira[$planejada->mes.'-'.$planejada->ano]['executado'] = 0.00;
+        }
+        foreach($executadas as $executada){
+            $execucao_financeira[$executada->mes.'-'.$executada->ano]['executado'] = $executada->executado;
+        }
+
+        $execucaoFinanceira = (object) $execucao_financeira;
+        $contrato->execucao_financeira = $execucaoFinanceira;
+
+        $contratoResource = new ContratoResource($contrato);
+        return $contratoResource;
     }
 
     /**
