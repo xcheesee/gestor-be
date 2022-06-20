@@ -16,7 +16,7 @@ class TipoContratacao extends JsonResource
     {
         return [
             'id' => $this->id,
-            'nome' => $this->contrato_id,
+            'nome' => $this->nome,
         ];
     }
 }
