@@ -50,7 +50,7 @@ class CriarTabelasReuniao20jun2022 extends Migration
             $table->timestamps();
         });
 
-        Schema::create('dotacao_tipos', function (Blueprint $table) {
+        Schema::create('tipo_dotacoes', function (Blueprint $table) {
             $table->id();
             $table->string('numero_dotacao');
             $table->text('descricao');
