@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TipoContratacao as TipoContratacao;
-use App\Http\Resources\TipoContratacao as TipoContratacaoResource;
+use App\Models\LicitacaoModelo as LicitacaoModelo;
+use App\Http\Resources\LicitacaoModelo as LicitacaoModeloResource;
 use Illuminate\Http\Request;
 
 /**
- * @group TipoContratacao
+ * @group LicitacaoModelo
  *
  * APIs para listar, cadastrar, editar e remover dados de execuções financeiras planejadas
  */
-class TipoContratacaoController extends Controller
+class LicitacaoModeloController extends Controller
 {
     /**
      * Lista os tipos de contratação disponíveis
@@ -21,8 +21,8 @@ class TipoContratacaoController extends Controller
      */
     public function index()
     {
-        $tipo_contratacoes = TipoContratacao::paginate(15);
-        return TipoContratacaoResource::collection($tipo_contratacoes);
+        $tipo_contratacoes = LicitacaoModelo::paginate(15);
+        return LicitacaoModeloResource::collection($tipo_contratacoes);
     }
 
     /**
@@ -51,10 +51,10 @@ class TipoContratacaoController extends Controller
      */
     public function store(Request $request)
     {
-        $tipo_contratacao = new TipoContratacao;
-        $tipo_contratacao->nome = $request->input('nome');
-        if ($tipo_contratacao->save()) {
-            return new TipoContratacaoResource($tipo_contratacao);
+        $licitacao_modelo = new LicitacaoModelo;
+        $licitacao_modelo->nome = $request->input('nome');
+        if ($licitacao_modelo->save()) {
+            return new LicitacaoModeloResource($licitacao_modelo);
         }
     }
 
@@ -74,8 +74,8 @@ class TipoContratacaoController extends Controller
      */
     public function show($id)
     {
-        $tipo_contratacao = TipoContratacao::findOrFail($id);
-        return new TipoContratacaoResource($tipo_contratacao);
+        $licitacao_modelo = LicitacaoModelo::findOrFail($id);
+        return new LicitacaoModeloResource($licitacao_modelo);
     }
 
     /**
@@ -107,11 +107,11 @@ class TipoContratacaoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $tipo_contratacao = TipoContratacao::findOrFail($request->id);
-        $tipo_contratacao->nome = $request->input('nome');
+        $licitacao_modelo = LicitacaoModelo::findOrFail($request->id);
+        $licitacao_modelo->nome = $request->input('nome');
 
-        if ($tipo_contratacao->save()) {
-            return new TipoContratacaoResource($tipo_contratacao);
+        if ($licitacao_modelo->save()) {
+            return new LicitacaoModeloResource($licitacao_modelo);
         }
     }
 
@@ -132,12 +132,12 @@ class TipoContratacaoController extends Controller
      */
     public function destroy($id)
     {
-        $tipo_contratacao = TipoContratacao::findOrFail($id);
+        $licitacao_modelo = LicitacaoModelo::findOrFail($id);
 
-        if ($tipo_contratacao->delete()) {
+        if ($licitacao_modelo->delete()) {
             return response()->json([
                 'message' => 'Tipo Contratação deletado com sucesso!',
-                'data' => new TipoContratacaoResource($tipo_contratacao)
+                'data' => new LicitacaoModeloResource($licitacao_modelo)
             ]);
         }
     }

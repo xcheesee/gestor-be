@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Contrato extends Model
 {
     protected $fillable = [
-        'tipo_contratacao_id',
+        'licitacao_modelo_id',
+        'envio_material_tecnico',
+        'minuta_edital',
+        'abertura_certame',
+        'homologacao',
         'processo_sei',
-        'dotacao_orcamentaria',
         'credor',
         'cnpj_cpf',
         'tipo_objeto',
@@ -23,19 +26,16 @@ class Contrato extends Model
         'condicao_pagamento',
         'prazo_a_partir_de',
         'data_prazo_maximo',
+        'numero_nota_reserva',
+        'valor_reserva',
         'nome_empresa',
         'telefone_empresa',
         'email_empresa',
         'outras_informacoes',
-        'envio_material_tecnico',
-        'minuta_edital',
-        'abertura_certame',
-        'homologacao',
-        'fonte_recurso',
     ];
 
-    public function tipo_contratacao()
+    public function licitacao_modelo()
     {
-        return $this->belongsTo(TipoContratacao::class);
+        return $this->belongsTo(LicitacaoModelo::class);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AditamentoFormRequest extends FormRequest
+class ExecucaoFinanceiraFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,10 @@ class AditamentoFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
-            'tipo_aditamentos' => 'in:Acréscimo de valor,Redução de valor,Prorrogação de prazo,Supressão de prazo,Suspensão,Rescisão',
-            'dias_reajuste' => 'nullable|integer',
-
+            'mes' => 'required|integer|max:12|min:1',
+            'ano' => 'required|integer|min:2000',
+            //'data_emissao_executado' => 'required',
+            //'executado' => 'float',
         ];
     }
 
@@ -36,7 +37,9 @@ class AditamentoFormRequest extends FormRequest
         return [
             'required' => "O campo ':attribute' é obrigatório",
             'integer' => "O valor do campo ':attribute' deve ser um número inteiro",
-            'tipo_aditamentos.in' => "Valores possíveis para tipo aditamento: 'Acréscimo de valor', 'Redução de valor', 'Prorrogação de valor', 'Supressão de prazo', 'Suspensão' e 'Rescisão'"
+            'mes.min' => "o valor de mês deve ser entre 1 a 12",
+            'mes.max' => "o valor de mês deve ser entre 1 a 12",
+            'ano.min' => "o valor de ano deve ser maior ou igual a 2000",
         ];
     }
 }

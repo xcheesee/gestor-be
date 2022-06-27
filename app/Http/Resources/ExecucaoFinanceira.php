@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Executada extends JsonResource
+class ExecucaoFinanceira extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,9 +19,13 @@ class Executada extends JsonResource
             'contrato_id' => $this->contrato_id,
             'mes' => $this->mes,
             'ano' => $this->ano,
-            'data_emissao_executado' => $this->data_emissao_executado,
-            'numero_executado' => $this->numero_executado,
-            'valor_executado' => $this->valor_executado,
+            'planejado_inicial' => $this->valor_executado,
+            'contratado_inicial' => $this->valor_executado,
+            'valor_reajuste' => $this->valor_executado,
+            'valor_aditivo' => $this->valor_executado,
+            'valor_cancelamento' => $this->valor_executado,
+            'empenhado' => $this->valor_executado,
+            'executado' => $this->valor_executado,
         ];
     }
 }

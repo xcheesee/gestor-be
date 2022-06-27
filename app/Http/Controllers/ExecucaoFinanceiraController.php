@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ExecutadaFormRequest;
-use App\Http\Resources\Executada as ExecutadaResource;
-use App\Models\Executada;
+use App\Http\Requests\ExecucaoFinanceiraFormRequest;
+use App\Http\Resources\ExecucaoFinanceira as ExecucaoFinanceiraResource;
+use App\Models\ExecucaoFinanceira;
 use Illuminate\Http\Request;
 
 /**
- * @group Executada
+ * @group ExecucaoFinanceira
  *
  * APIs para listar, cadastrar, editar e remover dados de execuções financeiras executadas
  */
-class ExecutadaController extends Controller
+class ExecucaoFinanceiraController extends Controller
 {
     /**
      * Lista notas de valores executados mensais
@@ -22,8 +22,8 @@ class ExecutadaController extends Controller
      */
     public function index()
     {
-        $executadas = Executada::paginate(15);
-        return ExecutadaResource::collection($executadas);
+        $executadas = ExecucaoFinanceira::paginate(15);
+        return ExecucaoFinanceiraResource::collection($executadas);
     }
 
     /**
@@ -60,9 +60,9 @@ class ExecutadaController extends Controller
      *     }
      * }
      */
-    public function store(ExecutadaFormRequest $request)
+    public function store(ExecucaoFinanceiraFormRequest $request)
     {
-        $executada = new Executada;
+        $executada = new ExecucaoFinanceira;
         $executada->contrato_id = $request->input('contrato_id');
         $executada->mes = $request->input('mes');
         $executada->ano = $request->input('ano');
@@ -70,7 +70,7 @@ class ExecutadaController extends Controller
         $executada->numero_executado = $request->input('numero_executado');
         $executada->valor_executado = $request->input('valor_executado');
         if ($executada->save()) {
-            return new ExecutadaResource($executada);
+            return new ExecucaoFinanceiraResource($executada);
         }
     }
 
@@ -96,8 +96,8 @@ class ExecutadaController extends Controller
      */
     public function show($id)
     {
-        $executada = Executada::findOrFail($id);
-        return new ExecutadaResource($executada);
+        $executada = ExecucaoFinanceira::findOrFail($id);
+        return new ExecucaoFinanceiraResource($executada);
     }
 
     /**
@@ -137,9 +137,9 @@ class ExecutadaController extends Controller
      *     }
      * }
      */
-    public function update(ExecutadaFormRequest $request, $id)
+    public function update(ExecucaoFinanceiraFormRequest $request, $id)
     {
-        $executada = Executada::findOrFail($request->id);
+        $executada = ExecucaoFinanceira::findOrFail($request->id);
         $executada->contrato_id = $request->input('contrato_id');
         $executada->mes = $request->input('mes');
         $executada->ano = $request->input('ano');
@@ -148,7 +148,7 @@ class ExecutadaController extends Controller
         $executada->valor_executado = $request->input('valor_executado');
 
         if ($executada->save()) {
-            return new ExecutadaResource($executada);
+            return new ExecucaoFinanceiraResource($executada);
         }
     }
 
@@ -174,12 +174,12 @@ class ExecutadaController extends Controller
      */
     public function destroy($id)
     {
-        $executada = Executada::findOrFail($id);
+        $executada = ExecucaoFinanceira::findOrFail($id);
 
         if ($executada->delete()) {
             return response()->json([
                 'message' => 'Certidão deletada com sucesso!',
-                'data' => new ExecutadaResource($executada)
+                'data' => new ExecucaoFinanceiraResource($executada)
             ]);
         }
     }
@@ -216,10 +216,10 @@ class ExecutadaController extends Controller
      */
     public function listar_por_contrato($id)
     {
-        $executadas = Executada::query()
+        $executadas = ExecucaoFinanceira::query()
             ->where('contrato_id','=',$id)
             ->get();
 
-        return ExecutadaResource::collection($executadas);
+        return ExecucaoFinanceiraResource::collection($executadas);
     }
 }

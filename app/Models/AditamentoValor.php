@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Aditamento extends Model
+class AditamentoValor extends Model
 {
+    protected $table = 'aditamentos_valor';
     protected $fillable = [
         'contrato_id',
         'tipo_aditamentos',
         'valor_aditamento',
-        'dias_reajuste',
         'indice_reajuste',
         'pct_reajuste',
     ];

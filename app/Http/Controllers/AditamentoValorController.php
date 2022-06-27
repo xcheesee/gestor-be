@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AditamentoFormRequest;
-use App\Models\Aditamento as Aditamento;
-use App\Http\Resources\Aditamento as AditamentoResource;
+use App\Http\Requests\AditamentoValorFormRequest;
+use App\Models\AditamentoValor as AditamentoValor;
+use App\Http\Resources\AditamentoValor as AditamentoValorResource;
 use Illuminate\Http\Request;
 
 /**
@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
  *
  * APIs para listar, cadastrar, editar e remover dados de aditamento
  */
-class AditamentoController extends Controller
+class AditamentoValorController extends Controller
 {
     /**
      * Lista os aditamentos
@@ -22,8 +22,8 @@ class AditamentoController extends Controller
      */
     public function index()
     {
-        $aditamentos = Aditamento::paginate(15);
-        return AditamentoResource::collection($aditamentos);
+        $aditamentos = AditamentoValor::paginate(15);
+        return AditamentoValorResource::collection($aditamentos);
     }
 
     /**
@@ -60,9 +60,9 @@ class AditamentoController extends Controller
      *     }
      * }
      */
-    public function store(AditamentoFormRequest $request)
+    public function store(AditamentoValorFormRequest $request)
     {
-        $aditamento = new Aditamento;
+        $aditamento = new AditamentoValor;
         $aditamento->contrato_id = $request->input('contrato_id');
         $aditamento->tipo_aditamentos = $request->input('tipo_aditamentos');
         $aditamento->valor_aditamento = $request->input('valor_aditamento');
@@ -71,7 +71,7 @@ class AditamentoController extends Controller
         $aditamento->pct_reajuste = $request->input('pct_reajuste');
 
         if ($aditamento->save()) {
-            return new AditamentoResource($aditamento);
+            return new AditamentoValorResource($aditamento);
         }
     }
 
@@ -96,8 +96,8 @@ class AditamentoController extends Controller
      */
     public function show($id)
     {
-        $aditamento = Aditamento::findOrFail($id);
-        return new AditamentoResource($aditamento);
+        $aditamento = AditamentoValor::findOrFail($id);
+        return new AditamentoValorResource($aditamento);
     }
 
     /**
@@ -137,9 +137,9 @@ class AditamentoController extends Controller
      *     }
      * }
      */
-    public function update(AditamentoFormRequest $request, $id)
+    public function update(AditamentoValorFormRequest $request, $id)
     {
-        $aditamento = Aditamento::findOrFail($request->id);
+        $aditamento = AditamentoValor::findOrFail($request->id);
         $aditamento->contrato_id = $request->input('contrato_id');
         $aditamento->tipo_aditamentos = $request->input('tipo_aditamentos');
         $aditamento->valor_aditamento = $request->input('valor_aditamento');
@@ -148,7 +148,7 @@ class AditamentoController extends Controller
         $aditamento->pct_reajuste = $request->input('pct_reajuste');
 
         if ($aditamento->save()) {
-            return new AditamentoResource($aditamento);
+            return new AditamentoValorResource($aditamento);
         }
     }
 
@@ -174,12 +174,12 @@ class AditamentoController extends Controller
      */
     public function destroy($id)
     {
-        $aditamento = Aditamento::findOrFail($id);
+        $aditamento = AditamentoValor::findOrFail($id);
 
         if ($aditamento->delete()) {
             return response()->json([
                 'message' => 'Aditamento deletado com sucesso!',
-                'data' => new AditamentoResource($aditamento)
+                'data' => new AditamentoValorResource($aditamento)
             ]);
         }
     }
@@ -252,10 +252,10 @@ class AditamentoController extends Controller
      */
     public function listar_por_contrato($id)
     {
-        $aditamentos = Aditamento::query()
+        $aditamentos = AditamentoValor::query()
             ->where('contrato_id','=',$id)
             ->get();
 
-        return AditamentoResource::collection($aditamentos);
+        return AditamentoValorResource::collection($aditamentos);
     }
 }
