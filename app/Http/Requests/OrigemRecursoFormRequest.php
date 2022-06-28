@@ -24,7 +24,14 @@ class OrigemRecursoFormRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nome' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'required' => "O campo ':attribute' é obrigatório",
         ];
     }
 }

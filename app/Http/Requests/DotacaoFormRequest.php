@@ -24,7 +24,16 @@ class DotacaoFormRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'dotacao_tipo_id' => 'required',
+            'contrato_id' => 'required',
+            'valor_dotacao' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'required' => "O campo ':attribute' é obrigatório",
         ];
     }
 }

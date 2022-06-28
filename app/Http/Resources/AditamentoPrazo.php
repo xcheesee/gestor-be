@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RecursoOrcamentario extends JsonResource
+class AditamentoPrazo extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +17,8 @@ class RecursoOrcamentario extends JsonResource
         return [
             'id' => $this->id,
             'contrato_id' => $this->contrato_id,
-            'nota_empenho' => $this->nota_empenho,
-            'saldo_empenho' => $this->saldo_empenho,
-            'dotacao_orcamentaria' => $this->dotacao_orcamentaria,
+            'tipo_aditamentos' => $this->tipo_aditamentos,
+            'dias_reajuste' => $this->dias_reajuste,
         ];
     }
 }
