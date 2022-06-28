@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AditamentoPrazo extends Model
 {
     protected $table = 'aditamentos_prazo';
+
     protected $fillable = [
         'contrato_id',
         'tipo_aditamentos',

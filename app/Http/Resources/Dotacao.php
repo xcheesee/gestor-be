@@ -14,6 +14,11 @@ class Dotacao extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'dotacao_tipo_id' => $this->dotacao_tipo_id,
+            'contrato_id' => $this->contrato_id,
+            'valor_dotacao' => $this->valor_dotacao,
+        ];
     }
 }

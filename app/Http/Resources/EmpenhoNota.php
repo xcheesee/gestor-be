@@ -14,6 +14,13 @@ class EmpenhoNota extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'contrato_id' => $this->contrato_id,
+            'tipo_empenho' => $this->tipo_empenho,
+            'data_emissao' => $this->data_emissao,
+            'numero_nota' => $this->numero_nota,
+            'valor_empenho' => $this->valor_empenho,
+        ];
     }
 }

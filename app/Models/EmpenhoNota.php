@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class EmpenhoNota extends Model
 {
     use HasFactory;
+
+    protected $table = 'empenho_notas';
+
+    protected $fillable = [
+        "contrato_id",
+        "tipo_empenho",
+        "data_emissao",
+        "numero_nota",
+        "valor_empenho",
+    ];
 }

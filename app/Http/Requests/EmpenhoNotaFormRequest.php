@@ -24,7 +24,17 @@ class EmpenhoNotaFormRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'contrato_id' => 'required',
+            'numero_nota' => 'nullable|integer',
+            'valor_empenho' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'required' => "O campo ':attribute' é obrigatório",
+            'integer' => "O valor do campo ':attribute' deve ser um número inteiro",
         ];
     }
 }
