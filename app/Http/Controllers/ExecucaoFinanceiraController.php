@@ -44,7 +44,7 @@ class ExecucaoFinanceiraController extends Controller
      * @bodyParam contrato_id integer required ID do contrato. Example: 3
      * @bodyParam mes integer required Mês referente ao valor executado. Valores entre 1 a 12. Example: 1
      * @bodyParam ano integer required Ano referente ao valor executado. Valor acima de 2000. Example: 2022
-     * @bodyParam data_emissao_executado date data de emissão da nota. Example: 2022-05-20
+     * @bodyParam planejado_inicial date data de emissão da nota. Example: 2022-05-20
      * @bodyParam numero_executado integer Número da nota. Example: 6045
      * @bodyParam valor_executado float required Valor executado. Example: 1204679.85
      *
@@ -54,9 +54,13 @@ class ExecucaoFinanceiraController extends Controller
      *         "contrato_id": 3,
      *         "mes": 1,
      *         "ano": 2022,
-     *         "data_emissao_executado": "2022-05-20",
-     *         "numero_executado": 6045,
-     *         "valor_executado": 1204679.85
+     *         "planejado_inicial": 1204679.85,
+     *         "contratado_inicial": 1300000.00,
+     *         "valor_reajuste": 120.00,
+     *         "valor_aditivo": 6045.00,
+     *         "valor_cancelamento": 500.95,
+     *         "empenhado": 604500.00,
+     *         "executado": 120467.99
      *     }
      * }
      */
@@ -66,9 +70,13 @@ class ExecucaoFinanceiraController extends Controller
         $executada->contrato_id = $request->input('contrato_id');
         $executada->mes = $request->input('mes');
         $executada->ano = $request->input('ano');
-        $executada->data_emissao_executado = $request->input('data_emissao_executado');
-        $executada->numero_executado = $request->input('numero_executado');
-        $executada->valor_executado = $request->input('valor_executado');
+        $executada->planejado_inicial = $request->input('planejado_inicial');
+        $executada->contratado_inicial = $request->input('contratado_inicial');
+        $executada->valor_reajuste = $request->input('valor_reajuste');
+        $executada->valor_aditivo = $request->input('valor_aditivo');
+        $executada->valor_cancelamento = $request->input('valor_cancelamento');
+        $executada->empenhado = $request->input('empenhado');
+        $executada->executado = $request->input('executado');
         if ($executada->save()) {
             return new ExecucaoFinanceiraResource($executada);
         }
@@ -88,9 +96,13 @@ class ExecucaoFinanceiraController extends Controller
      *         "contrato_id": 3,
      *         "mes": 1,
      *         "ano": 2022,
-     *         "data_emissao_executado": "2022-05-20",
-     *         "numero_executado": 6045,
-     *         "valor_executado": 1204679.85
+     *         "planejado_inicial": 1204679.85,
+     *         "contratado_inicial": 1300000.00,
+     *         "valor_reajuste": 120.00,
+     *         "valor_aditivo": 6045.00,
+     *         "valor_cancelamento": 500.95,
+     *         "empenhado": 604500.00,
+     *         "executado": 120467.99
      *     }
      * }
      */
@@ -131,9 +143,13 @@ class ExecucaoFinanceiraController extends Controller
      *         "contrato_id": 3,
      *         "mes": 1,
      *         "ano": 2022,
-     *         "data_emissao_executado": "2022-05-20",
-     *         "numero_executado": 6045,
-     *         "valor_executado": 1204679.85
+     *         "planejado_inicial": 1204679.85,
+     *         "contratado_inicial": 1300000.00,
+     *         "valor_reajuste": 120.00,
+     *         "valor_aditivo": 6045.00,
+     *         "valor_cancelamento": 500.95,
+     *         "empenhado": 604500.00,
+     *         "executado": 120467.99
      *     }
      * }
      */
@@ -143,9 +159,13 @@ class ExecucaoFinanceiraController extends Controller
         $executada->contrato_id = $request->input('contrato_id');
         $executada->mes = $request->input('mes');
         $executada->ano = $request->input('ano');
-        $executada->data_emissao_executado = $request->input('data_emissao_executado');
-        $executada->numero_executado = $request->input('numero_executado');
-        $executada->valor_executado = $request->input('valor_executado');
+        $executada->planejado_inicial = $request->input('planejado_inicial');
+        $executada->contratado_inicial = $request->input('contratado_inicial');
+        $executada->valor_reajuste = $request->input('valor_reajuste');
+        $executada->valor_aditivo = $request->input('valor_aditivo');
+        $executada->valor_cancelamento = $request->input('valor_cancelamento');
+        $executada->empenhado = $request->input('empenhado');
+        $executada->executado = $request->input('executado');
 
         if ($executada->save()) {
             return new ExecucaoFinanceiraResource($executada);
@@ -166,9 +186,13 @@ class ExecucaoFinanceiraController extends Controller
      *         "contrato_id": 3,
      *         "mes": 1,
      *         "ano": 2022,
-     *         "data_emissao_executado": "2022-05-20",
-     *         "numero_executado": 6045,
-     *         "valor_executado": 1204679.85
+     *         "planejado_inicial": 1204679.85,
+     *         "contratado_inicial": 1300000.00,
+     *         "valor_reajuste": 120.00,
+     *         "valor_aditivo": 6045.00,
+     *         "valor_cancelamento": 500.95,
+     *         "empenhado": 604500.00,
+     *         "executado": 120467.99
      *     }
      * }
      */
@@ -198,18 +222,26 @@ class ExecucaoFinanceiraController extends Controller
      *             "contrato_id": 3,
      *             "mes": 1,
      *             "ano": 2022,
-     *             "data_emissao_executado": "2022-05-20",
-     *             "numero_executado": 6045,
-     *             "valor_executado": 1204679.85
+     *             "planejado_inicial": 1204679.85,
+     *             "contratado_inicial": 1300000.00,
+     *             "valor_reajuste": 120.00,
+     *             "valor_aditivo": 6045.00,
+     *             "valor_cancelamento": 500.95,
+     *             "empenhado": 604500.00,
+     *             "executado": 120467.99
      *         },
      *         {
      *             "id": 3,
      *             "contrato_id": 3,
      *             "mes": 2,
      *             "ano": 2022,
-     *             "data_emissao_executado": "2022-06-20",
-     *             "numero_executado": 6046,
-     *             "valor_executado": 1204680.00
+     *             "planejado_inicial": 1204679.85,
+     *             "contratado_inicial": 1300000.00,
+     *             "valor_reajuste": 120.00,
+     *             "valor_aditivo": 0.00,
+     *             "valor_cancelamento": 0.00,
+     *             "empenhado": 604500.00,
+     *             "executado": 120467.99
      *         }
      *     ]
      * }

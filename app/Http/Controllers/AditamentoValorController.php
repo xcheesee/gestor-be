@@ -8,9 +8,9 @@ use App\Http\Resources\AditamentoValor as AditamentoValorResource;
 use Illuminate\Http\Request;
 
 /**
- * @group Aditamento
+ * @group AditamentoValor
  *
- * APIs para listar, cadastrar, editar e remover dados de aditamento
+ * APIs para listar, cadastrar, editar e remover dados de aditamento de valor
  */
 class AditamentoValorController extends Controller
 {
@@ -42,21 +42,19 @@ class AditamentoValorController extends Controller
      *
      *
      * @bodyParam contrato_id integer required ID do contrato. Example: 5
-     * @bodyParam tipo_aditamentos enum Tipo de aditamento('Acréscimo de valor', 'Redução de valor', 'Prorrogação de prazo', 'Supressão de prazo', 'Suspensão', 'Rescisão'). Example: Acréscimo de valor
-     * @bodyParam valor_aditamento float Valor do aditamento. Example: 1000
-     * @bodyParam dias_reajuste integer required Dias de acréscimo. Example: 60
+     * @bodyParam tipo_aditamentos enum Tipo de aditamento('Acréscimo de valor', 'Redução de valor'). Example: Acréscimo de valor
+     * @bodyParam valor_aditamento float Valor do aditamento. Example: 1000.00
      * @bodyParam indice_reajuste float Taxa de reajuste. Example: Teste
-     * @bodyParam pct_reajuste float PCT do reajuste. Example: 184
+     * @bodyParam pct_reajuste float PCT do reajuste. Example: 18.4
      *
      * @response 200 {
      *     "data": {
      *         "id": 1,
      *         "contrato_id": 5,
      *         "tipo_aditamentos": "Acréscimo de valor",
-     *         "valor_aditamento": 1000,
-     *         "dias_reajuste": 60,
+     *         "valor_aditamento": 1000.00,
      *         "indice_reajuste": "Teste",
-     *         "pct_reajuste": 184
+     *         "pct_reajuste": 18.4
      *     }
      * }
      */
