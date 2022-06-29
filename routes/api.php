@@ -3,18 +3,22 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\AditamentoController;
+use App\Http\Controllers\AditamentoPrazoController;
+use App\Http\Controllers\AditamentoValorController;
 use App\Http\Controllers\CertidaoController;
 use App\Http\Controllers\ContratoController;
-use App\Http\Controllers\DevolucaoController;
 use App\Http\Controllers\DistritoController;
-use App\Http\Controllers\ExecutadaController;
+use App\Http\Controllers\DotacaoController;
+use App\Http\Controllers\DotacaoRecursoController;
+use App\Http\Controllers\DotacaoTipoController;
+use App\Http\Controllers\EmpenhoNotaController;
+use App\Http\Controllers\ExecucaoFinanceiraController;
 use App\Http\Controllers\GarantiaController;
 use App\Http\Controllers\GestaoFiscalizacaoController;
-use App\Http\Controllers\PlanejadaController;
+use App\Http\Controllers\LicitacaoModeloController;
+use App\Http\Controllers\OrigemRecursoloController;
 use App\Http\Controllers\ServicoLocalController;
 use App\Http\Controllers\SubprefeituraController;
-use App\Http\Controllers\TipoContratacaoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,12 +70,19 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 //     return $request->user();
 // });
 
-Route::get('aditamentos', [AditamentoController::class, 'index']);
-Route::get('aditamentos/{id}', [AditamentoController::class, 'listar_por_contrato']);
-Route::post('aditamento', [AditamentoController::class, 'store']);
-Route::get('aditamento/{id}', [AditamentoController::class, 'show']);
-Route::put('aditamento/{id}', [AditamentoController::class, 'update']);
-Route::delete('aditamento/{id}', [AditamentoController::class, 'destroy']);
+Route::get('aditamentos_prazo', [AditamentoPrazoController::class, 'index']);
+Route::get('aditamentos_prazo/{id}', [AditamentoPrazoController::class, 'listar_por_contrato']);
+Route::post('aditamento_prazo', [AditamentoPrazoController::class, 'store']);
+Route::get('aditamento_prazo/{id}', [AditamentoPrazoController::class, 'show']);
+Route::put('aditamento_prazo/{id}', [AditamentoPrazoController::class, 'update']);
+Route::delete('aditamento_prazo/{id}', [AditamentoPrazoController::class, 'destroy']);
+
+Route::get('aditamentos_valor', [AditamentoValorController::class, 'index']);
+Route::get('aditamentos_valor/{id}', [AditamentoValorController::class, 'listar_por_contrato']);
+Route::post('aditamento_valor', [AditamentoValorController::class, 'store']);
+Route::get('aditamento_valor/{id}', [AditamentoValorController::class, 'show']);
+Route::put('aditamento_valor/{id}', [AditamentoValorController::class, 'update']);
+Route::delete('aditamento_valor/{id}', [AditamentoValorController::class, 'destroy']);
 
 Route::get('certidoes', [CertidaoController::class, 'index']);
 Route::get('certidoes/{id}', [CertidaoController::class, 'listar_por_contrato']);
@@ -87,6 +98,27 @@ Route::get('distrito/{id}', [DistritoController::class, 'show']);
 Route::put('distrito/{id}', [DistritoController::class, 'update']);
 Route::delete('distrito/{id}', [DistritoController::class, 'destroy']);
 
+Route::get('dotacoes', [DotacaoController::class, 'index']);
+Route::get('dotacoes/{id}', [DotacaoController::class, 'listar_por_contrato']);
+Route::post('dotacao', [DotacaoController::class, 'store']);
+Route::get('dotacao/{id}', [DotacaoController::class, 'show']);
+Route::put('dotacao/{id}', [DotacaoController::class, 'update']);
+Route::delete('dotacao/{id}', [DotacaoController::class, 'destroy']);
+
+Route::get('dotacao_recursos', [DotacaoRecursoController::class, 'index']);
+Route::get('dotacao_recursos/{id}', [DotacaoRecursoController::class, 'listar_por_contrato']);
+Route::post('dotacao_recurso', [DotacaoRecursoController::class, 'store']);
+Route::get('dotacao_recurso/{id}', [DotacaoRecursoController::class, 'show']);
+Route::put('dotacao_recurso/{id}', [DotacaoRecursoController::class, 'update']);
+Route::delete('dotacao_recurso/{id}', [DotacaoRecursoController::class, 'destroy']);
+
+Route::get('dotacao_tipos', [DotacaoTipoController::class, 'index']);
+Route::get('dotacao_tipos/{id}', [DotacaoTipoController::class, 'listar_por_contrato']);
+Route::post('dotacao_tipo', [DotacaoTipoController::class, 'store']);
+Route::get('dotacao_tipo/{id}', [DotacaoTipoController::class, 'show']);
+Route::put('dotacao_tipo/{id}', [DotacaoTipoController::class, 'update']);
+Route::delete('dotacao_tipo/{id}', [DotacaoTipoController::class, 'destroy']);
+
 Route::get('garantias', [GarantiaController::class, 'index']);
 Route::get('garantias/{id}', [GarantiaController::class, 'listar_por_contrato']);
 Route::post('garantia', [GarantiaController::class, 'store']);
@@ -101,26 +133,25 @@ Route::get('gestaofiscalizacao/{id}', [GestaoFiscalizacaoController::class, 'sho
 Route::put('gestaofiscalizacao/{id}', [GestaoFiscalizacaoController::class, 'update']);
 Route::delete('gestaofiscalizacao/{id}', [GestaoFiscalizacaoController::class, 'destroy']);
 
-Route::get('devolucoes', [DevolucaoController::class, 'index']);
-Route::get('devolucoes/{id}', [DevolucaoController::class, 'listar_por_contrato']);
-Route::post('devolucao', [DevolucaoController::class, 'store']);
-Route::get('devolucao/{id}', [DevolucaoController::class, 'show']);
-Route::put('devolucao/{id}', [DevolucaoController::class, 'update']);
-Route::delete('devolucao/{id}', [DevolucaoController::class, 'destroy']);
+Route::get('empenho_notas', [EmpenhoNotaController::class, 'index']);
+Route::get('empenho_notas/{id}', [EmpenhoNotaController::class, 'listar_por_contrato']);
+Route::post('empenho_nota', [EmpenhoNotaController::class, 'store']);
+Route::get('empenho_nota/{id}', [EmpenhoNotaController::class, 'show']);
+Route::put('empenho_nota/{id}', [EmpenhoNotaController::class, 'update']);
+Route::delete('empenho_nota/{id}', [EmpenhoNotaController::class, 'destroy']);
 
-Route::get('executadas', [ExecutadaController::class, 'index']);
-Route::get('executadas/{id}', [ExecutadaController::class, 'listar_por_contrato']);
-Route::post('executada', [ExecutadaController::class, 'store']);
-Route::get('executada/{id}', [ExecutadaController::class, 'show']);
-Route::put('executada/{id}', [ExecutadaController::class, 'update']);
-Route::delete('executada/{id}', [ExecutadaController::class, 'destroy']);
+Route::get('execucoes_financeiras', [ExecucaoFinanceiraController::class, 'index']);
+Route::get('execucoes_financeiras/{id}', [ExecucaoFinanceiraController::class, 'listar_por_contrato']);
+Route::post('execucao_financeira', [ExecucaoFinanceiraController::class, 'store']);
+Route::get('execucao_financeira/{id}', [ExecucaoFinanceiraController::class, 'show']);
+Route::put('execucao_financeira/{id}', [ExecucaoFinanceiraController::class, 'update']);
+Route::delete('execucao_financeira/{id}', [ExecucaoFinanceiraController::class, 'destroy']);
 
-Route::get('planejadas', [PlanejadaController::class, 'index']);
-Route::get('planejadas/{id}', [PlanejadaController::class, 'listar_por_contrato']);
-Route::post('planejada', [PlanejadaController::class, 'store']);
-Route::get('planejada/{id}', [PlanejadaController::class, 'show']);
-Route::put('planejada/{id}', [PlanejadaController::class, 'update']);
-Route::delete('planejada/{id}', [PlanejadaController::class, 'destroy']);
+Route::get('origem_recursos', [OrigemRecursoloController::class, 'index']);
+Route::post('origem_recurso', [OrigemRecursoloController::class, 'store']);
+Route::get('origem_recurso/{id}', [OrigemRecursoloController::class, 'show']);
+Route::put('origem_recurso/{id}', [OrigemRecursoloController::class, 'update']);
+Route::delete('origem_recurso/{id}', [OrigemRecursoloController::class, 'destroy']);
 
 Route::get('servicoslocais', [ServicoLocalController::class, 'index']);
 Route::get('servicoslocais/{id}', [ServicoLocalController::class, 'listar_por_contrato']);
@@ -137,8 +168,8 @@ Route::get('subprefeitura/{id}', [SubprefeituraController::class, 'show']);
 Route::put('subprefeitura/{id}', [SubprefeituraController::class, 'update']);
 Route::delete('subprefeitura/{id}', [SubprefeituraController::class, 'destroy']);
 
-Route::get('tipocontratacoes',[TipoContratacaoController::class, 'index']);
-Route::post('tipocontratacao', [TipoContratacaoController::class, 'store']);
-Route::get('tipocontratacao/{id}', [TipoContratacaoController::class, 'show']);
-Route::put('tipocontratacao/{id}', [TipoContratacaoController::class, 'update']);
-Route::delete('tipocontratacao/{id}', [TipoContratacaoController::class, 'destroy']);
+Route::get('licitacaomodelos',[LicitacaoModeloController::class, 'index']);
+Route::post('licitacaomodelo', [LicitacaoModeloController::class, 'store']);
+Route::get('licitacaomodelo/{id}', [LicitacaoModeloController::class, 'show']);
+Route::put('licitacaomodelo/{id}', [LicitacaoModeloController::class, 'update']);
+Route::delete('licitacaomodelo/{id}', [LicitacaoModeloController::class, 'destroy']);

@@ -3,19 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dotacao;
-use App\Http\Requests\StoreDotacaoRequest;
-use App\Http\Requests\UpdateDotacaoRequest;
+use App\Http\Requests\DotacaoFormRequest;
+use App\Http\Resources\Dotacao as DotacaoResource;
 
+/**
+ * @group Dotacao
+ *
+ * APIs para listar, cadastrar, editar e remover dados de dotação orçamentária
+ */
 class DotacaoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Lista as dotações
+     * @authenticated
      *
-     * @return \Illuminate\Http\Response
+     *
      */
     public function index()
     {
-        //
+        $dotacaos = Dotacao::paginate(15);
+        return DotacaoResource::collection($dotacaos);
     }
 
     /**
@@ -29,58 +36,159 @@ class DotacaoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Cadastra uma dotação
+     * @authenticated
      *
-     * @param  \App\Http\Requests\StoreDotacaoRequest  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @bodyParam dotacao_tipo_id integer required ID do tipo de dotação (tabela dotacao_tipos). Example: 5
+     * @bodyParam contrato_id integer required ID do contrato. Example: 5
+     * @bodyParam valor_dotacao float Valor desta dotação. Example: 1000.00
+     *
+     * @response 200 {
+     *     "data": {
+     *         "id": 1,
+     *         "dotacao_tipo_id": 1,
+     *         "contrato_id": 5,
+     *         "valor_dotacao": 1000.00
+     *     }
+     * }
      */
-    public function store(StoreDotacaoRequest $request)
+    public function store(DotacaoFormRequest $request)
     {
-        //
+        $dotacao = new Dotacao;
+        $dotacao->dotacao_tipo_id = $request->input('dotacao_tipo_id');
+        $dotacao->contrato_id = $request->input('contrato_id');
+        $dotacao->valor_dotacao = $request->input('valor_dotacao');
+
+        if ($dotacao->save()) {
+            return new DotacaoResource($dotacao);
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Mostra uma dotação específica
+     * @authenticated
      *
-     * @param  \App\Models\Dotacao  $dotacao
-     * @return \Illuminate\Http\Response
+     *
+     * @urlParam id integer required ID da dotação. Example: 1
+     *
+     * @response 200 {
+     *     "data": {
+     *         "id": 1,
+     *         "dotacao_tipo_id": 1,
+     *         "contrato_id": 5,
+     *         "valor_dotacao": 1000.00
+     *     }
+     * }
      */
-    public function show(Dotacao $dotacao)
+    public function show($id)
     {
-        //
+        $dotacao = Dotacao::findOrFail($id);
+        return new DotacaoResource($dotacao);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Dotacao  $dotacao
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Dotacao $dotacao)
+    public function edit($id)
     {
         //
     }
 
     /**
-     * Update the specified resource in storage.
+     * Edita uma dotação
+     * @authenticated
      *
-     * @param  \App\Http\Requests\UpdateDotacaoRequest  $request
-     * @param  \App\Models\Dotacao  $dotacao
-     * @return \Illuminate\Http\Response
+     *
+     * @urlParam id integer required ID da dotação que deseja editar. Example: 1
+     *
+     * @bodyParam dotacao_tipo_id integer required ID do tipo de dotação (tabela dotacao_tipos). Example: 5
+     * @bodyParam contrato_id integer required ID do contrato. Example: 5
+     * @bodyParam valor_dotacao float Valor desta dotação. Example: 1000.00
+     *
+     * @response 200 {
+     *     "data": {
+     *         "id": 1,
+     *         "dotacao_tipo_id": 1,
+     *         "contrato_id": 5,
+     *         "valor_dotacao": 1000.00
+     *     }
+     * }
      */
-    public function update(UpdateDotacaoRequest $request, Dotacao $dotacao)
+    public function update(DotacaoFormRequest $request, $id)
     {
-        //
+        $dotacao = Dotacao::findOrFail($id);
+        $dotacao->dotacao_tipo_id = $request->input('dotacao_tipo_id');
+        $dotacao->contrato_id = $request->input('contrato_id');
+        $dotacao->valor_dotacao = $request->input('valor_dotacao');
+
+        if ($dotacao->save()) {
+            return new DotacaoResource($dotacao);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Deleta uma dotação
+     * @authenticated
      *
-     * @param  \App\Models\Dotacao  $dotacao
-     * @return \Illuminate\Http\Response
+     *
+     * @urlParam id integer required ID da dotação que deseja deletar. Example: 1
+     *
+     * @response 200 {
+     *     "message": "Dotação deletada com sucesso!",
+     *     "data": {
+     *         "id": 1,
+     *         "dotacao_tipo_id": 1,
+     *         "contrato_id": 5,
+     *         "valor_dotacao": 1000.00
+     *     }
+     * }
      */
-    public function destroy(Dotacao $dotacao)
+    public function destroy($id)
     {
-        //
+        $dotacao = Dotacao::findOrFail($id);
+
+        if ($dotacao->delete()) {
+            return response()->json([
+                'message' => 'Dotação deletada com sucesso!',
+                'data' => new DotacaoResource($dotacao)
+            ]);
+        }
+    }
+
+    /**
+     * Lista as dotações pelo ID do contrato
+     * @authenticated
+     *
+     *
+     * @urlParam id integer required ID do contrato. Example: 5
+     *
+     * @response 200 {
+     *     "data": [
+     *         {
+     *             "id": 1,
+     *             "dotacao_tipo_id": 1,
+     *             "contrato_id": 5,
+     *             "valor_dotacao": 1000.00
+     *         },
+     *         {
+     *             "id": 2,
+     *             "dotacao_tipo_id": 2,
+     *             "contrato_id": 5,
+     *             "valor_dotacao": 1300.00
+     *         }
+     *     ]
+     * }
+     */
+    public function listar_por_contrato($id)
+    {
+        $dotacaos = Dotacao::query()
+            ->where('contrato_id','=',$id)
+            ->get();
+
+        return DotacaoResource::collection($dotacaos);
     }
 }

@@ -133,7 +133,7 @@ class DevolucaoController extends Controller
      */
     public function update(DevolucaoFormRequest $request, $id)
     {
-        $devolucao = Devolucao::findOrFail($request->id);
+        $devolucao = Devolucao::findOrFail($id);
         $devolucao->contrato_id = $request->input('contrato_id');
         $devolucao->ano = $request->input('ano');
         $devolucao->data_devolucao = $request->input('data_devolucao');

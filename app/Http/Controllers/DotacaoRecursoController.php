@@ -3,19 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\DotacaoRecurso;
-use App\Http\Requests\StoreDotacaoRecursoRequest;
-use App\Http\Requests\UpdateDotacaoRecursoRequest;
+use App\Http\Requests\DotacaoRecursoFormRequest;
+use App\Http\Resources\DotacaoRecurso as DotacaoRecursoResource;
 
+/**
+ * @group DotacaoRecurso
+ *
+ * APIs para listar, cadastrar, editar e remover relacionamentos entre dotações e origem de recursos
+ */
 class DotacaoRecursoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Lista as relações dotação x origem recurso
+     * @authenticated
      *
-     * @return \Illuminate\Http\Response
+     *
      */
     public function index()
     {
-        //
+        $dotacaos = DotacaoRecurso::paginate(15);
+        return DotacaoRecursoResource::collection($dotacaos);
     }
 
     /**
@@ -29,58 +36,136 @@ class DotacaoRecursoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Cadastra uma relação dotação x origem recurso
+     * @authenticated
      *
-     * @param  \App\Http\Requests\StoreDotacaoRecursoRequest  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @bodyParam dotacao_id integer required ID do tipo de dotação (tabela dotacao_tipos). Example: 1
+     * @bodyParam origem_recurso_id integer ID da origem do recurso. Example: 2
+     * @bodyParam outros_descricao string Descrição em texto da origem quando for selecionado "outro" (não terá um ID específico nesse caso). Example: "Fonte teste"
+     *
+     * @response 200 {
+     *     "data": {
+     *         "id": 1,
+     *         "dotacao_id": 1,
+     *         "origem_recurso_id": 2,
+     *         "outros_descricao": null
+     *     }
+     * }
+     *
+     * @response 200 {
+     *     "data": {
+     *         "id": 1,
+     *         "dotacao_id": 1,
+     *         "origem_recurso_id": null,
+     *         "outros_descricao": "Fonte teste"
+     *     }
+     * }
+     *
      */
-    public function store(StoreDotacaoRecursoRequest $request)
+    public function store(DotacaoRecursoFormRequest $request)
     {
-        //
+        $dotacao = new DotacaoRecurso;
+        $dotacao->dotacao_id = $request->input('dotacao_id');
+        $dotacao->origem_recurso_id = $request->input('origem_recurso_id');
+        $dotacao->outros_descricao = $request->input('outros_descricao');
+
+        if ($dotacao->save()) {
+            return new DotacaoRecursoResource($dotacao);
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Mostra uma relação dotação x origem recurso específica
+     * @authenticated
      *
-     * @param  \App\Models\DotacaoRecurso  $dotacaoRecurso
-     * @return \Illuminate\Http\Response
+     *
+     * @urlParam id integer required ID da relação dotação x origem recurso. Example: 1
+     *
+     * @response 200 {
+     *     "data": {
+     *         "id": 1,
+     *         "dotacao_id": 1,
+     *         "origem_recurso_id": 2,
+     *         "outros_descricao": null
+     *     }
+     * }
      */
-    public function show(DotacaoRecurso $dotacaoRecurso)
+    public function show($id)
     {
-        //
+        $dotacao = DotacaoRecurso::findOrFail($id);
+        return new DotacaoRecursoResource($dotacao);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\DotacaoRecurso  $dotacaoRecurso
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(DotacaoRecurso $dotacaoRecurso)
+    public function edit($id)
     {
         //
     }
 
     /**
-     * Update the specified resource in storage.
+     * Edita uma relação dotação x origem recurso
+     * @authenticated
      *
-     * @param  \App\Http\Requests\UpdateDotacaoRecursoRequest  $request
-     * @param  \App\Models\DotacaoRecurso  $dotacaoRecurso
-     * @return \Illuminate\Http\Response
+     *
+     * @urlParam id integer required ID da relação dotação x origem recurso que deseja editar. Example: 1
+     *
+     * @bodyParam dotacao_id integer required ID do tipo de dotação (tabela dotacao_tipos). Example: 1
+     * @bodyParam origem_recurso_id integer ID da origem do recurso. Example: 2
+     * @bodyParam outros_descricao string Descrição em texto da origem quando for selecionado "outro" (não terá um ID específico nesse caso). Example: "Fonte teste"
+     *
+     * @response 200 {
+     *     "data": {
+     *         "id": 1,
+     *         "dotacao_id": 1,
+     *         "origem_recurso_id": 2,
+     *         "outros_descricao": null
+     *     }
+     * }
      */
-    public function update(UpdateDotacaoRecursoRequest $request, DotacaoRecurso $dotacaoRecurso)
+    public function update(DotacaoRecursoFormRequest $request, $id)
     {
-        //
+        $dotacao = DotacaoRecurso::findOrFail($id);
+        $dotacao->dotacao_id = $request->input('dotacao_id');
+        $dotacao->origem_recurso_id = $request->input('origem_recurso_id');
+        $dotacao->outros_descricao = $request->input('outros_descricao');
+
+        if ($dotacao->save()) {
+            return new DotacaoRecursoResource($dotacao);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Deleta uma relação dotação x origem recurso
+     * @authenticated
      *
-     * @param  \App\Models\DotacaoRecurso  $dotacaoRecurso
-     * @return \Illuminate\Http\Response
+     *
+     * @urlParam id integer required ID da relação dotação x origem recurso que deseja deletar. Example: 1
+     *
+     * @response 200 {
+     *     "message": "Dotação-Recurso deletada com sucesso!",
+     *     "data":{
+     *         "id": 1,
+     *         "dotacao_id": 1,
+     *         "origem_recurso_id": 2,
+     *         "outros_descricao": null
+     *     }
+     * }
      */
-    public function destroy(DotacaoRecurso $dotacaoRecurso)
+    public function destroy($id)
     {
-        //
+        $dotacao = DotacaoRecurso::findOrFail($id);
+
+        if ($dotacao->delete()) {
+            return response()->json([
+                'message' => 'Dotação-Recurso deletada com sucesso!',
+                'data' => new DotacaoRecursoResource($dotacao)
+            ]);
+        }
     }
 }

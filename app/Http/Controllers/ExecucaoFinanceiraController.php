@@ -44,9 +44,13 @@ class ExecucaoFinanceiraController extends Controller
      * @bodyParam contrato_id integer required ID do contrato. Example: 3
      * @bodyParam mes integer required Mês referente ao valor executado. Valores entre 1 a 12. Example: 1
      * @bodyParam ano integer required Ano referente ao valor executado. Valor acima de 2000. Example: 2022
-     * @bodyParam planejado_inicial date data de emissão da nota. Example: 2022-05-20
-     * @bodyParam numero_executado integer Número da nota. Example: 6045
-     * @bodyParam valor_executado float required Valor executado. Example: 1204679.85
+     * @bodyParam planejado_inicial float Valor planejado inicial. Example: 1204679.85
+     * @bodyParam contratado_inicial float Valor contratado inicial. Example: 1300000.00
+     * @bodyParam valor_reajuste float Valor de reajuste. Example: 120.00
+     * @bodyParam valor_aditivo float Valor de aditivo. Example: 6045.00
+     * @bodyParam valor_cancelamento float Valor de cancelamento. Example: 500.95
+     * @bodyParam empenhado float Valor empenhado de fato. Example: 604500.00
+     * @bodyParam executado float Valor executado de fato. Example: 120467.99
      *
      * @response 200 {
      *     "data": {
@@ -133,9 +137,13 @@ class ExecucaoFinanceiraController extends Controller
      * @bodyParam contrato_id integer required ID do contrato. Example: 3
      * @bodyParam mes integer required Mês referente ao valor executado. Valores entre 1 a 12. Example: 1
      * @bodyParam ano integer required Ano referente ao valor executado. Valor acima de 2000. Example: 2022
-     * @bodyParam data_emissao_executado date data de emissão da nota. Example: 2022-05-20
-     * @bodyParam numero_executado integer Número da nota. Example: 6045
-     * @bodyParam valor_executado float required Valor executado. Example: 1204679.85
+     * @bodyParam planejado_inicial float Valor planejado inicial. Example: 1204679.85
+     * @bodyParam contratado_inicial float Valor contratado inicial. Example: 1300000.00
+     * @bodyParam valor_reajuste float Valor de reajuste. Example: 120.00
+     * @bodyParam valor_aditivo float Valor de aditivo. Example: 6045.00
+     * @bodyParam valor_cancelamento float Valor de cancelamento. Example: 500.95
+     * @bodyParam empenhado float Valor empenhado de fato. Example: 604500.00
+     * @bodyParam executado float Valor executado de fato. Example: 120467.99
      *
      * @response 200 {
      *     "data": {

@@ -120,7 +120,7 @@ class CertidaoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $certidao = Certidao::findOrFail($request->id);
+        $certidao = Certidao::findOrFail($id);
         $certidao->contrato_id = $request->input('contrato_id');
         $certidao->certidoes = $request->input('certidoes');
         $certidao->validade_certidoes = $request->input('validade_certidoes');
