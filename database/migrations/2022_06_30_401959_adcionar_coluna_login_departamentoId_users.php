@@ -14,8 +14,8 @@ class adcionarColunaLoginDepartamentoidUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('login')->after('name');
-            $table->foreignId('departamentos_id')->constrained();
+            $table->string('login')->after('name')->nullable();
+            $table->foreignId('departamentos_id')->nullable()->constrained();;
         });
     }
 
