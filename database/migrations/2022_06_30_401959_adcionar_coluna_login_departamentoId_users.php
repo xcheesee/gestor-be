@@ -15,7 +15,7 @@ class adcionarColunaLoginDepartamentoidUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('login')->after('name')->nullable();
-            $table->foreignId('departamentos_id')->nullable()->constrained();;
+            $table->foreignId('departamento_id')->nullable()->constrained();;
         });
     }
 
@@ -28,7 +28,7 @@ class adcionarColunaLoginDepartamentoidUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('login');
-            $table->dropColumn('departamentos_id');
+            $table->dropColumn('departamento_id');
             });
     }
 }
