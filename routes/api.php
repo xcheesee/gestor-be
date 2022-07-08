@@ -16,7 +16,7 @@ use App\Http\Controllers\ExecucaoFinanceiraController;
 use App\Http\Controllers\GarantiaController;
 use App\Http\Controllers\GestaoFiscalizacaoController;
 use App\Http\Controllers\LicitacaoModeloController;
-use App\Http\Controllers\OrigemRecursoloController;
+use App\Http\Controllers\OrigemRecursoController;
 use App\Http\Controllers\ServicoLocalController;
 use App\Http\Controllers\SubprefeituraController;
 
@@ -106,14 +106,12 @@ Route::put('dotacao/{id}', [DotacaoController::class, 'update']);
 Route::delete('dotacao/{id}', [DotacaoController::class, 'destroy']);
 
 Route::get('dotacao_recursos', [DotacaoRecursoController::class, 'index']);
-Route::get('dotacao_recursos/{id}', [DotacaoRecursoController::class, 'listar_por_contrato']);
 Route::post('dotacao_recurso', [DotacaoRecursoController::class, 'store']);
 Route::get('dotacao_recurso/{id}', [DotacaoRecursoController::class, 'show']);
 Route::put('dotacao_recurso/{id}', [DotacaoRecursoController::class, 'update']);
 Route::delete('dotacao_recurso/{id}', [DotacaoRecursoController::class, 'destroy']);
 
 Route::get('dotacao_tipos', [DotacaoTipoController::class, 'index']);
-Route::get('dotacao_tipos/{id}', [DotacaoTipoController::class, 'listar_por_contrato']);
 Route::post('dotacao_tipo', [DotacaoTipoController::class, 'store']);
 Route::get('dotacao_tipo/{id}', [DotacaoTipoController::class, 'show']);
 Route::put('dotacao_tipo/{id}', [DotacaoTipoController::class, 'update']);
@@ -147,11 +145,11 @@ Route::get('execucao_financeira/{id}', [ExecucaoFinanceiraController::class, 'sh
 Route::put('execucao_financeira/{id}', [ExecucaoFinanceiraController::class, 'update']);
 Route::delete('execucao_financeira/{id}', [ExecucaoFinanceiraController::class, 'destroy']);
 
-Route::get('origem_recursos', [OrigemRecursoloController::class, 'index']);
-Route::post('origem_recurso', [OrigemRecursoloController::class, 'store']);
-Route::get('origem_recurso/{id}', [OrigemRecursoloController::class, 'show']);
-Route::put('origem_recurso/{id}', [OrigemRecursoloController::class, 'update']);
-Route::delete('origem_recurso/{id}', [OrigemRecursoloController::class, 'destroy']);
+Route::get('origem_recursos', [OrigemRecursoController::class, 'index']);
+Route::post('origem_recurso', [OrigemRecursoController::class, 'store']);
+Route::get('origem_recurso/{id}', [OrigemRecursoController::class, 'show']);
+Route::put('origem_recurso/{id}', [OrigemRecursoController::class, 'update']);
+Route::delete('origem_recurso/{id}', [OrigemRecursoController::class, 'destroy']);
 
 Route::get('servicoslocais', [ServicoLocalController::class, 'index']);
 Route::get('servicoslocais/{id}', [ServicoLocalController::class, 'listar_por_contrato']);
