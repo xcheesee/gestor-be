@@ -168,4 +168,40 @@ class DotacaoRecursoController extends Controller
             ]);
         }
     }
+
+    /**
+     * Lista as origem de recursos pelo ID da dotação
+     * @authenticated
+     *
+     *
+     * @urlParam id integer required ID da dotação. Example: 1
+     *
+     * @response 200 {
+     *     "data":[
+     *         {
+     *              "id": 1,
+     *              "dotacao_id: 1,
+     *              "origem_recurso_id: 1,
+     *              "nome": "Tesouro Municipal",
+     *              "outros_descrição": null
+     *          },
+     *          {
+     *              "id": 2,
+     *              "dotacao_id: 1,
+     *              "origem_recurso_id: 4,
+     *              "nome": "FEMA",
+     *              "outros_descrição": null
+     *          }
+     *     ]
+     * }
+     */
+    public function listar_recursos_dotacao($id)
+    {
+        $dotacaoRecursos = DotacaoRecurso::query()
+        ->where('dotacao_id','=',$id)     
+        ->get();    
+        
+        //dd($dotacaoRecursos);
+        return DotacaoRecursoResource::collection($dotacaoRecursos);
+    }
 }

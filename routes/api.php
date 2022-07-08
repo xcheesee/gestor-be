@@ -110,6 +110,7 @@ Route::post('dotacao_recurso', [DotacaoRecursoController::class, 'store']);
 Route::get('dotacao_recurso/{id}', [DotacaoRecursoController::class, 'show']);
 Route::put('dotacao_recurso/{id}', [DotacaoRecursoController::class, 'update']);
 Route::delete('dotacao_recurso/{id}', [DotacaoRecursoController::class, 'destroy']);
+Route::get('dotacao_recursos_origem/{id}', [DotacaoRecursoController::class, 'listar_recursos_dotacao']);
 
 Route::get('dotacao_tipos', [DotacaoTipoController::class, 'index']);
 Route::post('dotacao_tipo', [DotacaoTipoController::class, 'store']);

@@ -18,6 +18,7 @@ class DotacaoRecurso extends JsonResource
             'id' => $this->id,
             'dotacao_id' => $this->dotacao_id,
             'origem_recurso_id' => $this->origem_recurso_id,
+            'nome'=> $this->origem_recurso ? $this->origem_recurso->nome : null,
             'outros_descricao' => $this->outros_descricao,
         ];
     }
