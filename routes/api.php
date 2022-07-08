@@ -16,7 +16,7 @@ use App\Http\Controllers\ExecucaoFinanceiraController;
 use App\Http\Controllers\GarantiaController;
 use App\Http\Controllers\GestaoFiscalizacaoController;
 use App\Http\Controllers\LicitacaoModeloController;
-use App\Http\Controllers\OrigemRecursoloController;
+use App\Http\Controllers\OrigemRecursoController;
 use App\Http\Controllers\ServicoLocalController;
 use App\Http\Controllers\SubprefeituraController;
 
@@ -148,11 +148,11 @@ Route::get('execucao_financeira/{id}', [ExecucaoFinanceiraController::class, 'sh
 Route::put('execucao_financeira/{id}', [ExecucaoFinanceiraController::class, 'update']);
 Route::delete('execucao_financeira/{id}', [ExecucaoFinanceiraController::class, 'destroy']);
 
-Route::get('origem_recursos', [OrigemRecursoloController::class, 'index']);
-Route::post('origem_recurso', [OrigemRecursoloController::class, 'store']);
-Route::get('origem_recurso/{id}', [OrigemRecursoloController::class, 'show']);
-Route::put('origem_recurso/{id}', [OrigemRecursoloController::class, 'update']);
-Route::delete('origem_recurso/{id}', [OrigemRecursoloController::class, 'destroy']);
+Route::get('origem_recursos', [OrigemRecursoController::class, 'index']);
+Route::post('origem_recurso', [OrigemRecursoController::class, 'store']);
+Route::get('origem_recurso/{id}', [OrigemRecursoController::class, 'show']);
+Route::put('origem_recurso/{id}', [OrigemRecursoController::class, 'update']);
+Route::delete('origem_recurso/{id}', [OrigemRecursoController::class, 'destroy']);
 
 Route::get('servicoslocais', [ServicoLocalController::class, 'index']);
 Route::get('servicoslocais/{id}', [ServicoLocalController::class, 'listar_por_contrato']);
