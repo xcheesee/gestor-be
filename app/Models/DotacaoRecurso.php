@@ -20,7 +20,7 @@ class DotacaoRecurso extends Model
         return $this->belongsTo(Dotacao::class);
     }
 
-    public function origem_recurso_id()
+    public function origem_recurso()
     {
         return $this->belongsTo(OrigemRecurso::class);
     }

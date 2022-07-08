@@ -168,4 +168,14 @@ class DotacaoRecursoController extends Controller
             ]);
         }
     }
+
+    public function allRelations($id)
+    {
+        $dotacaoRecursos = DotacaoRecurso::query()
+        ->where('dotacao_id','=',$id)     
+        ->get();    
+        
+        //dd($dotacaoRecursos);
+        return DotacaoRecursoResource::collection($dotacaoRecursos);
+    }
 }
