@@ -199,6 +199,8 @@ class ContratoController extends Controller
             $execucao_financeira[$executada->mes.'-'.$executada->ano]['planejado'] = $executada->planejado_inicial;
             $execucao_financeira[$executada->mes.'-'.$executada->ano]['contratado'] = $executada->contratado_atualizado;
             $execucao_financeira[$executada->mes.'-'.$executada->ano]['executado'] = $executada->executado ? $executada->executado : 0.00;
+            $execucao_financeira[$executada->mes.'-'.$executada->ano]['empenhado'] = $executada->empenhado;
+            $execucao_financeira[$executada->mes.'-'.$executada->ano]['saldo'] = $executada->saldo;
         }
 
         $execucaoFinanceira = (object) $execucao_financeira;

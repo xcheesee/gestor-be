@@ -32,4 +32,8 @@ class ExecucaoFinanceira extends Model
     public function getContratadoAtualizadoAttribute(){
         return $this->contratado_inicial + $this->valor_reajuste + $this->valor_aditivo - $this->valor_cancelamento;
     }
+
+    public function getSaldoAttribute(){
+        return $this->empenhado - $this->executado;
+    }
 }
