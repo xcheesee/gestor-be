@@ -175,12 +175,16 @@ class ContratoController extends Controller
      *             "1-2022": {
      *                 "mes": "Jan-2022",
      *                 "planejado": 12000,
-     *                 "executado": 10000.5
+     *                 "executado": 10000.5,
+     *                 "empenhado": 10500,
+     *                 "saldo": 500.5
      *             },
      *             "2-2022": {
      *                 "mes": "Fev-2022",
      *                 "planejado": 11999.99,
-     *                 "executado": 0
+     *                 "executado": 0,
+     *                 "empenhado": 0,
+     *                 "saldo": 0
      *             }
      *         }
      *     }
