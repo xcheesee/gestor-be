@@ -77,7 +77,7 @@ class ContratoController extends Controller
      *         "envio_material_tecnico": "2022-06-20",
      *         "minuta_edital": "2022-06-21",
      *         "abertura_certame": "2022-06-22",
-     *         "homologacao": "2022-06-23"
+     *         "homologacao": "2022-06-23",
      *         "processo_sei": "0123000134569000",
      *         "credor": "Teste Silva",
      *         "cnpj_cpf": "45106963896",
@@ -150,7 +150,7 @@ class ContratoController extends Controller
      *         "envio_material_tecnico": "2022-06-20",
      *         "minuta_edital": "2022-06-21",
      *         "abertura_certame": "2022-06-22",
-     *         "homologacao": "2022-06-23"
+     *         "homologacao": "2022-06-23",
      *         "processo_sei": "0123000134569000",
      *         "credor": "Teste Silva",
      *         "cnpj_cpf": "45106963896",
@@ -259,7 +259,7 @@ class ContratoController extends Controller
      *         "envio_material_tecnico": "2022-06-20",
      *         "minuta_edital": "2022-06-21",
      *         "abertura_certame": "2022-06-22",
-     *         "homologacao": "2022-06-23"
+     *         "homologacao": "2022-06-23",
      *         "processo_sei": "0123000134569000",
      *         "credor": "Teste Silva",
      *         "cnpj_cpf": "45106963896",
