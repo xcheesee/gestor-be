@@ -25,7 +25,6 @@ class ContratoFormRequest extends FormRequest
     {
         return [
             'processo_sei' => 'required',
-            'dotacao_orcamentaria' => 'required',
             'credor' => 'required',
             'cnpj_cpf' => 'required',
             'objeto' => 'required',

@@ -9,6 +9,8 @@ use App\Models\ExecucaoFinanceira;
 use App\Models\Planejada;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 /**
  * @group Contrato
@@ -21,11 +23,25 @@ class ContratoController extends Controller
      * Lista os contratos
      * @authenticated
      *
+     * @queryParam filter[processo_sei] Filtro de número do processo. Example: 0123000134569000
+     * @queryParam filter[nome_empresa] Filtro de nome completo ou parte do nome da empresa. Example: Teste SA
+     * @queryParam filter[inicio_depois_de] Filtro inicial de período da data de início da vigência. Example: 2022-01-01
+     * @queryParam filter[inicio_antes_de] Filtro final de período da data de início da vigência. Example: 2022-05-20
+     * @queryParam filter[vencimento_depois_de] Filtro inicial de período da data de vencimento do contrato. Example: 2023-01-01
+     * @queryParam filter[vencimento_antes_de] Filtro final de período da data de vencimento do contrato. Example: 2023-12-31
      *
      */
     public function index()
     {
-        $contratos = Contrato::paginate(15);
+        $contratos = QueryBuilder::for(Contrato::class)
+            ->allowedFilters([
+                    'processo_sei', 'nome_empresa',
+                    AllowedFilter::scope('inicio_depois_de'),
+                    AllowedFilter::scope('inicio_antes_de'),
+                    AllowedFilter::scope('vencimento_depois_de'),
+                    AllowedFilter::scope('vencimento_antes_de'),
+                ])
+            ->paginate(15);
         return ContratoResource::collection($contratos);
     }
 

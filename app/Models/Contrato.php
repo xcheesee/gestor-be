@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Contrato extends Model
 {
@@ -37,5 +39,25 @@ class Contrato extends Model
     public function licitacao_modelo()
     {
         return $this->belongsTo(LicitacaoModelo::class);
+    }
+
+    public function scopeInicioDepoisDe(Builder $query, $date): Builder
+    {
+        return $query->where('data_inicio_vigencia', '>=', Carbon::parse($date));
+    }
+
+    public function scopeInicioAntesDe(Builder $query, $date): Builder
+    {
+        return $query->where('data_inicio_vigencia', '<=', Carbon::parse($date));
+    }
+
+    public function scopeVencimentoDepoisDe(Builder $query, $date): Builder
+    {
+        return $query->where('data_vencimento', '>=', Carbon::parse($date));
+    }
+
+    public function scopeVencimentoAntesDe(Builder $query, $date): Builder
+    {
+        return $query->where('data_vencimento', '<=', Carbon::parse($date));
     }
 }
