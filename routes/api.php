@@ -60,6 +60,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::get('contratos',[ContratoController::class, 'index']);
+    Route::get('contratos_vencimento',[ContratoController::class, 'contratos_vencimento']);
     Route::post('contrato', [ContratoController::class, 'store']);
     Route::get('contrato/{id}', [ContratoController::class, 'show']);
     Route::put('contrato/{id}', [ContratoController::class, 'update']);

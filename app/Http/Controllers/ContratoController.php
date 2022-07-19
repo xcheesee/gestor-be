@@ -45,6 +45,12 @@ class ContratoController extends Controller
         return ContratoResource::collection($contratos);
     }
 
+    public function contratos_vencimento() {
+ 
+        $contratosVencimento = Contrato::query()->whereRaw('DATEDIFF(data_vencimento, NOW()) <= 180')->get();
+        return ContratoVencimentoResource::collection($contratosVencimento);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

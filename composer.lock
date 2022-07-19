@@ -1506,16 +1506,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.83.18",
+            "version": "v8.83.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "db8188e9cc8359a5c6706fa9d9f55aad7f235077"
+                "reference": "aa5908e83fccb18b135ca31aa0342cf4bd6909a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/db8188e9cc8359a5c6706fa9d9f55aad7f235077",
-                "reference": "db8188e9cc8359a5c6706fa9d9f55aad7f235077",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/aa5908e83fccb18b135ca31aa0342cf4bd6909a8",
+                "reference": "aa5908e83fccb18b135ca31aa0342cf4bd6909a8",
                 "shasum": ""
             },
             "require": {
@@ -1675,7 +1675,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-06-28T14:30:38+00:00"
+            "time": "2022-07-19T14:11:02+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -1994,16 +1994,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.3.3",
+            "version": "2.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "0da1dca5781dd3cfddbe328224d9a7a62571addc"
+                "reference": "155ec1c95626b16fda0889cf15904d24890a60d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/0da1dca5781dd3cfddbe328224d9a7a62571addc",
-                "reference": "0da1dca5781dd3cfddbe328224d9a7a62571addc",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/155ec1c95626b16fda0889cf15904d24890a60d5",
+                "reference": "155ec1c95626b16fda0889cf15904d24890a60d5",
                 "shasum": ""
             },
             "require": {
@@ -2096,7 +2096,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-07T21:28:26+00:00"
+            "time": "2022-07-17T16:25:47+00:00"
         },
         {
             "name": "league/config",
@@ -3375,16 +3375,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.11.6",
+            "version": "v0.11.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "3f5b5f8aaa979fbd0d1783173f4c82ad529fe621"
+                "reference": "77fc7270031fbc28f9a7bea31385da5c4855cb7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/3f5b5f8aaa979fbd0d1783173f4c82ad529fe621",
-                "reference": "3f5b5f8aaa979fbd0d1783173f4c82ad529fe621",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/77fc7270031fbc28f9a7bea31385da5c4855cb7a",
+                "reference": "77fc7270031fbc28f9a7bea31385da5c4855cb7a",
                 "shasum": ""
             },
             "require": {
@@ -3445,9 +3445,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.11.6"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.11.7"
             },
-            "time": "2022-07-03T16:40:23+00:00"
+            "time": "2022-07-07T13:49:11+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -6996,16 +6996,16 @@
         },
         {
             "name": "knuckleswtf/scribe",
-            "version": "3.33.0",
+            "version": "3.34.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/knuckleswtf/scribe.git",
-                "reference": "df677461933d26b521e3dd71c5d7bf3b9b0f30c7"
+                "reference": "185b327dd81d4c73dec7fc74fc473bfb05738c90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/df677461933d26b521e3dd71c5d7bf3b9b0f30c7",
-                "reference": "df677461933d26b521e3dd71c5d7bf3b9b0f30c7",
+                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/185b327dd81d4c73dec7fc74fc473bfb05738c90",
+                "reference": "185b327dd81d4c73dec7fc74fc473bfb05738c90",
                 "shasum": ""
             },
             "require": {
@@ -7080,7 +7080,7 @@
             ],
             "support": {
                 "issues": "https://github.com/knuckleswtf/scribe/issues",
-                "source": "https://github.com/knuckleswtf/scribe/tree/3.33.0"
+                "source": "https://github.com/knuckleswtf/scribe/tree/3.34.0"
             },
             "funding": [
                 {
@@ -7088,7 +7088,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-06-27T20:24:09+00:00"
+            "time": "2022-07-16T14:14:18+00:00"
         },
         {
             "name": "laravel/sail",
@@ -9713,5 +9713,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }
