@@ -22,7 +22,7 @@ class ServicoLocalController extends Controller
      */
     public function index()
     {
-        $servicosLocais = ServicoLocal::paginate(15);
+        $servicosLocais = ServicoLocal::get();
         return ServicoLocalResource::collection($servicosLocais);
     }
 
@@ -190,7 +190,7 @@ class ServicoLocalController extends Controller
         $servicosLocais = ServicoLocal::query()
             ->where('contrato_id','=',$id)
             ->get();
-        
+
         return ServicoLocalResource::collection($servicosLocais);
     }
 }

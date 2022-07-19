@@ -18,7 +18,7 @@ class DotacaoTipo extends JsonResource
             'id' => $this->id,
             'numero_dotacao' => $this->numero_dotacao,
             'descricao' => $this->descricao,
-            'tipo_despresa' => $this->tipo_despresa,
+            'tipo_despesa' => $this->tipo_despesa,
         ];
     }
 }

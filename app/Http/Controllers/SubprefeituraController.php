@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PrefeituraHelper;
 use App\Http\Requests\SubprefeituraFormRequest;
 use App\Models\Subprefeitura as Subprefeitura;
 use App\Http\Resources\Subprefeitura as SubprefeituraResource;
@@ -20,10 +21,30 @@ class SubprefeituraController extends Controller
      *
      *
      */
-    public function index()
+    public function index(Request $request)
     {
-        $subprefeituras = Subprefeitura::paginate(15);
-        return SubprefeituraResource::collection($subprefeituras);
+        $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+        if ($is_api_request){
+            $subprefeituras = Subprefeitura::get();
+            return SubprefeituraResource::collection($subprefeituras);
+        }
+
+        $filtros = array();
+        $filtros['regiao'] = $request->query('f-regiao');
+        $filtros['nome'] = $request->query('f-nome');
+
+        $data = Subprefeitura::sortable()
+            ->when($filtros['regiao'], function ($query, $val) {
+                return $query->where('regiao','=',$val);
+            })
+            ->when($filtros['nome'], function ($query, $val) {
+                return $query->where('nome','like','%'.$val.'%');
+            })
+            ->paginate(10);
+
+        $mensagem = $request->session()->get('mensagem');
+        return view('cadaux.subprefeitura.index', compact('data','mensagem','filtros'));
+
     }
 
     /**
@@ -31,9 +52,11 @@ class SubprefeituraController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $mensagem = $request->session()->get('mensagem');
+        $regioes = PrefeituraHelper::regiaoDropdown();
+        return view ('cadaux.subprefeitura.create',compact('mensagem','regioes'));
     }
 
     /**
@@ -59,7 +82,13 @@ class SubprefeituraController extends Controller
         $subprefeitura->regiao = $request->input('regiao');
 
         if ($subprefeitura->save()) {
-            return new SubprefeituraResource($subprefeitura);
+            $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+            if ($is_api_request){
+                return new SubprefeituraResource($subprefeitura);
+            }
+
+            $request->session()->flash('mensagem',"Subprefeitura '{$subprefeitura->nome}' (ID {$subprefeitura->id}) criada com sucesso");
+            return redirect()->route('cadaux-subprefeituras');
         }
     }
 
@@ -78,10 +107,15 @@ class SubprefeituraController extends Controller
      *     }
      * }
      */
-    public function show($id)
+    public function show(Request $request, int $id)
     {
         $subprefeitura = Subprefeitura::findOrFail($id);
-        return new SubprefeituraResource($subprefeitura);
+
+        $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+        if ($is_api_request){
+            return new SubprefeituraResource($subprefeitura);
+        }
+        return view('cadaux.subprefeitura.show', compact('subprefeitura'));
     }
 
     /**
@@ -90,9 +124,13 @@ class SubprefeituraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, int $id)
     {
-        //
+        $subprefeitura = Subprefeitura::findOrFail($id);
+        $regioes = PrefeituraHelper::regiaoDropdown();
+
+        $mensagem = $request->session()->get('mensagem');
+        return view ('cadaux.subprefeitura.edit', compact('subprefeitura','regioes','mensagem'));
     }
 
     /**
@@ -120,7 +158,13 @@ class SubprefeituraController extends Controller
         $subprefeitura->regiao = $request->input('regiao');
 
         if ($subprefeitura->save()) {
-            return new SubprefeituraResource($subprefeitura);
+            $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+            if ($is_api_request){
+                return new SubprefeituraResource($subprefeitura);
+            }
+
+            $request->session()->flash('mensagem',"Subprefeitura '{$subprefeitura->nome}' (ID {$subprefeitura->id}) editada com sucesso");
+            return redirect()->route('cadaux-subprefeituras');
         }
     }
 

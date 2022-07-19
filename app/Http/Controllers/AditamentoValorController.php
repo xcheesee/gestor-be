@@ -22,7 +22,7 @@ class AditamentoValorController extends Controller
      */
     public function index()
     {
-        $aditamentos = AditamentoValor::paginate(15);
+        $aditamentos = AditamentoValor::get();
         return AditamentoValorResource::collection($aditamentos);
     }
 

@@ -19,10 +19,18 @@ class LicitacaoModeloController extends Controller
      *
      *
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tipo_contratacoes = LicitacaoModelo::paginate(15);
-        return LicitacaoModeloResource::collection($tipo_contratacoes);
+        $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+
+        $licitacao_modelos = LicitacaoModelo::get();
+
+        if ($is_api_request){
+            return LicitacaoModeloResource::collection($licitacao_modelos);
+        }
+
+        $mensagem = $request->session()->get('mensagem');
+        return view ('cadaux.licitacao_modelo', compact('licitacao_modelos','mensagem'));
     }
 
     /**
@@ -51,11 +59,19 @@ class LicitacaoModeloController extends Controller
      */
     public function store(Request $request)
     {
+        $is_api_request = in_array('api',$request->route()->getAction('middleware'));
         $licitacao_modelo = new LicitacaoModelo;
         $licitacao_modelo->nome = $request->input('nome');
+
         if ($licitacao_modelo->save()) {
-            return new LicitacaoModeloResource($licitacao_modelo);
+            if ($is_api_request) {
+                return new LicitacaoModeloResource($licitacao_modelo);
+            }
+
+            $request->session()->flash('mensagem',"Modelo de Licitação '{$licitacao_modelo->nome}' criado com sucesso, ID {$licitacao_modelo->id}.");
+            return redirect()->route('cadaux-licitacao_modelos');
         }
+
     }
 
     /**
@@ -107,11 +123,16 @@ class LicitacaoModeloController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $is_api_request = in_array('api',$request->route()->getAction('middleware'));
         $licitacao_modelo = LicitacaoModelo::findOrFail($request->id);
         $licitacao_modelo->nome = $request->input('nome');
 
         if ($licitacao_modelo->save()) {
-            return new LicitacaoModeloResource($licitacao_modelo);
+            if ($is_api_request){
+                return new LicitacaoModeloResource($licitacao_modelo);
+            }
+
+            return response()->json(['mensagem' => "Modelo de Licitação '{$licitacao_modelo->nome}' - ID {$licitacao_modelo->id} editado com sucesso!"], 200);
         }
     }
 

@@ -22,7 +22,7 @@ class GarantiaController extends Controller
      */
     public function index()
     {
-        $garantias = Garantia::paginate(15);
+        $garantias = Garantia::get();
         return GarantiaResource::collection($garantias);
     }
 

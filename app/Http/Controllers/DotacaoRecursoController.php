@@ -21,7 +21,7 @@ class DotacaoRecursoController extends Controller
      */
     public function index()
     {
-        $dotacaos = DotacaoRecurso::paginate(15);
+        $dotacaos = DotacaoRecurso::get();
         return DotacaoRecursoResource::collection($dotacaos);
     }
 
@@ -198,9 +198,9 @@ class DotacaoRecursoController extends Controller
     public function listar_recursos_dotacao($id)
     {
         $dotacaoRecursos = DotacaoRecurso::query()
-        ->where('dotacao_id','=',$id)     
-        ->get();    
-        
+        ->where('dotacao_id','=',$id)
+        ->get();
+
         //dd($dotacaoRecursos);
         return DotacaoRecursoResource::collection($dotacaoRecursos);
     }

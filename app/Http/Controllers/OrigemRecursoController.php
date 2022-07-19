@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\OrigemRecurso;
 use App\Http\Requests\OrigemRecursoFormRequest;
 use App\Http\Resources\OrigemRecurso as OrigemRecursoResource;
+use Illuminate\Http\Request;
 
 /**
  * @group OrigemRecurso
@@ -19,10 +20,18 @@ class OrigemRecursoController extends Controller
      *
      *
      */
-    public function index()
+    public function index(Request $request)
     {
-        $origens = OrigemRecurso::paginate(15);
-        return OrigemRecursoResource::collection($origens);
+        $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+
+        $origens = OrigemRecurso::get();
+
+        if ($is_api_request){
+            return OrigemRecursoResource::collection($origens);
+        }
+
+        $mensagem = $request->session()->get('mensagem');
+        return view ('cadaux.origem_recurso', compact('origens','mensagem'));
     }
 
     /**
@@ -54,11 +63,17 @@ class OrigemRecursoController extends Controller
      */
     public function store(OrigemRecursoFormRequest $request)
     {
+        $is_api_request = in_array('api',$request->route()->getAction('middleware'));
         $origem = new OrigemRecurso;
         $origem->nome = $request->input('nome');
 
         if ($origem->save()) {
-            return new OrigemRecursoResource($origem);
+            if ($is_api_request) {
+                return new OrigemRecursoResource($origem);
+            }
+
+            $request->session()->flash('mensagem',"Fonte de Recurso '{$origem->nome}' criada com sucesso, ID {$origem->id}.");
+            return redirect()->route('cadaux-origem_recursos');
         }
     }
 
@@ -113,11 +128,17 @@ class OrigemRecursoController extends Controller
      */
     public function update(OrigemRecursoFormRequest $request, $id)
     {
+        $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+
         $origem = OrigemRecurso::findOrFail($id);
         $origem->nome = $request->input('nome');
 
         if ($origem->save()) {
-            return new OrigemRecursoResource($origem);
+            if ($is_api_request){
+                return new OrigemRecursoResource($origem);
+            }
+
+            return response()->json(['mensagem' => "Fonte de Recurso '{$origem->nome}' - ID {$origem->id} editada com sucesso!"], 200);
         }
     }
 

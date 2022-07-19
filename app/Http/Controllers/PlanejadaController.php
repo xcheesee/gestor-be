@@ -22,7 +22,7 @@ class PlanejadaController extends Controller
      */
     public function index()
     {
-        $planejadas = Planejada::paginate(15);
+        $planejadas = Planejada::get();
         return PlanejadaResource::collection($planejadas);
     }
 

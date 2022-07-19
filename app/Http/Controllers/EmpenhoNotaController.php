@@ -21,7 +21,7 @@ class EmpenhoNotaController extends Controller
      */
     public function index()
     {
-        $empenhonotas = EmpenhoNota::paginate(15);
+        $empenhonotas = EmpenhoNota::get();
         return EmpenhoNotaResource::collection($empenhonotas);
     }
 

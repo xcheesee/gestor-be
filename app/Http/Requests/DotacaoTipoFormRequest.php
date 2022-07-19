@@ -13,7 +13,7 @@ class DotacaoTipoFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class DotacaoTipoFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'numero_dotacao' => 'required',
+            'numero_dotacao' => 'required|unique:App\Models\DotacaoTipo,numero_dotacao',
             'descricao' => 'required',
         ];
     }
@@ -33,6 +33,7 @@ class DotacaoTipoFormRequest extends FormRequest
     {
         return [
             'required' => "O campo ':attribute' é obrigatório",
+            'numero_dotacao.unique' => "Já existe um tipo de dotação com este número, favor digitar outro número",
         ];
     }
 }

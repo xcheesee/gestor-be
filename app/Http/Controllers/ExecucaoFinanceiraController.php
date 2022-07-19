@@ -22,7 +22,7 @@ class ExecucaoFinanceiraController extends Controller
      */
     public function index()
     {
-        $executadas = ExecucaoFinanceira::paginate(15);
+        $executadas = ExecucaoFinanceira::get();
         return ExecucaoFinanceiraResource::collection($executadas);
     }
 

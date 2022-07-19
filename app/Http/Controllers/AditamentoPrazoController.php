@@ -22,7 +22,7 @@ class AditamentoPrazoController extends Controller
      */
     public function index()
     {
-        $aditamentos = AditamentoPrazo::paginate(15);
+        $aditamentos = AditamentoPrazo::get();
         return AditamentoPrazoResource::collection($aditamentos);
     }
 

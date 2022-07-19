@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PrefeituraHelper;
 use App\Http\Requests\DistritoFormRequest;
 use App\Models\Distrito as Distrito;
 use App\Http\Resources\Distrito as DistritoResource;
@@ -20,10 +21,31 @@ class DistritoController extends Controller
      *
      *
      */
-    public function index()
+    public function index(Request $request)
     {
-        $distritos = Distrito::paginate(100);
-        return DistritoResource::collection($distritos);
+        $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+        if ($is_api_request){
+            $distritos = Distrito::get();
+            return DistritoResource::collection($distritos);
+        }
+
+        $filtros = array();
+        $filtros['subprefeitura'] = $request->query('f-subprefeitura');
+        $filtros['nome'] = $request->query('f-nome');
+
+        $data = Distrito::sortable()
+            ->select('distritos.*', 'sub.nome as sub_nome')
+            ->leftJoin('subprefeituras as sub', 'subprefeitura_id', '=', 'sub.id')
+            ->when($filtros['subprefeitura'], function ($query, $val) {
+                return $query->where('sub.nome','like','%'.$val.'%');
+            })
+            ->when($filtros['nome'], function ($query, $val) {
+                return $query->where('distritos.nome','like','%'.$val.'%');
+            })
+            ->paginate(10);
+
+        $mensagem = $request->session()->get('mensagem');
+        return view('cadaux.distrito.index', compact('data','mensagem','filtros'));
     }
 
     /**
@@ -31,9 +53,11 @@ class DistritoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $subprefeituras = PrefeituraHelper::subprefeituraDropdown();
+        $mensagem = $request->session()->get('mensagem');
+        return view ('cadaux.distrito.create',compact('subprefeituras','mensagem'));
     }
 
     /**
@@ -59,7 +83,13 @@ class DistritoController extends Controller
         $distrito->subprefeitura_id = $request->input('subprefeitura_id');
 
         if ($distrito->save()) {
-            return new DistritoResource($distrito);
+            $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+            if ($is_api_request){
+                return new DistritoResource($distrito);
+            }
+
+            $request->session()->flash('mensagem',"Distrito '{$distrito->nome}' (ID {$distrito->id}) criado com sucesso");
+            return redirect()->route('cadaux-distritos');
         }
     }
 
@@ -78,10 +108,14 @@ class DistritoController extends Controller
      *     }
      * }
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $distrito = Distrito::findOrFail($id);
-        return new DistritoResource($distrito);
+        $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+        if ($is_api_request){
+            return new DistritoResource($distrito);
+        }
+        return view('cadaux.distrito.show', compact('distrito'));
     }
 
     /**
@@ -90,9 +124,12 @@ class DistritoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, int $id)
     {
-        //
+        $distrito = Distrito::findOrFail($id);
+        $subprefeituras = PrefeituraHelper::subprefeituraDropdown();
+        $mensagem = $request->session()->get('mensagem');
+        return view ('cadaux.distrito.edit', compact('distrito','subprefeituras','mensagem'));
     }
 
     /**
@@ -121,7 +158,13 @@ class DistritoController extends Controller
         $distrito->subprefeitura_id = $request->input('subprefeitura_id');
 
         if ($distrito->save()) {
-            return new DistritoResource($distrito);
+            $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+            if ($is_api_request){
+                return new DistritoResource($distrito);
+            }
+
+            $request->session()->flash('mensagem',"Distrito '{$distrito->nome}' (ID {$distrito->id}) editado com sucesso");
+            return redirect()->route('cadaux-distritos');
         }
     }
 

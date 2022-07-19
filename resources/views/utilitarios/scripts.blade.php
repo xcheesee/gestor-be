@@ -16,9 +16,15 @@
         $('.phone_with_ddd').mask('(00) 0000-0000');
         $('.phone_us').mask('(000) 000-0000');
         $('.rf').mask('000000-0');
+        $('.dotacao').mask('00.00.00.000.0000.0.000.00000000.00.0');
+        $('.processo_sei').mask('0000.0000/0000000-0');
+        $('.contrato').mask('000/SSSS/0000');
         $('.cpf').mask('000.000.000-00', {reverse: true});
         $('.money').mask('000.000.000.000.000,00', {reverse: true});
-        //$('.mixed').mask('AAA 000-S0S'); //para exemplo de definição de custom masks
+
+        //$('.mixed').mask('AAA 000-S0S'); //leia abaixo:
+        /*O usuário poderá digitar uma sequência de três caracteres alpha números, seguido de espaço, seguido de três caracteres números,
+        seguido de traço, seguido de um caractere do tipo string, seguido de um caractere do tipo inteiro e seguido de um caractere do tipo string.*/
 
         $('.jmulti').multiSelect({
             selectableHeader: "<input type='text' class='search-input form-control' autocomplete='off' placeholder='Clique na lista abaixo para selecionar, digite aqui para filtrar'>",

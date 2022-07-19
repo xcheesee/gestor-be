@@ -3,11 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class Subprefeitura extends Model
 {
+    use Sortable;
+
+    public $sortable = ['id','regiao','nome'];
     protected $fillable = [
-        'nome',
         'regiao',
+        'nome',
     ];
 }

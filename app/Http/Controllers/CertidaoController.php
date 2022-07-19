@@ -22,7 +22,7 @@ class CertidaoController extends Controller
      */
     public function index()
     {
-        $certidoes = Certidao::paginate(15);
+        $certidoes = Certidao::get();
         return CertidaoResource::collection($certidoes);
     }
 

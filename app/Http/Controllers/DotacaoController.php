@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dotacao;
 use App\Http\Requests\DotacaoFormRequest;
 use App\Http\Resources\Dotacao as DotacaoResource;
+use App\Models\DotacaoRecurso;
 
 /**
  * @group Dotacao
@@ -21,7 +22,7 @@ class DotacaoController extends Controller
      */
     public function index()
     {
-        $dotacaos = Dotacao::paginate(15);
+        $dotacaos = Dotacao::get();
         return DotacaoResource::collection($dotacaos);
     }
 
@@ -43,13 +44,24 @@ class DotacaoController extends Controller
      * @bodyParam dotacao_tipo_id integer required ID do tipo de dotação (tabela dotacao_tipos). Example: 5
      * @bodyParam contrato_id integer required ID do contrato. Example: 5
      * @bodyParam valor_dotacao float Valor desta dotação. Example: 1000.00
+     * @bodyParam origem_recurso_id integer required ID da fonte/origem do recurso. Example: 2
+     * @bodyParam outros_descricao string Descrição da fonte, usado apenas caso o usuário selecione "outros" (origem_recurso_id = 0). Example: Fonte Externa
      *
      * @response 200 {
      *     "data": {
      *         "id": 1,
      *         "dotacao_tipo_id": 1,
      *         "contrato_id": 5,
-     *         "valor_dotacao": 1000.00
+     *         "valor_dotacao": 1000.00,
+     *         "recursos": [
+     *             {
+     *                 "id": 1,
+     *                 "dotacao_id": 1,
+     *                 "origem_recurso_id": 1,
+     *                 "nome": "Convênio Estadual",
+     *                 "outros_descricao": null
+     *             }
+     *         ]
      *     }
      * }
      */
@@ -61,6 +73,17 @@ class DotacaoController extends Controller
         $dotacao->valor_dotacao = $request->input('valor_dotacao');
 
         if ($dotacao->save()) {
+            if ($request->input('origem_recurso_id') > 0){
+                $dotacaorecurso = new DotacaoRecurso();
+                $dotacaorecurso->dotacao_id = $dotacao->id;
+                $dotacaorecurso->origem_recurso_id = $request->input('origem_recurso_id') > 0 ? $request->input('origem_recurso_id') : null;
+                $dotacaorecurso->outros_descricao = $request->input('outros_descricao');
+
+                if ($dotacaorecurso->save()) {
+
+                    return new DotacaoResource($dotacao);
+                }
+            }
             return new DotacaoResource($dotacao);
         }
     }
@@ -77,7 +100,23 @@ class DotacaoController extends Controller
      *         "id": 1,
      *         "dotacao_tipo_id": 1,
      *         "contrato_id": 5,
-     *         "valor_dotacao": 1000.00
+     *         "valor_dotacao": 1000.00,
+     *         "recursos": [
+     *             {
+     *                 "id": 1,
+     *                 "dotacao_id": 1,
+     *                 "origem_recurso_id": 1,
+     *                 "nome": "Tesouro Municipal",
+     *                 "outros_descricao": null
+     *             },
+     *             {
+     *                 "id": 2,
+     *                 "dotacao_id": 1,
+     *                 "origem_recurso_id": 4,
+     *                 "nome": "FEMA",
+     *                 "outros_descricao": null
+     *             }
+     *         ]
      *     }
      * }
      */

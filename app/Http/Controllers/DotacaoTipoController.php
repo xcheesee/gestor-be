@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DotacaoTipo;
 use App\Http\Requests\DotacaoTipoFormRequest;
 use App\Http\Resources\DotacaoTipo as DotacaoTipoResource;
+use Illuminate\Http\Request;
 
 /**
  * @group DotacaoTipo
@@ -19,10 +20,34 @@ class DotacaoTipoController extends Controller
      *
      *
      */
-    public function index()
+    public function index(Request $request)
     {
-        $dotacaos = DotacaoTipo::paginate(15);
-        return DotacaoTipoResource::collection($dotacaos);
+        $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+        if ($is_api_request){
+            $dotacaos = DotacaoTipo::get();
+            return DotacaoTipoResource::collection($dotacaos);
+        }
+
+        $filtros = array();
+        $filtros['numero_dotacao'] = $request->query('f-numero_dotacao');
+        $filtros['descricao'] = $request->query('f-descricao');
+        $filtros['tipo_despesa'] = $request->query('f-tipo_despesa');
+
+        $data = DotacaoTipo::sortable()
+            ->when($filtros['numero_dotacao'], function ($query, $val) {
+                return $query->where('numero_dotacao','like','%'.$val.'%');
+            })
+            ->when($filtros['descricao'], function ($query, $val) {
+                return $query->where('descricao','like','%'.$val.'%');
+            })
+            ->when($filtros['tipo_despesa'], function ($query, $val) {
+                return $query->where('tipo_despesa','like','%'.$val.'%');
+            })
+            ->paginate(10);
+
+        $mensagem = $request->session()->get('mensagem');
+        return view('cadaux.dotacao_tipo.index', compact('data','mensagem','filtros'));
+
     }
 
     /**
@@ -30,9 +55,10 @@ class DotacaoTipoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $mensagem = $request->session()->get('mensagem');
+        return view ('cadaux.dotacao_tipo.create',compact('mensagem'));
     }
 
     /**
@@ -56,13 +82,19 @@ class DotacaoTipoController extends Controller
      */
     public function store(DotacaoTipoFormRequest $request)
     {
-        $dotacao = new DotacaoTipo;
-        $dotacao->numero_dotacao = $request->input('numero_dotacao');
-        $dotacao->descricao = $request->input('descricao');
-        $dotacao->tipo_despesa = $request->input('tipo_despesa');
+        $dotacao_tipo = new DotacaoTipo;
+        $dotacao_tipo->numero_dotacao = $request->input('numero_dotacao');
+        $dotacao_tipo->descricao = $request->input('descricao');
+        $dotacao_tipo->tipo_despesa = $request->input('tipo_despesa');
 
-        if ($dotacao->save()) {
-            return new DotacaoTipoResource($dotacao);
+        if ($dotacao_tipo->save()) {
+            $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+            if ($is_api_request){
+                return new DotacaoTipoResource($dotacao_tipo);
+            }
+
+            $request->session()->flash('mensagem',"Tipo de Dotação nº '{$dotacao_tipo->numero_dotacao}' (ID {$dotacao_tipo->id}) criada com sucesso");
+            return redirect()->route('cadaux-dotacao_tipos');
         }
     }
 
@@ -82,10 +114,15 @@ class DotacaoTipoController extends Controller
      *     }
      * }
      */
-    public function show($id)
+    public function show(Request $request, int $id)
     {
-        $dotacao = DotacaoTipo::findOrFail($id);
-        return new DotacaoTipoResource($dotacao);
+        $dotacao_tipo = DotacaoTipo::findOrFail($id);
+
+        $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+        if ($is_api_request){
+            return new DotacaoTipoResource($dotacao_tipo);
+        }
+        return view('cadaux.dotacao_tipo.show', compact('dotacao_tipo'));
     }
 
     /**
@@ -94,9 +131,11 @@ class DotacaoTipoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, int $id)
     {
-        //
+        $dotacao_tipo = DotacaoTipo::findOrFail($id);
+        $mensagem = $request->session()->get('mensagem');
+        return view ('cadaux.dotacao_tipo.edit', compact('dotacao_tipo','mensagem'));
     }
 
     /**
@@ -121,13 +160,19 @@ class DotacaoTipoController extends Controller
      */
     public function update(DotacaoTipoFormRequest $request, $id)
     {
-        $dotacao = DotacaoTipo::findOrFail($id);
-        $dotacao->numero_dotacao = $request->input('numero_dotacao');
-        $dotacao->descricao = $request->input('descricao');
-        $dotacao->tipo_despesa = $request->input('tipo_despesa');
+        $dotacao_tipo = DotacaoTipo::findOrFail($id);
+        $dotacao_tipo->numero_dotacao = $request->input('numero_dotacao');
+        $dotacao_tipo->descricao = $request->input('descricao');
+        $dotacao_tipo->tipo_despesa = $request->input('tipo_despesa');
 
-        if ($dotacao->save()) {
-            return new DotacaoTipoResource($dotacao);
+        if ($dotacao_tipo->save()) {
+            $is_api_request = in_array('api',$request->route()->getAction('middleware'));
+            if ($is_api_request){
+                return new DotacaoTipoResource($dotacao_tipo);
+            }
+
+            $request->session()->flash('mensagem',"Tipo de Dotação nº '{$dotacao_tipo->numero_dotacao}' (ID {$dotacao_tipo->id}) editada com sucesso");
+            return redirect()->route('cadaux-dotacao_tipos');
         }
     }
 

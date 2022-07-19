@@ -12,7 +12,7 @@ class Dotacao extends Model
     protected $table = 'dotacoes';
 
     protected $fillable = [
-        'tipo_dotacao_id',
+        'dotacao_tipo_id',
         'contrato_id',
         'valor_dotacao',
     ];
@@ -22,8 +22,12 @@ class Dotacao extends Model
         return $this->belongsTo(Contrato::class);
     }
 
-    public function tipo_dotacao()
+    public function dotacao_tipo()
     {
-        return $this->belongsTo(TipoDotacao::class);
+        return $this->belongsTo(DotacaoTipo::class);
+    }
+
+    public function dotacao_recursos(){
+        return $this->hasMany(DotacaoRecurso::class);
     }
 }

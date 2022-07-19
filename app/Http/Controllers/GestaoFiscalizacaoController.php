@@ -22,7 +22,7 @@ class GestaoFiscalizacaoController extends Controller
      */
     public function index()
     {
-        $gestaoFiscalizacao = GestaoFiscalizacao::paginate(15);
+        $gestaoFiscalizacao = GestaoFiscalizacao::get();
         return GestaoFiscalizacaoResource::collection($gestaoFiscalizacao);
     }
 
@@ -217,7 +217,7 @@ class GestaoFiscalizacaoController extends Controller
         $gestaoFiscalizacao = GestaoFiscalizacao::query()
             ->where('contrato_id','=',$id)
             ->get();
-        
+
             return GestaoFiscalizacaoResource::collection($gestaoFiscalizacao);
     }
 }

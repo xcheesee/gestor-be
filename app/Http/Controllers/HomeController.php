@@ -24,9 +24,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $mensagem = $request->session()->get('mensagem');
-        //return view ('series.index', compact('series','mensagem'));
         return view('home', compact('mensagem'));
-        //return view('home');
     }
 
     /**
@@ -39,6 +37,19 @@ class HomeController extends Controller
         $mensagem = $request->session()->get('mensagem');
         //return view ('series.index', compact('series','mensagem'));
         return view('admin', compact('mensagem'));
+        //return view('home');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function cadaux(Request $request)
+    {
+        $mensagem = $request->session()->get('mensagem');
+        //return view ('series.index', compact('series','mensagem'));
+        return view('cadaux.index', compact('mensagem'));
         //return view('home');
     }
 }
