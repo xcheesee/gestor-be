@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ContratoFormRequest;
 use App\Models\Contrato as Contrato;
 use App\Http\Resources\Contrato as ContratoResource;
+use App\Http\Resources\ContratoVencimento as ContratoVencimentoResource;
 use App\Models\ExecucaoFinanceira;
 use App\Models\Planejada;
 use Illuminate\Http\Request;
