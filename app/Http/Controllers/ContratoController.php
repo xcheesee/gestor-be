@@ -46,6 +46,21 @@ class ContratoController extends Controller
         return ContratoResource::collection($contratos);
     }
 
+    /**
+     * Lista os contratos com data de vencimento menor do que 6 meses.
+     * @authenticated
+     *
+    * @response 200 {
+     *     "data": {
+     *         "id": 14,
+     *         "processo_sei": "0123000134569000",
+     *         "cnpj_cpf": "45106963896",
+     *         "numero_contrato": "2343rbte67b63",
+     *         "data_vencimento": "2023-05-20",
+     *         "nome_empresa": "Teste LTDA",
+     *         "telefone_empresa": "11913314554",
+     *         "email_empresa": "teste@prefeitura.com",
+     */
     public function contratos_vencimento() {
  
         $contratosVencimento = Contrato::query()->whereRaw('DATEDIFF(data_vencimento, NOW()) <= 180')->get();
