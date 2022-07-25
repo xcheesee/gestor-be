@@ -17,7 +17,7 @@ class AditamentoValor extends JsonResource
         return [
             'id' => $this->id,
             'contrato_id' => $this->contrato_id,
-            'tipo_aditamentos' => $this->tipo_aditamentos,
+            'tipo_aditamento' => $this->tipo_aditamento,
             'valor_aditamento' => $this->valor_aditamento,
             'indice_reajuste' => $this->indice_reajuste,
             'pct_reajuste' => $this->pct_reajuste,

@@ -27,6 +27,7 @@ class ExecucaoFinanceira extends JsonResource
             'valor_cancelamento' => $this->valor_cancelamento,
             'empenhado' => $this->empenhado,
             'executado' => $this->executado,
+            'saldo' => $this->saldo,
         ];
     }
 }

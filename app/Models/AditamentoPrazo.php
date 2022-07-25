@@ -10,7 +10,7 @@ class AditamentoPrazo extends Model
 
     protected $fillable = [
         'contrato_id',
-        'tipo_aditamentos',
+        'tipo_aditamento',
         'dias_reajuste',
     ];
 
