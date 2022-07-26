@@ -60,11 +60,13 @@ class ExecucaoFinanceiraController extends Controller
      *         "ano": 2022,
      *         "planejado_inicial": 1204679.85,
      *         "contratado_inicial": 1300000.00,
+     *         "contratado_atualizado": 1305664.05,
      *         "valor_reajuste": 120.00,
      *         "valor_aditivo": 6045.00,
      *         "valor_cancelamento": 500.95,
      *         "empenhado": 604500.00,
-     *         "executado": 120467.99
+     *         "executado": 120467.99,
+     *         "saldo": 484032.01
      *     }
      * }
      */
@@ -102,11 +104,13 @@ class ExecucaoFinanceiraController extends Controller
      *         "ano": 2022,
      *         "planejado_inicial": 1204679.85,
      *         "contratado_inicial": 1300000.00,
+     *         "contratado_atualizado": 1305664.05,
      *         "valor_reajuste": 120.00,
      *         "valor_aditivo": 6045.00,
      *         "valor_cancelamento": 500.95,
      *         "empenhado": 604500.00,
-     *         "executado": 120467.99
+     *         "executado": 120467.99,
+     *         "saldo": 484032.01
      *     }
      * }
      */
@@ -153,11 +157,13 @@ class ExecucaoFinanceiraController extends Controller
      *         "ano": 2022,
      *         "planejado_inicial": 1204679.85,
      *         "contratado_inicial": 1300000.00,
+     *         "contratado_atualizado": 1305664.05,
      *         "valor_reajuste": 120.00,
      *         "valor_aditivo": 6045.00,
      *         "valor_cancelamento": 500.95,
      *         "empenhado": 604500.00,
-     *         "executado": 120467.99
+     *         "executado": 120467.99,
+     *         "saldo": 484032.01
      *     }
      * }
      */
@@ -196,11 +202,13 @@ class ExecucaoFinanceiraController extends Controller
      *         "ano": 2022,
      *         "planejado_inicial": 1204679.85,
      *         "contratado_inicial": 1300000.00,
+     *         "contratado_atualizado": 1305664.05,
      *         "valor_reajuste": 120.00,
      *         "valor_aditivo": 6045.00,
      *         "valor_cancelamento": 500.95,
      *         "empenhado": 604500.00,
-     *         "executado": 120467.99
+     *         "executado": 120467.99,
+     *         "saldo": 484032.01
      *     }
      * }
      */
@@ -232,24 +240,28 @@ class ExecucaoFinanceiraController extends Controller
      *             "ano": 2022,
      *             "planejado_inicial": 1204679.85,
      *             "contratado_inicial": 1300000.00,
+     *             "contratado_atualizado": 1305664.05,
      *             "valor_reajuste": 120.00,
      *             "valor_aditivo": 6045.00,
      *             "valor_cancelamento": 500.95,
      *             "empenhado": 604500.00,
-     *             "executado": 120467.99
+     *             "executado": 120467.99,
+     *             "saldo": 484032.01
      *         },
      *         {
      *             "id": 3,
      *             "contrato_id": 3,
-     *             "mes": 2,
+     *             "mes": 1,
      *             "ano": 2022,
      *             "planejado_inicial": 1204679.85,
      *             "contratado_inicial": 1300000.00,
+     *             "contratado_atualizado": 1305664.05,
      *             "valor_reajuste": 120.00,
-     *             "valor_aditivo": 0.00,
-     *             "valor_cancelamento": 0.00,
+     *             "valor_aditivo": 6045.00,
+     *             "valor_cancelamento": 500.95,
      *             "empenhado": 604500.00,
-     *             "executado": 120467.99
+     *             "executado": 120467.99,
+     *             "saldo": 484032.01
      *         }
      *     ]
      * }

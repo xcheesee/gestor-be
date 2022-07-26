@@ -51,7 +51,7 @@ class ContratoController extends Controller
      * @authenticated
      *
      * @response 200 {
-     *     "data": {
+     *     "data": [{
      *         "id": 14,
      *         "processo_sei": "0123000134569000",
      *         "cnpj_cpf": "45106963896",
@@ -60,10 +60,26 @@ class ContratoController extends Controller
      *         "nome_empresa": "Teste LTDA",
      *         "telefone_empresa": "11913314554",
      *         "email_empresa": "teste@prefeitura.com",
+     *         "dias_ate_vencimento": 163,
+     *         "meses_ate_vencimento": "5 meses e 10 dia(s)"
+     *     },
+     *     {
+     *         "id": 11,
+     *         "processo_sei": "0000000000000016",
+     *         "cnpj_cpf": "00100200345",
+     *         "numero_contrato": "005SVMA2022",
+     *         "data_vencimento": "2022-12-14",
+     *         "nome_empresa": "Honos",
+     *         "telefone_empresa": "11910203040",
+     *         "email_empresa": "lucashonorato@gmail.com",
+     *         "dias_ate_vencimento": 146,
+     *         "meses_ate_vencimento": "4 meses e 24 dia(s)"
+     *     }]
+     * }
      */
     public function contratos_vencimento() {
- 
-        $contratosVencimento = Contrato::query()->whereRaw('DATEDIFF(data_vencimento, NOW()) <= 180')->get();
+
+        $contratosVencimento = Contrato::query()->whereRaw('DATEDIFF(data_vencimento, NOW()) <= 182')->get();
         return ContratoVencimentoResource::collection($contratosVencimento);
     }
 
@@ -211,6 +227,7 @@ class ContratoController extends Controller
      *         "outras_informacoes": "Exemplo. Nenhuma outra informação",
      *         "execucao_financeira": {
      *             "1-2022": {
+     *                 "id": "1",
      *                 "mes": "Jan-2022",
      *                 "planejado": 12000,
      *                 "executado": 10000.5,
@@ -218,6 +235,7 @@ class ContratoController extends Controller
      *                 "saldo": 500.5
      *             },
      *             "2-2022": {
+     *                 "id": "2",
      *                 "mes": "Fev-2022",
      *                 "planejado": 11999.99,
      *                 "executado": 0,
@@ -237,6 +255,7 @@ class ContratoController extends Controller
         $execucao_financeira = array();
         $meses = array('','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez');
         foreach($executadas as $executada){
+            $execucao_financeira[$executada->mes.'-'.$executada->ano]['id'] = $executada->id;
             $execucao_financeira[$executada->mes.'-'.$executada->ano]['mes'] = $meses[$executada->mes].'-'.$executada->ano;
             $execucao_financeira[$executada->mes.'-'.$executada->ano]['planejado'] = $executada->planejado_inicial;
             $execucao_financeira[$executada->mes.'-'.$executada->ano]['contratado'] = $executada->contratado_atualizado;

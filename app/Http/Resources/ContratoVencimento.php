@@ -23,6 +23,8 @@ class ContratoVencimento extends JsonResource
             'nome_empresa' => $this->nome_empresa,
             'telefone_empresa' => $this->telefone_empresa,
             'email_empresa' => $this->email_empresa,
+            'dias_ate_vencimento' => $this->dias_ate_vencimento,
+            'meses_ate_vencimento' => $this->meses_ate_vencimento,
         ];
     }
 }

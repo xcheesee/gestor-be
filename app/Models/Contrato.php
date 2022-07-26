@@ -60,4 +60,27 @@ class Contrato extends Model
     {
         return $query->where('data_vencimento', '<=', Carbon::parse($date));
     }
+
+    public function getDiferencaAteVencimentoAttribute(){
+        $date1 = date_create_from_format('Y-m-d', $this->data_vencimento);
+        $date2 = date_create_from_format('Y-m-d', date('Y-m-d'));
+        $diff = (array) date_diff($date1,$date2);
+        return $diff;
+    }
+
+    public function getDiasAteVencimentoAttribute(){
+        return $this->diferenca_ate_vencimento['days'];
+    }
+
+    public function getMesesAteVencimentoAttribute(){
+        $texto = '';
+        if ($this->diferenca_ate_vencimento['m'] > 0){
+            $texto = $this->diferenca_ate_vencimento['m'] == 1 ? $this->diferenca_ate_vencimento['m'].' mês' : $this->diferenca_ate_vencimento['m'].' meses';
+            if ($this->diferenca_ate_vencimento['d'] > 0) $texto .= ' e '.$this->diferenca_ate_vencimento['d'].' dia(s)';
+        }else{
+            if ($this->diferenca_ate_vencimento['d'] > 0) $texto = $this->diferenca_ate_vencimento['d'].' dia(s)';
+            else $texto = 'Vencido há '.($this->diferenca_ate_vencimento['d']*-1).' dia(s)';
+        }
+        return $texto;
+    }
 }
