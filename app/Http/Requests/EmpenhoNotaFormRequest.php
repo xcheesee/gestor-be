@@ -25,6 +25,7 @@ class EmpenhoNotaFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
+            'tipo_empenho' => 'nullable|in:complemento,cancelamento',
             'numero_nota' => 'nullable|integer',
             'valor_empenho' => 'required',
         ];
@@ -34,6 +35,7 @@ class EmpenhoNotaFormRequest extends FormRequest
     {
         return [
             'required' => "O campo ':attribute' é obrigatório",
+            'tipo_empenho.in' => "Valores possíveis para tipo empenho: 'complemento', 'cancelamento'",
             'integer' => "O valor do campo ':attribute' deve ser um número inteiro",
         ];
     }

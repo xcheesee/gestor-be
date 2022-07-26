@@ -125,7 +125,7 @@ class ServicoLocalController extends Controller
      *     }
      * }
      */
-    public function update(Request $request, $id)
+    public function update(ServicoLocalFormRequest $request, $id)
     {
         $servicoLocal = ServicoLocal::findOrFail($request->id);
         $servicoLocal->contrato_id = $request->input('contrato_id');

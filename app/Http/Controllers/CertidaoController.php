@@ -118,7 +118,7 @@ class CertidaoController extends Controller
      *     }
      * }
      */
-    public function update(Request $request, $id)
+    public function update(CertidaoFormRequest $request, $id)
     {
         $certidao = Certidao::findOrFail($id);
         $certidao->contrato_id = $request->input('contrato_id');

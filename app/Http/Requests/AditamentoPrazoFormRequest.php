@@ -25,7 +25,7 @@ class AditamentoPrazoFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
-            'tipo_aditamentos' => 'in:Prorrogação de prazo,Supressão de prazo,Suspensão,Rescisão',
+            'tipo_aditamento' => 'nullable|in:Prorrogação de prazo,Supressão de prazo,Suspensão,Rescisão',
             'dias_reajuste' => 'nullable|integer',
 
         ];
@@ -36,7 +36,7 @@ class AditamentoPrazoFormRequest extends FormRequest
         return [
             'required' => "O campo ':attribute' é obrigatório",
             'integer' => "O valor do campo ':attribute' deve ser um número inteiro",
-            'tipo_aditamentos.in' => "Valores possíveis para tipo aditamento: 'Acréscimo de valor', 'Redução de valor', 'Prorrogação de valor', 'Supressão de prazo', 'Suspensão' e 'Rescisão'"
+            'tipo_aditamento.in' => "Valores possíveis para tipo aditamento: 'Acréscimo de valor', 'Redução de valor', 'Prorrogação de valor', 'Supressão de prazo', 'Suspensão' e 'Rescisão'"
         ];
     }
 }

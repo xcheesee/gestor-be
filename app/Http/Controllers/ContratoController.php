@@ -50,7 +50,7 @@ class ContratoController extends Controller
      * Lista os contratos com data de vencimento menor do que 6 meses.
      * @authenticated
      *
-    * @response 200 {
+     * @response 200 {
      *     "data": {
      *         "id": 14,
      *         "processo_sei": "0123000134569000",
@@ -327,7 +327,7 @@ class ContratoController extends Controller
      *     }
      * }
      */
-    public function update(Request $request, $id)
+    public function update(ContratoFormRequest $request, $id)
     {
         $contrato = Contrato::findOrFail($id);
         $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id');

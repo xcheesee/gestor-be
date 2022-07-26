@@ -17,7 +17,7 @@ class AditamentoPrazo extends JsonResource
         return [
             'id' => $this->id,
             'contrato_id' => $this->contrato_id,
-            'tipo_aditamentos' => $this->tipo_aditamentos,
+            'tipo_aditamento' => $this->tipo_aditamento,
             'dias_reajuste' => $this->dias_reajuste,
         ];
     }

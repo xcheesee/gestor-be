@@ -151,7 +151,7 @@ class DistritoController extends Controller
      *     }
      * }
      */
-    public function update(Request $request, $id)
+    public function update(DistritoFormRequest $request, $id)
     {
         $distrito = Distrito::findOrFail($request->id);
         $distrito->nome = $request->input('nome');

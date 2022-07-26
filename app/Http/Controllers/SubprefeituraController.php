@@ -151,7 +151,7 @@ class SubprefeituraController extends Controller
      *     }
      * }
      */
-    public function update(Request $request, $id)
+    public function update(SubprefeituraFormRequest $request, $id)
     {
         $subprefeitura = Subprefeitura::findOrFail($request->id);
         $subprefeitura->nome = $request->input('nome');

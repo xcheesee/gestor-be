@@ -143,7 +143,7 @@ class GestaoFiscalizacaoController extends Controller
      *     }
      * }
      */
-    public function update(Request $request, $id)
+    public function update(GestaoFiscalizacaoFormRequest $request, $id)
     {
         $gestaoFiscalizacao = GestaoFiscalizacao::findOrFail($request->id);
         $gestaoFiscalizacao->contrato_id = $request->input('contrato_id');

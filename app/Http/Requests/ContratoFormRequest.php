@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use LaravelLegends\PtBrValidator\Rules\TelefoneComDdd;
 
 class ContratoFormRequest extends FormRequest
 {
@@ -27,14 +28,15 @@ class ContratoFormRequest extends FormRequest
             'processo_sei' => 'required',
             'credor' => 'required',
             'cnpj_cpf' => 'required',
+            'tipo_objeto' => 'nullable|in:obra,projeto,serviço,aquisição',
             'objeto' => 'required',
             'numero_contrato' => 'required',
             'valor_contrato' => 'required',
             'data_inicio_vigencia' => 'required',
             'condicao_pagamento' => 'required',
             'nome_empresa' => 'required',
-            'telefone_empresa' => 'required',
-            'email_empresa' => 'required',
+            'telefone_empresa' => 'required|telefone_com_ddd',
+            'email_empresa' => 'required|email',
         ];
     }
 

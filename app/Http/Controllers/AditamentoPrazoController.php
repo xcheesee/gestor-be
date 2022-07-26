@@ -42,14 +42,14 @@ class AditamentoPrazoController extends Controller
      *
      *
      * @bodyParam contrato_id integer required ID do contrato. Example: 5
-     * @bodyParam tipo_aditamentos enum Tipo de aditamento('Prorrogação de prazo', 'Supressão de prazo', 'Suspensão', 'Rescisão'). Example: Prorrogação de prazo
+     * @bodyParam tipo_aditamento enum Tipo de aditamento('Prorrogação de prazo', 'Supressão de prazo', 'Suspensão', 'Rescisão'). Example: Prorrogação de prazo
      * @bodyParam dias_reajuste integer required Dias de acréscimo. Example: 60
      *
      * @response 200 {
      *     "data": {
      *         "id": 1,
      *         "contrato_id": 5,
-     *         "tipo_aditamentos": "Prorrogação de prazo",
+     *         "tipo_aditamento": "Prorrogação de prazo",
      *         "dias_reajuste": 60
      *     }
      * }
@@ -58,7 +58,7 @@ class AditamentoPrazoController extends Controller
     {
         $aditamento = new AditamentoPrazo;
         $aditamento->contrato_id = $request->input('contrato_id');
-        $aditamento->tipo_aditamentos = $request->input('tipo_aditamentos');
+        $aditamento->tipo_aditamento = $request->input('tipo_aditamento');
         $aditamento->dias_reajuste = $request->input('dias_reajuste');
 
         if ($aditamento->save()) {
@@ -77,7 +77,7 @@ class AditamentoPrazoController extends Controller
      *     "data": {
      *         "id": 1,
      *         "contrato_id": 5,
-     *         "tipo_aditamentos": "Acréscimo de valor",
+     *         "tipo_aditamento": "Acréscimo de valor",
      *         "valor_aditamento": 1000,
      *         "dias_reajuste": 60,
      *         "indice_reajuste": "Teste",
@@ -110,14 +110,14 @@ class AditamentoPrazoController extends Controller
      * @urlParam id integer required ID do aditamento que deseja editar. Example: 1
      *
      * @bodyParam contrato_id integer required ID do contrato. Example: 5
-     * @bodyParam tipo_aditamentos enum Tipo de aditamento('Prorrogação de prazo', 'Supressão de prazo', 'Suspensão', 'Rescisão'). Example: Prorrogação de prazo
+     * @bodyParam tipo_aditamento enum Tipo de aditamento('Prorrogação de prazo', 'Supressão de prazo', 'Suspensão', 'Rescisão'). Example: Prorrogação de prazo
      * @bodyParam dias_reajuste integer required Dias de acréscimo. Example: 60
      *
      * @response 200 {
      *     "data": {
      *         "id": 1,
      *         "contrato_id": 5,
-     *         "tipo_aditamentos": "Prorrogação de prazo",
+     *         "tipo_aditamento": "Prorrogação de prazo",
      *         "dias_reajuste": 60
      *     }
      * }
@@ -126,7 +126,7 @@ class AditamentoPrazoController extends Controller
     {
         $aditamento = AditamentoPrazo::findOrFail($request->id);
         $aditamento->contrato_id = $request->input('contrato_id');
-        $aditamento->tipo_aditamentos = $request->input('tipo_aditamentos');
+        $aditamento->tipo_aditamento = $request->input('tipo_aditamento');
         $aditamento->dias_reajuste = $request->input('dias_reajuste');
 
         if ($aditamento->save()) {
@@ -146,7 +146,7 @@ class AditamentoPrazoController extends Controller
      *     "data": {
      *         "id": 1,
      *         "contrato_id": 5,
-     *         "tipo_aditamentos": "Prorrogação de prazo",
+     *         "tipo_aditamento": "Prorrogação de prazo",
      *         "dias_reajuste": 60
      *     }
      * }
@@ -175,25 +175,25 @@ class AditamentoPrazoController extends Controller
      *         {
      *             "id": 5,
      *             "contrato_id": 5,
-     *             "tipo_aditamentos": "Prorrogação de prazo",
+     *             "tipo_aditamento": "Prorrogação de prazo",
      *             "dias_reajuste": 30
      *         },
      *         {
      *             "id": 6,
      *             "contrato_id": 5,
-     *             "tipo_aditamentos": "Supressão de prazo",
+     *             "tipo_aditamento": "Supressão de prazo",
      *             "dias_reajuste": 15
      *         },
      *         {
      *             "id": 7,
      *             "contrato_id": 5,
-     *             "tipo_aditamentos": "Suspensão",
+     *             "tipo_aditamento": "Suspensão",
      *             "dias_reajuste": 90
      *         },
      *         {
      *             "id": 8,
      *             "contrato_id": 5,
-     *             "tipo_aditamentos": "Rescisão",
+     *             "tipo_aditamento": "Rescisão",
      *             "dias_reajuste": 0
      *         }
      *     ]

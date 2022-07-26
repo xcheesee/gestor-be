@@ -131,7 +131,7 @@ class GarantiaController extends Controller
      *     }
      * }
      */
-    public function update(Request $request, $id)
+    public function update(GarantiaFormRequest $request, $id)
     {
         $garantia = Garantia::findOrFail($request->id);
         $garantia->contrato_id = $request->input('contrato_id');

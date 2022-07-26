@@ -10,7 +10,7 @@ class AditamentoValor extends Model
     
     protected $fillable = [
         'contrato_id',
-        'tipo_aditamentos',
+        'tipo_aditamento',
         'valor_aditamento',
         'indice_reajuste',
         'pct_reajuste',
