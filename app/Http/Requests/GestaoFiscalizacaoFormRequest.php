@@ -35,6 +35,7 @@ class GestaoFiscalizacaoFormRequest extends FormRequest
     {
         return [
             'required' => "O campo ':attribute' é obrigatório",
+            'email' => "O campo ':attribute' precisa ser um e-mail válido",
         ];
     }
 }

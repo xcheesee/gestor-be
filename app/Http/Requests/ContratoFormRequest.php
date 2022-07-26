@@ -35,7 +35,7 @@ class ContratoFormRequest extends FormRequest
             'data_inicio_vigencia' => 'required',
             'condicao_pagamento' => 'required',
             'nome_empresa' => 'required',
-            'telefone_empresa' => 'required|telefone_com_ddd',
+            'telefone_empresa' => ["required","regex:/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/"],
             'email_empresa' => 'required|email',
         ];
     }
@@ -44,6 +44,8 @@ class ContratoFormRequest extends FormRequest
     {
         return [
             'required' => "O campo ':attribute' é obrigatório",
+            'tipo_objeto.in' => "Valores possíveis para tipo de objeto: 'obra','projeto','serviço','aquisição'",
+            'telefone_empresa.regex' => "Formato inválido para telefone"
         ];
     }
 }
