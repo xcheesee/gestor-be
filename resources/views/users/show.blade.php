@@ -19,14 +19,40 @@
     </div>
     <div class="row">
         <div class="col">
+            <strong>Login Rede:</strong>
+            {{ $user->login }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <strong>Email:</strong>
             {{ $user->email }}
         </div>
     </div>
     <div class="row">
         <div class="col">
+            <strong>Departamentos:</strong>
+            @if(!empty($userDeptos))
+                @foreach($userDeptos as $depto)
+                    <label class="badge bg-primary">{{ $depto }}</label>
+                @endforeach
+            @endif
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <strong>Senha:</strong>
             ********
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <strong>Perfil:</strong>
+            @if(!empty($userRole))
+                @foreach($userRole as $role)
+                    <label class="badge bg-primary">{{ $role }}</label>
+                @endforeach
+            @endif
         </div>
     </div>
 </div>

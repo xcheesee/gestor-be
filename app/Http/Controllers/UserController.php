@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DepartamentoHelper;
+use App\Models\Departamento;
+use App\Models\DepartamentoUsuario;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -32,7 +35,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $data = User::query()->where('ativo','=',1)->orderBy('id', 'asc')->paginate(7);
+        $data = User::query()->where('ativo','=',1)->orderBy('id', 'asc')->paginate(10);
 
         $mensagem = $request->session()->get('mensagem');
         return view('users.index', compact('data','mensagem'));
@@ -46,8 +49,9 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name','name')->all();
+        $departamentos = Departamento::pluck('nome', 'id')->all();
 
-        return view('users.create', compact('roles'));
+        return view('users.create', compact('roles','departamentos'));
     }
 
     /**
@@ -62,7 +66,8 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed',
-            'roles' => 'required'
+            'roles' => 'required',
+            'departamentos' => 'required'
         ]);
 
         $input = $request->all();
@@ -70,6 +75,14 @@ class UserController extends Controller
 
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
+
+        //salvando os departamentos do usuário
+        foreach($input['departamentos'] as $departamento){
+            $depto_user = new DepartamentoUsuario();
+            $depto_user->departamento_id = $departamento;
+            $depto_user->user_id = $user->id;
+            $depto_user->save();
+        }
 
         return redirect()->route('users.index')
             ->with('success', 'User created successfully.');
@@ -84,8 +97,11 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+        $userRole = $user->roles->pluck('name')->all();
+        $userDeptos = DepartamentoHelper::deptosByUser($id,'nome');
+        //dd($userRole);
 
-        return view('users.show', compact('user'));
+        return view('users.show', compact('user','userRole','userDeptos'));
     }
 
     /**
@@ -99,8 +115,11 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
+        $departamentos = Departamento::pluck('nome', 'id')->all();
+        $userDeptos = DepartamentoHelper::deptosByUser($id,'id');
+        //dd($userDeptos);
 
-        return view('users.edit', compact('user', 'roles', 'userRole'));
+        return view('users.edit', compact('user', 'roles', 'userRole','departamentos','userDeptos'));
     }
 
     /**
@@ -116,10 +135,12 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'confirmed',
-            'roles' => 'required'
+            'roles' => 'required',
+            'departamentos' => 'required'
         ]);
 
         $input = $request->all();
+        //dd($input['departamentos']);
 
         if(!empty($input['password'])) {
             $input['password'] = Hash::make($input['password']);
@@ -135,6 +156,17 @@ class UserController extends Controller
             ->delete();
 
         $user->assignRole($request->input('roles'));
+
+        //salvando os departamentos do usuário
+        DB::table('departamento_usuarios')
+            ->where('user_id', $id)
+            ->delete();
+        foreach($input['departamentos'] as $departamento){
+            $depto_user = new DepartamentoUsuario();
+            $depto_user->departamento_id = $departamento;
+            $depto_user->user_id = $id;
+            $depto_user->save();
+        }
 
         return redirect()->route('users.index')
             ->with('success', 'User updated successfully.');
@@ -152,6 +184,10 @@ class UserController extends Controller
         $user = User::find($id);
         $user->ativo = 0;
         $user->save();
+
+        DB::table('departamento_usuarios')
+            ->where('user_id', $id)
+            ->delete();
 
         return redirect()->route('users.index')
             ->with('success', 'User deleted successfully.');

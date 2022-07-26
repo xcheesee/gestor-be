@@ -14,8 +14,16 @@
                 {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
             </div>
             <div class="form-group mb-3">
+                <strong>Login Rede:</strong>
+                {!! Form::text('login', null, array('placeholder' => 'Login usado na rede interna (d000000 ou x000000)','class' => 'form-control', 'autocomplete'=>"off")) !!}
+            </div>
+            <div class="form-group mb-3">
                 <strong>Email:</strong>
                 {!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
+            </div>
+            <div class="form-group mb-3">
+                <strong>Departamentos:</strong>
+                {!! Form::select('departamentos[]', $departamentos, [], array('class' => 'form-control','multiple')) !!}
             </div>
             <div class="form-group mb-3">
                 <strong>Senha:</strong>
