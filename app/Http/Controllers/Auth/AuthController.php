@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\DepartamentoHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -73,8 +74,15 @@ class AuthController extends Controller
      *
      * @response 200 {
      *     "message": "Oi username, bem-vindo!",
+     *     "username": "username",
+     *     "id": 1,
      *     "access_token": "1|IEXWeQ8KFQCu3d3giZbTJ7dOTNf9dSACPypztMB3",
-     *     "token_type": "Bearer"
+     *     "token_type": "Bearer",
+     *     "departamentos": {
+     *         "3": "CGPABI",
+     *         "4": "CGPABI/DIPO",
+     *         "5": "CGPABI/DFS",
+     *     }
      * }
      *
      * @response 401 {
@@ -91,12 +99,15 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
+        $userDeptos = DepartamentoHelper::deptosByUser($user->id,'nome');
+
         return response()->json([
             'message' => 'Oi '.$user->name.', bem-vindo!',
             'username' => $user->name,
             'id' => $user->id,
             'access_token' => $token,
             'token_type' => 'Bearer',
+            'departamentos' => $userDeptos,
         ]);
     }
 

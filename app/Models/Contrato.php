@@ -9,6 +9,7 @@ use Illuminate\Support\Carbon;
 class Contrato extends Model
 {
     protected $fillable = [
+        'departamento_id',
         'licitacao_modelo_id',
         'envio_material_tecnico',
         'minuta_edital',
@@ -35,6 +36,11 @@ class Contrato extends Model
         'email_empresa',
         'outras_informacoes',
     ];
+
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class);
+    }
 
     public function licitacao_modelo()
     {

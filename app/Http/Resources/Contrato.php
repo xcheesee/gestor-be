@@ -16,6 +16,8 @@ class Contrato extends JsonResource
     {
         return [
             'id' => $this->id,
+            'departamento_id' => $this->departamento_id,
+            'departamento' => $this->departamento ? $this->departamento->nome : null,
             'licitacao_modelo_id' => $this->licitacao_modelo_id,
             'licitacao_modelo' => $this->licitacao_modelo ? $this->licitacao_modelo->nome : null,
             'envio_material_tecnico' => $this->envio_material_tecnico,

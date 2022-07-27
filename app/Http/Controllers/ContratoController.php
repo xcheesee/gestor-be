@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ContratoFormRequest;
 use App\Models\Contrato as Contrato;
 use App\Http\Resources\Contrato as ContratoResource;
+use App\Http\Resources\ContratoTotalizadores;
 use App\Http\Resources\ContratoVencimento as ContratoVencimentoResource;
 use App\Models\ExecucaoFinanceira;
 use App\Models\Planejada;
@@ -42,6 +43,7 @@ class ContratoController extends Controller
                     AllowedFilter::scope('vencimento_depois_de'),
                     AllowedFilter::scope('vencimento_antes_de'),
                 ])
+            ->allowedSorts('id', 'processo_sei', 'credor', 'nome_empresa', 'numero_contrato', 'data_inicio_vigencia', 'data_vencimento')
             ->paginate(15);
         return ContratoResource::collection($contratos);
     }
@@ -98,6 +100,7 @@ class ContratoController extends Controller
      * @authenticated
      *
      *
+     * @bodyParam departamento_id integer ID do departamento. Example: 2
      * @bodyParam licitacao_modelo_id integer ID do modelo de licitação. Example: 1
      * @bodyParam envio_material_tecnico date Data do envio de material técnico. Example: 2022-06-20
      * @bodyParam minuta_edital date Data do minuta do edital. Example: 2022-06-21
@@ -127,7 +130,10 @@ class ContratoController extends Controller
      * @response 200 {
      *     "data": {
      *         "id": 14,
+     *         "departamento_id": 2,
+     *         "departamento": "GABINETE/NDTIC",
      *         "licitacao_modelo_id": 1,
+     *         "licitacao_modelo": "Concorrência",
      *         "envio_material_tecnico": "2022-06-20",
      *         "minuta_edital": "2022-06-21",
      *         "abertura_certame": "2022-06-22",
@@ -200,7 +206,10 @@ class ContratoController extends Controller
      * @response 200 {
      *     "data": {
      *         "id": 14,
+     *         "departamento_id": 2,
+     *         "departamento": "GABINETE/NDTIC",
      *         "licitacao_modelo_id": 1,
+     *         "licitacao_modelo": "Concorrência",
      *         "envio_material_tecnico": "2022-06-20",
      *         "minuta_edital": "2022-06-21",
      *         "abertura_certame": "2022-06-22",
@@ -289,6 +298,7 @@ class ContratoController extends Controller
      *
      * @urlParam id integer required ID do contrato que deseja editar. Example: 14
      *
+     * @bodyParam departamento_id integer ID do departamento. Example: 2
      * @bodyParam licitacao_modelo_id integer ID do modelo de licitação. Example: 1
      * @bodyParam envio_material_tecnico date Data do envio de material técnico. Example: 2022-06-20
      * @bodyParam minuta_edital date Data do minuta do edital. Example: 2022-06-21
@@ -318,7 +328,10 @@ class ContratoController extends Controller
      * @response 200 {
      *     "data": {
      *         "id": 14,
+     *         "departamento_id": 2,
+     *         "departamento": "GABINETE/NDTIC",
      *         "licitacao_modelo_id": 1,
+     *         "licitacao_modelo": "Concorrência",
      *         "envio_material_tecnico": "2022-06-20",
      *         "minuta_edital": "2022-06-21",
      *         "abertura_certame": "2022-06-22",
@@ -349,6 +362,7 @@ class ContratoController extends Controller
     public function update(ContratoFormRequest $request, $id)
     {
         $contrato = Contrato::findOrFail($id);
+        $contrato->departamento_id = $request->input('departamento_id');
         $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id');
         $contrato->envio_material_tecnico = $request->input('envio_material_tecnico');
         $contrato->minuta_edital = $request->input('minuta_edital');
@@ -392,6 +406,10 @@ class ContratoController extends Controller
      *     "message": "Contrato deletado com sucesso!",
      *     "data": {
      *         "id": 14,
+     *         "departamento_id": 2,
+     *         "departamento": "GABINETE/NDTIC",
+     *         "licitacao_modelo_id": 1,
+     *         "licitacao_modelo": "Concorrência",
      *         "processo_sei": "0123000134569000",
      *         "credor": "Teste Silva",
      *         "cnpj_cpf": "45106963896",
@@ -421,5 +439,49 @@ class ContratoController extends Controller
                 'data' => new ContratoResource($contrato)
             ]);
         }
+    }
+
+    /**
+     * Mostra um contrato específico
+     * @authenticated
+     *
+     *
+     * @urlParam id integer required ID do contrato. Example: 14
+     *
+     * @response 200 {
+     *     "data": {
+     *         "id": 14,
+     *         "valor_contrato": 1500,
+     *         "valor_reserva": 200,
+     *         "valor_dotacoes": 199.90,
+     *         "valor_empenhos": 500.50,
+     *         "valor_aditamentos": 300
+     *     }
+     * }
+     */
+    public function exibeTotalizadores(int $id)
+    {
+        $contrato = Contrato::findOrFail($id);
+
+        $executadas = ExecucaoFinanceira::query()->where('contrato_id','=',$id)->get();
+
+        //array que irá retornar todos os valores solicitados. Os de contrato e reserva já se encontram no contrato, os demais precisamos somar
+        $retorno = array();
+        $retorno['id'] = $contrato->id;
+        $retorno['valor_contrato'] = $contrato->valor_contrato;
+        $retorno['valor_reserva'] = $contrato->valor_reserva > 0 ? $contrato->valor_reserva : 0;
+        $retorno['valor_dotacoes'] = 0;
+        $retorno['valor_empenhos'] = 0;
+        $retorno['valor_planejados'] = 0;
+        $retorno['valor_aditamentos'] = 0;
+
+        foreach($executadas as $executada){
+            $retorno['valor_planejados'] += $executada->planejado_inicial;
+        }
+
+        $retornoJson = (object) $retorno;
+
+        $contratoResource = new ContratoTotalizadores($retornoJson);
+        return $contratoResource;
     }
 }
