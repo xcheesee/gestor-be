@@ -27,7 +27,7 @@ class ContratoFormRequest extends FormRequest
         return [
             'processo_sei' => 'required',
             'credor' => 'required',
-            'cnpj_cpf' => 'required',
+            'cnpj_cpf' => 'required|cpf_ou_cnpj',
             'tipo_objeto' => 'nullable|in:obra,projeto,serviço,aquisição',
             'objeto' => 'required',
             'numero_contrato' => 'required',
@@ -45,7 +45,8 @@ class ContratoFormRequest extends FormRequest
         return [
             'required' => "O campo ':attribute' é obrigatório",
             'tipo_objeto.in' => "Valores possíveis para tipo de objeto: 'obra','projeto','serviço','aquisição'",
-            'telefone_empresa.regex' => "Formato inválido para telefone"
+            'telefone_empresa.regex' => "Formato inválido para telefone",
+            'email' => "O campo ':attribute' precisa ser um e-mail válido",
         ];
     }
 }
