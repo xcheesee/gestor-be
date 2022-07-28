@@ -34,6 +34,7 @@ class ContratoController extends Controller
      * @queryParam filter[inicio_antes_de] Filtro final de período da data de início da vigência. Example: 2022-05-20
      * @queryParam filter[vencimento_depois_de] Filtro inicial de período da data de vencimento do contrato. Example: 2023-01-01
      * @queryParam filter[vencimento_antes_de] Filtro final de período da data de vencimento do contrato. Example: 2023-12-31
+     * @queryParam sort Campo a ser ordenado (padrão ascendente, inserir um hífen antes para decrescente). Colunas possíveis: 'id', 'processo_sei', 'credor', 'nome_empresa', 'numero_contrato', 'data_inicio_vigencia', 'data_vencimento' Example: -processo_sei
      *
      */
     public function index()
@@ -191,7 +192,7 @@ class ContratoController extends Controller
         $contrato->nome_empresa = $request->input('nome_empresa');
         $contrato->telefone_empresa = $request->input('telefone_empresa');
         $contrato->email_empresa = $request->input('email_empresa');
-        $contrato->outras_informacoes = str_replace("\n",'<br />', addslashes(htmlspecialchars($request->input('outras_informacoes'))));
+        $contrato->outras_informacoes = $request->input('outras_informacoes');
         $contrato->user_id = auth()->user()->id;
 
         if ($contrato->save()) {
@@ -390,7 +391,7 @@ class ContratoController extends Controller
         $contrato->nome_empresa = $request->input('nome_empresa');
         $contrato->telefone_empresa = $request->input('telefone_empresa');
         $contrato->email_empresa = $request->input('email_empresa');
-        $contrato->outras_informacoes = str_replace("\n",'<br />', addslashes(htmlspecialchars($request->input('outras_informacoes'))));
+        $contrato->outras_informacoes = $request->input('outras_informacoes');
         $contrato->user_id = auth()->user()->id;
 
         if ($contrato->save()) {
