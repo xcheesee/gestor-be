@@ -9,6 +9,9 @@ use App\Http\Resources\ContratoTotalizadores;
 use App\Http\Resources\ContratoVencimento as ContratoVencimentoResource;
 use App\Models\ExecucaoFinanceira;
 use App\Models\Planejada;
+use App\Models\Dotacao;
+use App\Models\EmpenhoNota;
+use App\Models\AditamentoValor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -464,7 +467,10 @@ class ContratoController extends Controller
     {
         $contrato = Contrato::findOrFail($id);
 
+        $dotacoes = Dotacao::query()->where('contrato_id','=',$id)->get();
+        $empenhos = EmpenhoNota::query()->where('contrato_id','=',$id)->get();
         $executadas = ExecucaoFinanceira::query()->where('contrato_id','=',$id)->get();
+        $aditamentos = AditamentoValor::query()->where('contrato_id','=',$id)->get();
 
         //array que irá retornar todos os valores solicitados. Os de contrato e reserva já se encontram no contrato, os demais precisamos somar
         $retorno = array();
@@ -476,8 +482,20 @@ class ContratoController extends Controller
         $retorno['valor_planejados'] = 0;
         $retorno['valor_aditamentos'] = 0;
 
+        foreach($dotacoes as $dotacao) {
+            $retorno['valor_dotacoes'] += $dotacao->valor_dotacao;
+        }
+
+        foreach($empenhos as $empenho) {
+            $retorno['valor_empenhos'] += $empenho->valor_empenho;
+        }
+
         foreach($executadas as $executada){
             $retorno['valor_planejados'] += $executada->planejado_inicial;
+        }
+
+        foreach($aditamentos as $aditamento) {
+            $retorno['valor_aditamentos'] += $aditamento->valor_aditamento;
         }
 
         $retornoJson = (object) $retorno;
