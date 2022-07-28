@@ -486,15 +486,29 @@ class ContratoController extends Controller
         }
 
         foreach($empenhos as $empenho) {
-            $retorno['valor_empenhos'] += $empenho->valor_empenho;
-        }
+
+            $total_empenho = $retorno['valor_empenhos'] += $empenho->valor_empenho;
+    
+                if ($empenho->tipo_empenho === "cancelamento" || $empenho->tipo_empenho === NULL) {
+                    $valor_cancelamento_null = $empenho->valor_empenho;
+        
+                    $retorno['valor_empenhos'] = $total_empenho - ($valor_cancelamento_null * 2);
+                }
+        }    
 
         foreach($executadas as $executada){
             $retorno['valor_planejados'] += $executada->planejado_inicial;
         }
 
         foreach($aditamentos as $aditamento) {
-            $retorno['valor_aditamentos'] += $aditamento->valor_aditamento;
+
+            $total_aditamento = $retorno['valor_aditamentos'] += $aditamento->valor_aditamento;
+
+                if ($aditamento->tipo_aditamento === "Redução de valor" || $aditamento->tipo_aditamento === NULL) {
+                    $valor_reducao_null = $aditamento->valor_aditamento;
+
+                    $retorno['valor_aditamentos'] = $total_aditamento - ($valor_reducao_null * 2);
+                }
         }
 
         $retornoJson = (object) $retorno;
