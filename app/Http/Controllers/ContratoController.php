@@ -488,14 +488,15 @@ class ContratoController extends Controller
 
         foreach($empenhos as $empenho) {
 
-            $total_empenho = $retorno['valor_empenhos'] += $empenho->valor_empenho;
-    
-                if ($empenho->tipo_empenho === "cancelamento" || $empenho->tipo_empenho === NULL) {
-                    $valor_cancelamento_null = $empenho->valor_empenho;
-        
-                    $retorno['valor_empenhos'] = $total_empenho - ($valor_cancelamento_null * 2);
-                }
-        }    
+            echo $empenho->valor_empenho;
+            echo "\n";
+
+            if ($empenho->tipo_empenho === "cancelamento" || $empenho->tipo_empenho === NULL) {
+                $retorno['valor_empenhos'] -= $empenho->valor_empenho;
+            } else{
+                $retorno['valor_empenhos'] += $empenho->valor_empenho;
+            }
+        }  
 
         foreach($executadas as $executada){
             $retorno['valor_planejados'] += $executada->planejado_inicial;
@@ -503,13 +504,14 @@ class ContratoController extends Controller
 
         foreach($aditamentos as $aditamento) {
 
-            $total_aditamento = $retorno['valor_aditamentos'] += $aditamento->valor_aditamento;
+            echo $aditamento->valor_aditamento;
+            echo "\n";
 
-                if ($aditamento->tipo_aditamento === "Redução de valor" || $aditamento->tipo_aditamento === NULL) {
-                    $valor_reducao_null = $aditamento->valor_aditamento;
-
-                    $retorno['valor_aditamentos'] = $total_aditamento - ($valor_reducao_null * 2);
-                }
+            if ($aditamento->tipo_aditamento === "Redução de valor" || $aditamento->tipo_aditamento === NULL) {
+                 $retorno['valor_aditamentos'] -= $aditamento->valor_aditamento;
+            } else {
+                $retorno['valor_aditamentos'] += $aditamento->valor_aditamento;
+            }
         }
 
         $retornoJson = (object) $retorno;
