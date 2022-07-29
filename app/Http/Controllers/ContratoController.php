@@ -487,10 +487,6 @@ class ContratoController extends Controller
         }
 
         foreach($empenhos as $empenho) {
-
-            echo $empenho->valor_empenho;
-            echo "\n";
-
             if ($empenho->tipo_empenho === "cancelamento" || $empenho->tipo_empenho === NULL) {
                 $retorno['valor_empenhos'] -= $empenho->valor_empenho;
             } else{
@@ -503,10 +499,6 @@ class ContratoController extends Controller
         }
 
         foreach($aditamentos as $aditamento) {
-
-            echo $aditamento->valor_aditamento;
-            echo "\n";
-
             if ($aditamento->tipo_aditamento === "Redução de valor" || $aditamento->tipo_aditamento === NULL) {
                  $retorno['valor_aditamentos'] -= $aditamento->valor_aditamento;
             } else {
