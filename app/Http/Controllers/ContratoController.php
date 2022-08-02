@@ -446,7 +446,7 @@ class ContratoController extends Controller
     }
 
     /**
-     * Mostra um contrato específico
+     * Mostra os valores de referência e totais para o formulário de execução financeira
      * @authenticated
      *
      *
@@ -459,6 +459,7 @@ class ContratoController extends Controller
      *         "valor_reserva": 200,
      *         "valor_dotacoes": 199.90,
      *         "valor_empenhos": 500.50,
+     *         "valor_planejados": 500.50,
      *         "valor_aditamentos": 300
      *     }
      * }
@@ -487,15 +488,12 @@ class ContratoController extends Controller
         }
 
         foreach($empenhos as $empenho) {
-
-            $total_empenho = $retorno['valor_empenhos'] += $empenho->valor_empenho;
-    
-                if ($empenho->tipo_empenho === "cancelamento" || $empenho->tipo_empenho === NULL) {
-                    $valor_cancelamento_null = $empenho->valor_empenho;
-        
-                    $retorno['valor_empenhos'] = $total_empenho - ($valor_cancelamento_null * 2);
-                }
-        }    
+            if ($empenho->tipo_empenho === "cancelamento" || $empenho->tipo_empenho === NULL) {
+                $retorno['valor_empenhos'] -= $empenho->valor_empenho;
+            }else{
+                $retorno['valor_empenhos'] += $empenho->valor_empenho;
+            }
+        }
 
         foreach($executadas as $executada){
             $retorno['valor_planejados'] += $executada->planejado_inicial;
