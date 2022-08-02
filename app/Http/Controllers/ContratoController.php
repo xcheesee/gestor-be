@@ -459,7 +459,7 @@ class ContratoController extends Controller
      *         "valor_reserva": 200,
      *         "valor_dotacoes": 199.90,
      *         "valor_empenhos": 500.50,
-     *         "valor_planejados": 500.50,
+     *         "valor_planejados": 250,
      *         "valor_aditamentos": 300
      *     }
      * }
@@ -490,7 +490,7 @@ class ContratoController extends Controller
         foreach($empenhos as $empenho) {
             if ($empenho->tipo_empenho === "cancelamento" || $empenho->tipo_empenho === NULL) {
                 $retorno['valor_empenhos'] -= $empenho->valor_empenho;
-            }else{
+            } else{
                 $retorno['valor_empenhos'] += $empenho->valor_empenho;
             }
         }
@@ -500,14 +500,11 @@ class ContratoController extends Controller
         }
 
         foreach($aditamentos as $aditamento) {
-
-            $total_aditamento = $retorno['valor_aditamentos'] += $aditamento->valor_aditamento;
-
-                if ($aditamento->tipo_aditamento === "Redução de valor" || $aditamento->tipo_aditamento === NULL) {
-                    $valor_reducao_null = $aditamento->valor_aditamento;
-
-                    $retorno['valor_aditamentos'] = $total_aditamento - ($valor_reducao_null * 2);
-                }
+            if ($aditamento->tipo_aditamento === "Redução de valor" || $aditamento->tipo_aditamento === NULL) {
+                 $retorno['valor_aditamentos'] -= $aditamento->valor_aditamento;
+            } else {
+                $retorno['valor_aditamentos'] += $aditamento->valor_aditamento;
+            }
         }
 
         $retornoJson = (object) $retorno;
