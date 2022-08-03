@@ -33,6 +33,7 @@ Route::prefix(env('APP_FOLDER', 'contratos'))->group(function () { //considerand
 
     Route::group(['middleware' => ['autenticador']], function() {
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
 
         //Cadastros auxiliares
         Route::get('/cadaux', [App\Http\Controllers\HomeController::class, 'cadaux'])->name('cadaux');

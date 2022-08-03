@@ -16,7 +16,7 @@
         @endcan
         @can('relatorio-show')
             <div class="col d-grid gap-2">
-                <button onclick="location.href='{{ route('home') }}'" class="btn btn-info disabled"><i class="fas fa-folder-open fa-7x"></i><br>Relatórios</button>
+                <button onclick="location.href='{{ route('dashboard') }}'" class="btn btn-info"><i class="fa-solid fa-chart-pie fa-7x"></i><br>Dashboard</button>
             </div>
         @endcan
     </div>

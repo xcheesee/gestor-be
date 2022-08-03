@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\ContratadoVsExecutado;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -35,9 +37,18 @@ class HomeController extends Controller
     public function admin(Request $request)
     {
         $mensagem = $request->session()->get('mensagem');
-        //return view ('series.index', compact('series','mensagem'));
         return view('admin', compact('mensagem'));
-        //return view('home');
+    }
+
+    /**
+     * Show cadaux index.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function cadaux(Request $request)
+    {
+        $mensagem = $request->session()->get('mensagem');
+        return view('cadaux.index', compact('mensagem'));
     }
 
     /**
@@ -45,11 +56,22 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function cadaux(Request $request)
+    public function dashboard(Request $request, ContratadoVsExecutado $chartCvE)
     {
         $mensagem = $request->session()->get('mensagem');
-        //return view ('series.index', compact('series','mensagem'));
-        return view('cadaux.index', compact('mensagem'));
-        //return view('home');
+        $contratado = DB::table('contratos')
+            ->select(DB::raw('SUM(valor_contrato) as total_contratado'))
+            ->where(DB::raw('YEAR(data_inicio_vigencia)'),'=',idate("Y"))->get();
+        $dataCvE = DB::table('execucao_financeira')
+            ->select(DB::raw('SUM(contratado_inicial) as t_contratado'),DB::raw('SUM(executado) as t_executado'))
+            ->where('ano','=',idate("Y"))->first();
+        //dd($execucoes);
+
+        $grafico = ['dados' => [$dataCvE->t_contratado,$dataCvE->t_executado,($dataCvE->t_contratado - $dataCvE->t_executado)]];
+
+        return view('dashboard.index', [
+            'mensagem'=>$mensagem,
+            'chartCvE'=>$chartCvE->build($grafico)
+        ]);
     }
 }
