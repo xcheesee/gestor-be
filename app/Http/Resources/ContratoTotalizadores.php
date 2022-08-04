@@ -22,6 +22,8 @@ class ContratoTotalizadores extends JsonResource
             'valor_empenhos' => $this->valor_empenhos,
             'valor_planejados' => $this->valor_planejados,
             'valor_aditamentos' => $this->valor_aditamentos,
+            'total_empenhado' => $this->total_empenhado,
+            'total_executado' => $this->total_executado,
         ];
     }
 }

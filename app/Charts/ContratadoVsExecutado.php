@@ -16,7 +16,7 @@ class ContratadoVsExecutado
     public function build($data)
     {
         return $this->chart->pieChart()
-            ->setTitle('Contratado x Executado')
+            ->setTitle('Contratado x Executado - '.date('Y'))
             ->setSubtitle('Valores em R$')
             ->addData($data['dados'])
             ->setLabels(['Contratado', 'Executado', 'Restante']);

@@ -452,19 +452,23 @@ class ContratoController extends Controller
      *
      * @urlParam id integer required ID do contrato. Example: 14
      *
+     * @queryParam execucao_id ID do registro de execução financeira que deseja ignorar no totalizador de empenhados e executados. Example: 2
+     *
      * @response 200 {
      *     "data": {
      *         "id": 14,
-     *         "valor_contrato": 1500,
-     *         "valor_reserva": 200,
-     *         "valor_dotacoes": 199.90,
+     *         "valor_contrato": 1992,
+     *         "valor_reserva": 777,
+     *         "valor_dotacoes": 500.09,
      *         "valor_empenhos": 500.50,
-     *         "valor_planejados": 250,
-     *         "valor_aditamentos": 300
+     *         "valor_planejados": 900,
+     *         "valor_aditamentos": 30,
+     *         "total_empenhado": 400,
+     *         "total_executado": 320
      *     }
      * }
      */
-    public function exibeTotalizadores(int $id)
+    public function exibeTotalizadores(int $id, Request $request)
     {
         $contrato = Contrato::findOrFail($id);
 
@@ -482,6 +486,8 @@ class ContratoController extends Controller
         $retorno['valor_empenhos'] = 0;
         $retorno['valor_planejados'] = 0;
         $retorno['valor_aditamentos'] = 0;
+        $retorno['total_empenhado'] = 0;
+        $retorno['total_executado'] = 0;
 
         foreach($dotacoes as $dotacao) {
             $retorno['valor_dotacoes'] += $dotacao->valor_dotacao;
@@ -495,8 +501,19 @@ class ContratoController extends Controller
             }
         }
 
+        $execucao_id = $request->query('execucao_id') ? $request->query('execucao_id') : 0;
         foreach($executadas as $executada){
             $retorno['valor_planejados'] += $executada->planejado_inicial;
+
+            if($execucao_id == 0){
+                $retorno['total_empenhado'] += $executada->empenhado;
+                $retorno['total_executado'] += $executada->executado;
+            }else{
+                if ($executada->id != $execucao_id){
+                    $retorno['total_empenhado'] += $executada->empenhado;
+                    $retorno['total_executado'] += $executada->executado;
+                }
+            }
         }
 
         foreach($aditamentos as $aditamento) {
