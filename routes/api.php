@@ -32,6 +32,7 @@ use App\Http\Controllers\SubprefeituraController;
 */
 Route::post('cadastrar', [AuthController::class, 'cadastrar']);
 Route::post('login', [AuthController::class, 'login']);
+Route::post('alterar_senha', [AuthController::class, 'alterar_senha']);
 
 Route::group(['middleware' => ['auth:sanctum']], function() {
     /**

@@ -8,7 +8,7 @@
 @include('layouts.mensagem', ['mensagem' => $mensagem])
 
 <div class="row d-flex justify-content-center mt-3 containerTabela">
-    <form class="form-inline" method="GET">
+    <form method="GET">
         <div class="row align-items-end">
             <div class="col col-3 mb-2">
                 <label for="f-subprefeitura" class="col-form-label">Subprefeitura</label>
