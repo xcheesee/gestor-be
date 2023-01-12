@@ -68,7 +68,7 @@ class LicitacaoModeloController extends Controller
                 return new LicitacaoModeloResource($licitacao_modelo);
             }
 
-            $request->session()->flash('mensagem',"Modelo de Licitação '{$licitacao_modelo->nome}' criado com sucesso, ID {$licitacao_modelo->id}.");
+            $request->session()->flash('mensagem',"Modalidade de Licitação '{$licitacao_modelo->nome}' criada com sucesso, ID {$licitacao_modelo->id}.");
             return redirect()->route('cadaux-licitacao_modelos');
         }
 
@@ -132,7 +132,7 @@ class LicitacaoModeloController extends Controller
                 return new LicitacaoModeloResource($licitacao_modelo);
             }
 
-            return response()->json(['mensagem' => "Modelo de Licitação '{$licitacao_modelo->nome}' - ID {$licitacao_modelo->id} editado com sucesso!"], 200);
+            return response()->json(['mensagem' => "Modalidade de Licitação '{$licitacao_modelo->nome}' - ID {$licitacao_modelo->id} editada com sucesso!"], 200);
         }
     }
 

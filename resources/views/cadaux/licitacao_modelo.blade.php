@@ -13,7 +13,7 @@
         <div class="col-8">
         </div>
         <div class="col-4 text-end">
-            <button class="btn btn-success" onclick="scrollToNewForm('newform')">Novo Modelo de Licitação</a>
+            <button class="btn btn-success" onclick="scrollToNewForm('newform')">Nova Modalidade de Licitação</a>
         </div>
     </div>
     <div class="row">
@@ -59,7 +59,7 @@
     </div>
 </div>
 <div id="newform" class="row d-flex justify-content-center mt-3 containerTabela">
-    <h4>Novo Modelo de Licitação</h4>
+    <h4>Nova Modalidade de Licitação</h4>
     <form method="post" enctype="multipart/form-data">
         @csrf
         <div class="row">
