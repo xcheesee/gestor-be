@@ -65,7 +65,13 @@ class HomeController extends Controller
             ->select(DB::raw('SUM(contratado_inicial) as t_contratado'),DB::raw('SUM(executado) as t_executado'))
             ->where('ano','=',idate("Y"))->first();
         //dd($execucoes);
-        $dataset = array('departamentos'=>array(),'valores'=>array());
+        $dataset = array('departamentos'=>array(),'valores'=>array(
+            'planejado' => array(),
+            'contratado' => array(),
+            'empenhado' => array(),
+            'executado' => array(),
+            'saldo' => array(),
+        ));
         $execucoes = ExecucaoFinanceira::query()->where('ano','=',idate("Y"))->get();
         $i = 0;
         foreach($execucoes as $execucao){
