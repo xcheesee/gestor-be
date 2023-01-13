@@ -1,7 +1,7 @@
 @extends('layouts.base')
 
 @section('cabecalho')
-    @include('layouts.cabecalho', ['titulo' => 'Modelos de Licitação', 'rota' => 'cadaux'])
+    @include('layouts.cabecalho', ['titulo' => 'Modalidades de Licitação', 'rota' => 'cadaux'])
 @endsection
 
 @section('conteudo')

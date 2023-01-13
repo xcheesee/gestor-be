@@ -12,7 +12,7 @@
                 <div class="list-group list-group-flush">
                     <a href="{{ route('cadaux-origem_recursos') }}" class="list-group-item list-group-item-action">Fontes de Recurso</a>
                     <a href="{{ route('cadaux-dotacao_tipos') }}" class="list-group-item list-group-item-action">Tipos de Dotação</a>
-                    <a href="{{ route('cadaux-licitacao_modelos') }}" class="list-group-item list-group-item-action">Modelos de Licitação</a>
+                    <a href="{{ route('cadaux-licitacao_modelos') }}" class="list-group-item list-group-item-action">Modalidades de Licitação</a>
                     <a href="{{ route('cadaux-distritos') }}" class="list-group-item list-group-item-action">Distritos</a>
                     <a href="{{ route('cadaux-subprefeituras') }}" class="list-group-item list-group-item-action">Subprefeituras</a>
                 </div>
