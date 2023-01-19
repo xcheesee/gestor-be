@@ -40,8 +40,11 @@ class ContratoController extends Controller
     public function index()
     {
         $contratos = QueryBuilder::for(Contrato::class)
+            ->select('empresa.nome as nome_empresa', 'contratos.*')
+            ->leftJoin('empresa', 'empresa.id', 'contratos.empresa_id')
             ->allowedFilters([
-                    'processo_sei', 'nome_empresa',
+                    'processo_sei',
+                    AllowedFilter::partial('nome_empresa','empresa.nome'),
                     AllowedFilter::scope('inicio_depois_de'),
                     AllowedFilter::scope('inicio_antes_de'),
                     AllowedFilter::scope('vencimento_depois_de'),
@@ -105,6 +108,7 @@ class ContratoController extends Controller
      *
      *
      * @bodyParam departamento_id integer ID do departamento. Example: 2
+     * @bodyParam empresa_id integer ID da empresa. Example: 1
      * @bodyParam licitacao_modelo_id integer ID do modelo de licitação. Example: 1
      * @bodyParam envio_material_tecnico date Data do envio de material técnico. Example: 2022-06-20
      * @bodyParam minuta_edital date Data do minuta do edital. Example: 2022-06-21
@@ -124,11 +128,8 @@ class ContratoController extends Controller
      * @bodyParam condicao_pagamento string required Condição do pagamento. Example: Em até 10 dias após adimplemento
      * @bodyParam prazo_a_partir_de string Condição do início do prazo. Example: A partir do início da vigência
      * @bodyParam data_prazo_maximo date O prazo máximo do contrato. Example: 2023-06-21
-     * @bodyParam nome_empresa string required Nome da empresa. Example: Teste LTDA
      * @bodyParam numero_nota_reserva string Número da última nota de reserva. Example: 1024
      * @bodyParam valor_reserva float Valor total de reserva. Example: 200.00
-     * @bodyParam telefone_empresa string required Telefone da empresa. Example: 11913314554
-     * @bodyParam email_empresa string required E-Mail da empresa. Example: teste@prefeitura.com
      * @bodyParam outras_informacoes text Informações adicionais. Example: Exemplo. Nenhuma outra informação
      *
      * @response 200 {
@@ -136,6 +137,11 @@ class ContratoController extends Controller
      *         "id": 14,
      *         "departamento_id": 2,
      *         "departamento": "GABINETE/NDTIC",
+     *         "empresa_id": 1,
+     *         "nome_empresa": "Testes S.A.",
+     *         "cnpj_empresa": "58.621.352/0001-44",
+     *         "telefone_empresa": "11913314554",
+     *         "email_empresa": "teste@prefeitura.com",
      *         "licitacao_modelo_id": 1,
      *         "licitacao_modelo": "Concorrência",
      *         "envio_material_tecnico": "2022-06-20",
@@ -158,9 +164,6 @@ class ContratoController extends Controller
      *         "data_prazo_maximo": "2023-06-20",
      *         "numero_nota_reserva": "1024",
      *         "valor_reserva": "200.00",
-     *         "nome_empresa": "Teste LTDA",
-     *         "telefone_empresa": "11913314554",
-     *         "email_empresa": "teste@prefeitura.com",
      *         "outras_informacoes": "Exemplo. Nenhuma outra informação",
      *     }
      * }
@@ -169,6 +172,7 @@ class ContratoController extends Controller
     {
         $contrato = new Contrato();
         $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id');
+        $contrato->departamento_id = $request->input('departamento_id');
         $contrato->envio_material_tecnico = $request->input('envio_material_tecnico');
         $contrato->minuta_edital = $request->input('minuta_edital');
         $contrato->abertura_certame = $request->input('abertura_certame');
@@ -189,9 +193,9 @@ class ContratoController extends Controller
         $contrato->data_prazo_maximo = $request->input('data_prazo_maximo');
         $contrato->numero_nota_reserva = $request->input('numero_nota_reserva');
         $contrato->valor_reserva = $request->input('valor_reserva');
-        $contrato->nome_empresa = $request->input('nome_empresa');
-        $contrato->telefone_empresa = $request->input('telefone_empresa');
-        $contrato->email_empresa = $request->input('email_empresa');
+        // $contrato->nome_empresa = $request->input('nome_empresa');
+        // $contrato->telefone_empresa = $request->input('telefone_empresa');
+        // $contrato->email_empresa = $request->input('email_empresa');
         $contrato->outras_informacoes = $request->input('outras_informacoes');
         $contrato->user_id = auth()->user()->id;
 
@@ -212,6 +216,11 @@ class ContratoController extends Controller
      *         "id": 14,
      *         "departamento_id": 2,
      *         "departamento": "GABINETE/NDTIC",
+     *         "empresa_id": 1,
+     *         "nome_empresa": "Testes S.A.",
+     *         "cnpj_empresa": "58.621.352/0001-44",
+     *         "telefone_empresa": "11913314554",
+     *         "email_empresa": "teste@prefeitura.com",
      *         "licitacao_modelo_id": 1,
      *         "licitacao_modelo": "Concorrência",
      *         "envio_material_tecnico": "2022-06-20",
@@ -234,9 +243,6 @@ class ContratoController extends Controller
      *         "data_prazo_maximo": "2023-06-20",
      *         "numero_nota_reserva": "1024",
      *         "valor_reserva": "200.00",
-     *         "nome_empresa": "Teste LTDA",
-     *         "telefone_empresa": "11913314554",
-     *         "email_empresa": "teste@prefeitura.com",
      *         "outras_informacoes": "Exemplo. Nenhuma outra informação",
      *         "execucao_financeira": {
      *             "1-2022": {
@@ -303,6 +309,7 @@ class ContratoController extends Controller
      * @urlParam id integer required ID do contrato que deseja editar. Example: 14
      *
      * @bodyParam departamento_id integer ID do departamento. Example: 2
+     * @bodyParam empresa_id integer ID da empresa. Example: 1
      * @bodyParam licitacao_modelo_id integer ID do modelo de licitação. Example: 1
      * @bodyParam envio_material_tecnico date Data do envio de material técnico. Example: 2022-06-20
      * @bodyParam minuta_edital date Data do minuta do edital. Example: 2022-06-21
@@ -322,11 +329,8 @@ class ContratoController extends Controller
      * @bodyParam condicao_pagamento string required Condição do pagamento. Example: Em até 10 dias após adimplemento
      * @bodyParam prazo_a_partir_de string Condição do início do prazo. Example: A partir do início da vigência
      * @bodyParam data_prazo_maximo date O prazo máximo do contrato. Example: 2023-06-21
-     * @bodyParam nome_empresa string required Nome da empresa. Example: Teste LTDA
      * @bodyParam numero_nota_reserva string Número da última nota de reserva. Example: 1024
      * @bodyParam valor_reserva float Valor total de reserva. Example: 200.00
-     * @bodyParam telefone_empresa string required Telefone da empresa. Example: 11913314554
-     * @bodyParam email_empresa string required E-Mail da empresa. Example: teste@prefeitura.com
      * @bodyParam outras_informacoes text Informações adicionais. Example: Exemplo. Nenhuma outra informação
      *
      * @response 200 {
@@ -334,6 +338,11 @@ class ContratoController extends Controller
      *         "id": 14,
      *         "departamento_id": 2,
      *         "departamento": "GABINETE/NDTIC",
+     *         "empresa_id": 1,
+     *         "nome_empresa": "Testes S.A.",
+     *         "cnpj_empresa": "58.621.352/0001-44",
+     *         "telefone_empresa": "11913314554",
+     *         "email_empresa": "teste@prefeitura.com",
      *         "licitacao_modelo_id": 1,
      *         "licitacao_modelo": "Concorrência",
      *         "envio_material_tecnico": "2022-06-20",
@@ -356,9 +365,6 @@ class ContratoController extends Controller
      *         "data_prazo_maximo": "2023-06-20",
      *         "numero_nota_reserva": "1024",
      *         "valor_reserva": "200.00",
-     *         "nome_empresa": "Teste LTDA",
-     *         "telefone_empresa": "11913314554",
-     *         "email_empresa": "teste@prefeitura.com",
      *         "outras_informacoes": "Exemplo. Nenhuma outra informação",
      *     }
      * }
@@ -367,31 +373,29 @@ class ContratoController extends Controller
     {
         $contrato = Contrato::findOrFail($id);
         $contrato->departamento_id = $request->input('departamento_id');
-        $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id');
-        $contrato->envio_material_tecnico = $request->input('envio_material_tecnico');
-        $contrato->minuta_edital = $request->input('minuta_edital');
-        $contrato->abertura_certame = $request->input('abertura_certame');
-        $contrato->homologacao = $request->input('homologacao');
+        $contrato->empresa_id = $request->input('empresa_id') ? $request->input('empresa_id') : null;
+        $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id') ? $request->input('licitacao_modelo_id') : null;
+        $contrato->envio_material_tecnico = $request->input('envio_material_tecnico') ? $request->input('envio_material_tecnico') : null;
+        $contrato->minuta_edital = $request->input('minuta_edital') ? $request->input('minuta_edital') : null;
+        $contrato->abertura_certame = $request->input('abertura_certame') ? $request->input('abertura_certame') : null;
+        $contrato->homologacao = $request->input('homologacao') ? $request->input('homologacao') : null;
         $contrato->processo_sei = $request->input('processo_sei');
-        $contrato->credor = $request->input('credor');
-        $contrato->cnpj_cpf = $request->input('cnpj_cpf');
-        $contrato->tipo_objeto = $request->input('tipo_objeto');
-        $contrato->objeto = $request->input('objeto');
-        $contrato->numero_contrato = $request->input('numero_contrato');
-        $contrato->data_assinatura = $request->input('data_assinatura');
-        $contrato->valor_contrato = $request->input('valor_contrato');
-        $contrato->valor_mensal_estimativo = $request->input('valor_mensal_estimativo');
-        $contrato->data_inicio_vigencia = $request->input('data_inicio_vigencia');
-        $contrato->data_vencimento = $request->input('data_vencimento');
-        $contrato->condicao_pagamento = $request->input('condicao_pagamento');
-        $contrato->prazo_a_partir_de = $request->input('prazo_a_partir_de');
-        $contrato->data_prazo_maximo = $request->input('data_prazo_maximo');
-        $contrato->numero_nota_reserva = $request->input('numero_nota_reserva');
-        $contrato->valor_reserva = $request->input('valor_reserva');
-        $contrato->nome_empresa = $request->input('nome_empresa');
-        $contrato->telefone_empresa = $request->input('telefone_empresa');
-        $contrato->email_empresa = $request->input('email_empresa');
-        $contrato->outras_informacoes = $request->input('outras_informacoes');
+        $contrato->credor = $request->input('credor') ? $request->input('credor') : null;
+        $contrato->cnpj_cpf = $request->input('cnpj_cpf') ? $request->input('cnpj_cpf') : null;
+        $contrato->tipo_objeto = $request->input('tipo_objeto') ? $request->input('tipo_objeto') : null;
+        $contrato->objeto = $request->input('objeto') ? $request->input('objeto') : null;
+        $contrato->numero_contrato = $request->input('numero_contrato') ? $request->input('numero_contrato') : null;
+        $contrato->data_assinatura = $request->input('data_assinatura') ? $request->input('data_assinatura') : null;
+        $contrato->valor_contrato = $request->input('valor_contrato') ? $request->input('valor_contrato') : null;
+        $contrato->valor_mensal_estimativo = $request->input('valor_mensal_estimativo') ? $request->input('valor_mensal_estimativo') : null;
+        $contrato->data_inicio_vigencia = $request->input('data_inicio_vigencia') ? $request->input('data_inicio_vigencia') : null;
+        $contrato->data_vencimento = $request->input('data_vencimento') ? $request->input('data_vencimento') : null;
+        $contrato->condicao_pagamento = $request->input('condicao_pagamento') ? $request->input('condicao_pagamento') : null;
+        $contrato->prazo_a_partir_de = $request->input('prazo_a_partir_de') ? $request->input('prazo_a_partir_de') : null;
+        $contrato->data_prazo_maximo = $request->input('data_prazo_maximo') ? $request->input('data_prazo_maximo') : null;
+        $contrato->numero_nota_reserva = $request->input('numero_nota_reserva') ? $request->input('numero_nota_reserva') : null;
+        $contrato->valor_reserva = $request->input('valor_reserva') ? $request->input('valor_reserva') : null;
+        $contrato->outras_informacoes = $request->input('outras_informacoes') ? $request->input('outras_informacoes') : null;
         $contrato->user_id = auth()->user()->id;
 
         if ($contrato->save()) {
@@ -412,6 +416,11 @@ class ContratoController extends Controller
      *         "id": 14,
      *         "departamento_id": 2,
      *         "departamento": "GABINETE/NDTIC",
+     *         "empresa_id": 1,
+     *         "nome_empresa": "Testes S.A.",
+     *         "cnpj_empresa": "58.621.352/0001-44",
+     *         "telefone_empresa": "11913314554",
+     *         "email_empresa": "teste@prefeitura.com",
      *         "licitacao_modelo_id": 1,
      *         "licitacao_modelo": "Concorrência",
      *         "processo_sei": "0123000134569000",
@@ -427,9 +436,6 @@ class ContratoController extends Controller
      *         "prazo_contrato_meses": 12,
      *         "prazo_a_partir_de": "A partir do início da vigência",
      *         "data_prazo_maximo": "2023-06-21",
-     *         "nome_empresa": "Teste LTDA",
-     *         "telefone_empresa": "11913314554",
-     *         "email_empresa": "teste@prefeitura.com",
      *         "outras_informacoes": "Exemplo. Nenhuma outra informação"
      *     }
      * }

@@ -42,6 +42,11 @@ class Contrato extends Model
         return $this->belongsTo(Departamento::class);
     }
 
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
+
     public function licitacao_modelo()
     {
         return $this->belongsTo(LicitacaoModelo::class);

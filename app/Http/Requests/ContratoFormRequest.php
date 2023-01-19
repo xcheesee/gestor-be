@@ -25,8 +25,9 @@ class ContratoFormRequest extends FormRequest
     public function rules()
     {
         return [
+            'departamento_id' => 'required',
             'processo_sei' => 'required',
-            'credor' => 'required',
+            /*'credor' => 'required',
             'cnpj_cpf' => 'required|cpf_ou_cnpj',
             'tipo_objeto' => 'nullable|in:obra,projeto,serviço,aquisição',
             'objeto' => 'required',
@@ -36,7 +37,7 @@ class ContratoFormRequest extends FormRequest
             'condicao_pagamento' => 'required',
             'nome_empresa' => 'required',
             'telefone_empresa' => ["required","regex:/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/"],
-            'email_empresa' => 'required|email',
+            'email_empresa' => 'required|email',*/
         ];
     }
 

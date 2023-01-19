@@ -20,6 +20,7 @@
         $('.processo_sei').mask('0000.0000/0000000-0');
         $('.contrato').mask('000/SSSS/0000');
         $('.cpf').mask('000.000.000-00', {reverse: true});
+        $('.cnpj').mask('00.000.000/0000-00', {reverse: true});
         $('.money').mask('000.000.000.000.000,00', {reverse: true});
 
         //$('.mixed').mask('AAA 000-S0S'); //leia abaixo:
