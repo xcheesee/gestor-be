@@ -171,6 +171,7 @@ class ContratoController extends Controller
     public function store(ContratoFormRequest $request)
     {
         $contrato = new Contrato();
+        $contrato->departamento_id = $request->input('departamento_id');
         $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id');
         $contrato->departamento_id = $request->input('departamento_id');
         $contrato->envio_material_tecnico = $request->input('envio_material_tecnico');
