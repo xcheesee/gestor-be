@@ -40,11 +40,11 @@ class ContratoController extends Controller
     public function index()
     {
         $contratos = QueryBuilder::for(Contrato::class)
-            ->select('empresa.nome as nome_empresa', 'contratos.*')
-            ->leftJoin('empresa', 'empresa.id', 'contratos.empresa_id')
+            ->select('empresas.nome as nome_empresa', 'contratos.*')
+            ->leftJoin('empresas', 'empresas.id', 'contratos.empresa_id')
             ->allowedFilters([
                     'processo_sei',
-                    AllowedFilter::partial('nome_empresa','empresa.nome'),
+                    AllowedFilter::partial('nome_empresa','empresas.nome'),
                     AllowedFilter::scope('inicio_depois_de'),
                     AllowedFilter::scope('inicio_antes_de'),
                     AllowedFilter::scope('vencimento_depois_de'),
@@ -172,32 +172,32 @@ class ContratoController extends Controller
     {
         $contrato = new Contrato();
         $contrato->departamento_id = $request->input('departamento_id');
-        $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id');
-        $contrato->departamento_id = $request->input('departamento_id');
-        $contrato->envio_material_tecnico = $request->input('envio_material_tecnico');
-        $contrato->minuta_edital = $request->input('minuta_edital');
-        $contrato->abertura_certame = $request->input('abertura_certame');
-        $contrato->homologacao = $request->input('homologacao');
         $contrato->processo_sei = $request->input('processo_sei');
-        $contrato->credor = $request->input('credor');
-        $contrato->cnpj_cpf = $request->input('cnpj_cpf');
-        $contrato->tipo_objeto = $request->input('tipo_objeto');
-        $contrato->objeto = $request->input('objeto');
-        $contrato->numero_contrato = $request->input('numero_contrato');
-        $contrato->data_assinatura = $request->input('data_assinatura');
-        $contrato->valor_contrato = $request->input('valor_contrato');
-        $contrato->valor_mensal_estimativo = $request->input('valor_mensal_estimativo');
-        $contrato->data_inicio_vigencia = $request->input('data_inicio_vigencia');
-        $contrato->data_vencimento = $request->input('data_vencimento');
-        $contrato->condicao_pagamento = $request->input('condicao_pagamento');
-        $contrato->prazo_a_partir_de = $request->input('prazo_a_partir_de');
-        $contrato->data_prazo_maximo = $request->input('data_prazo_maximo');
-        $contrato->numero_nota_reserva = $request->input('numero_nota_reserva');
-        $contrato->valor_reserva = $request->input('valor_reserva');
+        // $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id');
+        // $contrato->departamento_id = $request->input('departamento_id');
+        // $contrato->envio_material_tecnico = $request->input('envio_material_tecnico');
+        // $contrato->minuta_edital = $request->input('minuta_edital');
+        // $contrato->abertura_certame = $request->input('abertura_certame');
+        // $contrato->homologacao = $request->input('homologacao');
+        // $contrato->credor = $request->input('credor');
+        // $contrato->cnpj_cpf = $request->input('cnpj_cpf');
+        // $contrato->tipo_objeto = $request->input('tipo_objeto');
+        // $contrato->objeto = $request->input('objeto');
+        // $contrato->numero_contrato = $request->input('numero_contrato');
+        // $contrato->data_assinatura = $request->input('data_assinatura');
+        // $contrato->valor_contrato = $request->input('valor_contrato');
+        // $contrato->valor_mensal_estimativo = $request->input('valor_mensal_estimativo');
+        // $contrato->data_inicio_vigencia = $request->input('data_inicio_vigencia');
+        // $contrato->data_vencimento = $request->input('data_vencimento');
+        // $contrato->condicao_pagamento = $request->input('condicao_pagamento');
+        // $contrato->prazo_a_partir_de = $request->input('prazo_a_partir_de');
+        // $contrato->data_prazo_maximo = $request->input('data_prazo_maximo');
+        // $contrato->numero_nota_reserva = $request->input('numero_nota_reserva');
+        // $contrato->valor_reserva = $request->input('valor_reserva');
         // $contrato->nome_empresa = $request->input('nome_empresa');
         // $contrato->telefone_empresa = $request->input('telefone_empresa');
         // $contrato->email_empresa = $request->input('email_empresa');
-        $contrato->outras_informacoes = $request->input('outras_informacoes');
+        // $contrato->outras_informacoes = $request->input('outras_informacoes');
         $contrato->user_id = auth()->user()->id;
 
         if ($contrato->save()) {

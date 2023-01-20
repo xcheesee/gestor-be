@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Charts\ContratadoVsExecutado;
 use App\Charts\ExecucaoPorDepartamento;
+use App\Models\Departamento;
 use App\Models\ExecucaoFinanceira;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -60,10 +61,22 @@ class HomeController extends Controller
      */
     public function dashboard(Request $request, ContratadoVsExecutado $chartCvE, ExecucaoPorDepartamento $chartEpD)
     {
+        //dd($request);
+        $filtros = array();
+        $filtros['ano_pesquisa'] = $request->query('f-ano_pesquisa');
+        $filtros['departamento'] = $request->query('f-departamento');
+        if(!$filtros['ano_pesquisa']) $filtros['ano_pesquisa'] = idate("Y");
+        $departamentos = Departamento::pluck('nome', 'id')->all();
+
         $mensagem = $request->session()->get('mensagem');
         $dataCvE = DB::table('execucao_financeira')
             ->select(DB::raw('SUM(contratado_inicial) as t_contratado'),DB::raw('SUM(executado) as t_executado'))
-            ->where('ano','=',idate("Y"))->first();
+            ->leftJoin("contratos",'contrato_id','=','contratos.id')
+            ->leftJoin("departamentos",'contratos.departamento_id','=','departamentos.id')
+            ->when($filtros['departamento'], function ($query, $val) {
+                return $query->where('contratos.departamento_id','=',$val);
+            })
+            ->where('ano','=',$filtros['ano_pesquisa'])->first();
         //dd($execucoes);
         $dataset = array('departamentos'=>array(),'valores'=>array(
             'planejado' => array(),
@@ -72,7 +85,16 @@ class HomeController extends Controller
             'executado' => array(),
             'saldo' => array(),
         ));
-        $execucoes = ExecucaoFinanceira::query()->where('ano','=',idate("Y"))->get();
+        $execucoes = ExecucaoFinanceira::query()
+            ->select('execucao_financeira.*')
+            ->leftJoin("contratos",'contrato_id','=','contratos.id')
+            ->leftJoin("departamentos",'contratos.departamento_id','=','departamentos.id')
+            ->when($filtros['departamento'], function ($query, $val) {
+                return $query->where('contratos.departamento_id','=',$val);
+            })
+            ->where('ano','=',$filtros['ano_pesquisa'])
+            ->get();
+
         $i = 0;
         foreach($execucoes as $execucao){
             $k = array_search($execucao->contrato->departamento->nome,$dataset['departamentos']);
@@ -92,7 +114,9 @@ class HomeController extends Controller
                 $i++;
             }
         }
-        //dd($dataset);
+        //dd($dataCvE->t_executado);
+        $dataCvE->t_contratado = $dataCvE->t_contratado ? $dataCvE->t_contratado : 0;
+        $dataCvE->t_executado = $dataCvE->t_executado ? $dataCvE->t_executado : 0;
 
         $grafico = ['dados' => [$dataCvE->t_contratado,$dataCvE->t_executado,($dataCvE->t_contratado - $dataCvE->t_executado)]];
 
@@ -107,6 +131,8 @@ class HomeController extends Controller
 
         return view('dashboard.index', [
             'mensagem'=>$mensagem,
+            'filtros' => $filtros,
+            'departamentos' => $departamentos,
             'chartCvE'=>$chartCvE->build($grafico),
             'chartEpD'=>$chartEpD->build($dataEpD)
         ]);
