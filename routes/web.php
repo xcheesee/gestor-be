@@ -61,6 +61,12 @@ Route::prefix(env('APP_FOLDER', 'contratos'))->group(function () { //considerand
         Route::get('/distritos/{id}/ver', [App\Http\Controllers\DistritoController::class, 'show'])->name('cadaux-distritos-show');
         Route::get('/distritos/{id}/editar', [App\Http\Controllers\DistritoController::class, 'edit'])->name('cadaux-distritos-edit');
         Route::post('/distritos/{id}/editar', [App\Http\Controllers\DistritoController::class, 'update'])->name('cadaux-distritos-update');
+        Route::get('/empresas', [App\Http\Controllers\EmpresaController::class, 'index'])->name('cadaux-empresas'); //->middleware('permission:cadaux')
+        Route::get('/empresas/criar', [App\Http\Controllers\EmpresaController::class, 'create'])->name('cadaux-empresas-create');
+        Route::post('/empresas/criar', [App\Http\Controllers\EmpresaController::class, 'store'])->name('cadaux-empresas-store');
+        Route::get('/empresas/{id}/ver', [App\Http\Controllers\EmpresaController::class, 'show'])->name('cadaux-empresas-show');
+        Route::get('/empresas/{id}/editar', [App\Http\Controllers\EmpresaController::class, 'edit'])->name('cadaux-empresas-edit');
+        Route::post('/empresas/{id}/editar', [App\Http\Controllers\EmpresaController::class, 'update'])->name('cadaux-empresas-update');
 
 		//Gestão de Usuários e Permissões
         Route::resource('users', App\Http\Controllers\UserController::class)->middleware('permission:user-list');

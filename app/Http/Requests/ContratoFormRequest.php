@@ -25,19 +25,19 @@ class ContratoFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'processo_sei' => 'required',
             'departamento_id' => 'required',
-            'telefone_empresa' => ["regex:/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/"],
+            'processo_sei' => 'required',
+            /*'credor' => 'required',
+            'cnpj_cpf' => 'required|cpf_ou_cnpj',
             'tipo_objeto' => 'nullable|in:obra,projeto,serviço,aquisição',
-            'email_empresa' => 'email',
-           //'credor' => 'required',
-           //'cnpj_cpf' => 'required|cpf_ou_cnpj',
-           //'objeto' => 'required',
-           //'numero_contrato' => 'required',
-           //'valor_contrato' => 'required',
-           //'data_inicio_vigencia' => 'required',
-           //'condicao_pagamento' => 'required',
-           //'nome_empresa' => 'required',
+            'objeto' => 'required',
+            'numero_contrato' => 'required',
+            'valor_contrato' => 'required',
+            'data_inicio_vigencia' => 'required',
+            'condicao_pagamento' => 'required',
+            'nome_empresa' => 'required',
+            'telefone_empresa' => ["required","regex:/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/"],
+            'email_empresa' => 'required|email',*/
         ];
     }
 
