@@ -24,9 +24,9 @@ class DotacaoFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'dotacao_tipo_id' => 'required',
+            //'dotacao_tipo_id' => 'required',
             'contrato_id' => 'required',
-            'valor_dotacao' => 'required',
+            //'valor_dotacao' => 'required',
         ];
     }
 

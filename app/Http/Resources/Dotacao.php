@@ -21,7 +21,6 @@ class Dotacao extends JsonResource
             'descricao' => $this->dotacao_tipo ? $this->dotacao_tipo->descricao : null,
             'tipo_despesa' => $this->dotacao_tipo ? $this->dotacao_tipo->tipo_despesa : null,
             'contrato_id' => $this->contrato_id,
-            'valor_dotacao' => $this->valor_dotacao,
             'recursos' => DotacaoRecurso::collection($this->dotacao_recursos),
         ];
     }

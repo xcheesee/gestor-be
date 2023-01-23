@@ -43,7 +43,6 @@ class DotacaoController extends Controller
      *
      * @bodyParam dotacao_tipo_id integer required ID do tipo de dotação (tabela dotacao_tipos). Example: 5
      * @bodyParam contrato_id integer required ID do contrato. Example: 5
-     * @bodyParam valor_dotacao float Valor desta dotação. Example: 1000.00
      * @bodyParam origem_recurso_id integer required ID da fonte/origem do recurso. Example: 2
      * @bodyParam outros_descricao string Descrição da fonte, usado apenas caso o usuário selecione "outros" (origem_recurso_id = 0). Example: Fonte Externa
      *
@@ -52,7 +51,6 @@ class DotacaoController extends Controller
      *         "id": 1,
      *         "dotacao_tipo_id": 1,
      *         "contrato_id": 5,
-     *         "valor_dotacao": 1000.00,
      *         "recursos": [
      *             {
      *                 "id": 1,
@@ -70,7 +68,6 @@ class DotacaoController extends Controller
         $dotacao = new Dotacao;
         $dotacao->dotacao_tipo_id = $request->input('dotacao_tipo_id');
         $dotacao->contrato_id = $request->input('contrato_id');
-        $dotacao->valor_dotacao = $request->input('valor_dotacao');
 
         if ($dotacao->save()) {
             if ($request->input('origem_recurso_id') > 0){
@@ -100,7 +97,6 @@ class DotacaoController extends Controller
      *         "id": 1,
      *         "dotacao_tipo_id": 1,
      *         "contrato_id": 5,
-     *         "valor_dotacao": 1000.00,
      *         "recursos": [
      *             {
      *                 "id": 1,
@@ -146,14 +142,12 @@ class DotacaoController extends Controller
      *
      * @bodyParam dotacao_tipo_id integer required ID do tipo de dotação (tabela dotacao_tipos). Example: 5
      * @bodyParam contrato_id integer required ID do contrato. Example: 5
-     * @bodyParam valor_dotacao float Valor desta dotação. Example: 1000.00
      *
      * @response 200 {
      *     "data": {
      *         "id": 1,
      *         "dotacao_tipo_id": 1,
-     *         "contrato_id": 5,
-     *         "valor_dotacao": 1000.00
+     *         "contrato_id": 5
      *     }
      * }
      */
@@ -162,7 +156,6 @@ class DotacaoController extends Controller
         $dotacao = Dotacao::findOrFail($id);
         $dotacao->dotacao_tipo_id = $request->input('dotacao_tipo_id');
         $dotacao->contrato_id = $request->input('contrato_id');
-        $dotacao->valor_dotacao = $request->input('valor_dotacao');
 
         if ($dotacao->save()) {
             return new DotacaoResource($dotacao);
@@ -181,8 +174,7 @@ class DotacaoController extends Controller
      *     "data": {
      *         "id": 1,
      *         "dotacao_tipo_id": 1,
-     *         "contrato_id": 5,
-     *         "valor_dotacao": 1000.00
+     *         "contrato_id": 5
      *     }
      * }
      */
@@ -210,14 +202,12 @@ class DotacaoController extends Controller
      *         {
      *             "id": 1,
      *             "dotacao_tipo_id": 1,
-     *             "contrato_id": 5,
-     *             "valor_dotacao": 1000.00
+     *             "contrato_id": 5
      *         },
      *         {
      *             "id": 2,
      *             "dotacao_tipo_id": 2,
-     *             "contrato_id": 5,
-     *             "valor_dotacao": 1300.00
+     *             "contrato_id": 5
      *         }
      *     ]
      * }

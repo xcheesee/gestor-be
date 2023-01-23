@@ -14,7 +14,6 @@ class Dotacao extends Model
     protected $fillable = [
         'dotacao_tipo_id',
         'contrato_id',
-        'valor_dotacao',
     ];
 
     public function contrato()
