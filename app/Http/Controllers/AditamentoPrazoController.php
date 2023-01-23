@@ -80,8 +80,7 @@ class AditamentoPrazoController extends Controller
      *         "tipo_aditamento": "Acréscimo de valor",
      *         "valor_aditamento": 1000,
      *         "dias_reajuste": 60,
-     *         "indice_reajuste": "Teste",
-     *         "pct_reajuste": 184
+     *         "percentual": 184
      *     }
      * }
      */

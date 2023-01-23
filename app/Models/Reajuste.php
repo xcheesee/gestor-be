@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AditamentoValor extends Model
+class Reajuste extends Model
 {
-    protected $table = 'aditamentos_valor';
+    use HasFactory;
 
     protected $fillable = [
         'contrato_id',
-        'tipo_aditamento',
-        'valor_aditamento',
-        'percentual',
+        'indice_reajuste',
+        'valor_reajuste',
     ];
 
     public function contrato()

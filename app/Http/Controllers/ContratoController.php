@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContratoFormRequest;
+use App\Http\Requests\ContratoNovoRequest;
 use App\Models\Contrato as Contrato;
 use App\Http\Resources\Contrato as ContratoResource;
 use App\Http\Resources\ContratoTotalizadores;
@@ -108,29 +109,7 @@ class ContratoController extends Controller
      *
      *
      * @bodyParam departamento_id integer ID do departamento. Example: 2
-     * @bodyParam empresa_id integer ID da empresa. Example: 1
-     * @bodyParam licitacao_modelo_id integer ID do modelo de licitação. Example: 1
-     * @bodyParam envio_material_tecnico date Data do envio de material técnico. Example: 2022-06-20
-     * @bodyParam minuta_edital date Data do minuta do edital. Example: 2022-06-21
-     * @bodyParam abertura_certame date Data da abertura do certame. Example: 2022-06-22
-     * @bodyParam homologacao date Data de homologação. Example: 2022-06-23
      * @bodyParam processo_sei string required Processo SEI. Example: 0123000134569000
-     * @bodyParam credor string required Nome do credor. Example: Teste Silva
-     * @bodyParam cnpj_cpf string required Cnpj ou Cpf. Example: 45106963896
-     * @bodyParam tipo_objeto string Tipo de Objeto ('obra','projeto','serviço' ou 'aquisição'). Example: projeto
-     * @bodyParam objeto string required Objeto. Example: teste
-     * @bodyParam numero_contrato string required Número do contrato. Example: 2343rbte67b63
-     * @bodyParam data_assinatura date Data de assinatura do contrato. Example: 2022-05-21
-     * @bodyParam valor_contrato float required Valor do contrato. Example: 1600
-     * @bodyParam valor_mensal_estimativo float required Valor do contrato. Example: 1600
-     * @bodyParam data_inicio_vigencia date required Data de inicio da vigência. Example: 2022-05-24
-     * @bodyParam data_vencimento date Data de fim da vigência. Example: 2023-05-21
-     * @bodyParam condicao_pagamento string required Condição do pagamento. Example: Em até 10 dias após adimplemento
-     * @bodyParam prazo_a_partir_de string Condição do início do prazo. Example: A partir do início da vigência
-     * @bodyParam data_prazo_maximo date O prazo máximo do contrato. Example: 2023-06-21
-     * @bodyParam numero_nota_reserva string Número da última nota de reserva. Example: 1024
-     * @bodyParam valor_reserva float Valor total de reserva. Example: 200.00
-     * @bodyParam outras_informacoes text Informações adicionais. Example: Exemplo. Nenhuma outra informação
      *
      * @response 200 {
      *     "data": {
@@ -168,7 +147,7 @@ class ContratoController extends Controller
      *     }
      * }
      */
-    public function store(ContratoFormRequest $request)
+    public function store(ContratoNovoRequest $request)
     {
         $contrato = new Contrato();
         $contrato->departamento_id = $request->input('departamento_id');

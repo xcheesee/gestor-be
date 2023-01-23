@@ -44,8 +44,7 @@ class AditamentoValorController extends Controller
      * @bodyParam contrato_id integer required ID do contrato. Example: 5
      * @bodyParam tipo_aditamento enum Tipo de aditamento('Acréscimo de valor', 'Redução de valor'). Example: Acréscimo de valor
      * @bodyParam valor_aditamento float Valor do aditamento. Example: 1000.00
-     * @bodyParam indice_reajuste float Taxa de reajuste. Example: Teste
-     * @bodyParam pct_reajuste float PCT do reajuste. Example: 18.4
+     * @bodyParam percentual float PCT do reajuste. Example: 18.4
      *
      * @response 200 {
      *     "data": {
@@ -53,8 +52,7 @@ class AditamentoValorController extends Controller
      *         "contrato_id": 5,
      *         "tipo_aditamento": "Acréscimo de valor",
      *         "valor_aditamento": 1000.00,
-     *         "indice_reajuste": "Teste",
-     *         "pct_reajuste": 18.4
+     *         "percentual": 18.4
      *     }
      * }
      */
@@ -64,8 +62,7 @@ class AditamentoValorController extends Controller
         $aditamento->contrato_id = $request->input('contrato_id');
         $aditamento->tipo_aditamento = $request->input('tipo_aditamento');
         $aditamento->valor_aditamento = $request->input('valor_aditamento');
-        $aditamento->indice_reajuste = $request->input('indice_reajuste');
-        $aditamento->pct_reajuste = $request->input('pct_reajuste');
+        $aditamento->percentual = $request->input('percentual');
 
         if ($aditamento->save()) {
             return new AditamentoValorResource($aditamento);
@@ -85,8 +82,7 @@ class AditamentoValorController extends Controller
      *         "contrato_id": 5,
      *         "tipo_aditamento": "Acréscimo de valor",
      *         "valor_aditamento": 1000,
-     *         "indice_reajuste": "Teste",
-     *         "pct_reajuste": 184
+     *         "percentual": 184
      *     }
      * }
      */
@@ -117,8 +113,7 @@ class AditamentoValorController extends Controller
      * @bodyParam contranto_id integer required ID do contrato. Example: 5
      * @bodyParam tipo_aditamento enum Tipo de aditamento('Acréscimo de valor', 'Redução de valor', 'Prorrogação de prazo', 'Supressão de prazo', 'Suspensão', 'Rescisão'). Example: Acréscimo de valor
      * @bodyParam valor_aditamento float Valor do aditamento. Example: 1000
-     * @bodyParam indice_reajuste float Taxa de reajuste. Example: Teste
-     * @bodyParam pct_reajuste float PCT do reajuste. Example: 184
+     * @bodyParam percentual float PCT do reajuste. Example: 184
      *
      * @response 200 {
      *     "data": {
@@ -126,8 +121,7 @@ class AditamentoValorController extends Controller
      *         "contrato_id": 5,
      *         "tipo_aditamento": "Acréscimo de valor",
      *         "valor_aditamento": 1000,
-     *         "indice_reajuste": "Teste",
-     *         "pct_reajuste": 184
+     *         "percentual": 184
      *     }
      * }
      */
@@ -137,8 +131,7 @@ class AditamentoValorController extends Controller
         $aditamento->contrato_id = $request->input('contrato_id');
         $aditamento->tipo_aditamento = $request->input('tipo_aditamento');
         $aditamento->valor_aditamento = $request->input('valor_aditamento');
-        $aditamento->indice_reajuste = $request->input('indice_reajuste');
-        $aditamento->pct_reajuste = $request->input('pct_reajuste');
+        $aditamento->percentual = $request->input('percentual');
 
         if ($aditamento->save()) {
             return new AditamentoValorResource($aditamento);
@@ -160,8 +153,7 @@ class AditamentoValorController extends Controller
      *         "tipo_aditamento": "Acréscimo de valor",
      *         "valor_aditamento": 1000,
      *         "dias_reajuste": 60,
-     *         "indice_reajuste": "Teste",
-     *         "pct_reajuste": 184
+     *         "percentual": 184
      *     }
      * }
      */
@@ -191,16 +183,14 @@ class AditamentoValorController extends Controller
      *             "contrato_id": 5,
      *             "tipo_aditamento": "Acréscimo de valor",
      *             "valor_aditamento": 1000,
-     *             "indice_reajuste": "Teste",
-     *             "pct_reajuste": 184
+     *             "percentual": 184
      *         },
      *         {
      *             "id": 4,
      *             "contrato_id": 5,
      *             "tipo_aditamento": "Redução de valor",
      *             "valor_aditamento": 1000,
-     *             "indice_reajuste": "Teste",
-     *             "pct_reajuste": 295
+     *             "percentual": 295
      *         }
      *     ]
      * }

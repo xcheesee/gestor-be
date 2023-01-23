@@ -19,6 +19,7 @@ use App\Http\Controllers\LicitacaoModeloController;
 use App\Http\Controllers\OrigemRecursoController;
 use App\Http\Controllers\ServicoLocalController;
 use App\Http\Controllers\SubprefeituraController;
+use App\Http\Controllers\ReajusteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -175,3 +176,10 @@ Route::post('licitacaomodelo', [LicitacaoModeloController::class, 'store']);
 Route::get('licitacaomodelo/{id}', [LicitacaoModeloController::class, 'show']);
 Route::put('licitacaomodelo/{id}', [LicitacaoModeloController::class, 'update']);
 Route::delete('licitacaomodelo/{id}', [LicitacaoModeloController::class, 'destroy']);
+
+Route::get('reajustes', [ReajusteController::class, 'index']);
+Route::get('reajustes/{id}', [ReajusteController::class, 'listar_por_contrato']);
+Route::post('reajuste', [ReajusteController::class, 'store']);
+Route::get('reajuste/{id}', [ReajusteController::class, 'show']);
+Route::put('reajuste/{id}', [ReajusteController::class, 'update']);
+Route::delete('reajuste/{id}', [ReajusteController::class, 'destroy']);

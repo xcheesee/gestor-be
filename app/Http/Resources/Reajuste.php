@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AditamentoValor extends JsonResource
+class Reajuste extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +17,8 @@ class AditamentoValor extends JsonResource
         return [
             'id' => $this->id,
             'contrato_id' => $this->contrato_id,
-            'tipo_aditamento' => $this->tipo_aditamento,
-            'valor_aditamento' => $this->valor_aditamento,
-            'percentual' => $this->percentual,
+            'indice_reajuste' => $this->indice_reajuste,
+            'indice_reajuste' => $this->indice_reajuste,
         ];
     }
 }
