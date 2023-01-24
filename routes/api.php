@@ -12,6 +12,7 @@ use App\Http\Controllers\DotacaoController;
 use App\Http\Controllers\DotacaoRecursoController;
 use App\Http\Controllers\DotacaoTipoController;
 use App\Http\Controllers\EmpenhoNotaController;
+use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\ExecucaoFinanceiraController;
 use App\Http\Controllers\GarantiaController;
 use App\Http\Controllers\GestaoFiscalizacaoController;
@@ -121,6 +122,8 @@ Route::post('dotacao_tipo', [DotacaoTipoController::class, 'store']);
 Route::get('dotacao_tipo/{id}', [DotacaoTipoController::class, 'show']);
 Route::put('dotacao_tipo/{id}', [DotacaoTipoController::class, 'update']);
 Route::delete('dotacao_tipo/{id}', [DotacaoTipoController::class, 'destroy']);
+
+Route::get('empresas', [EmpresaController::class, 'index']);
 
 Route::get('garantias', [GarantiaController::class, 'index']);
 Route::get('garantias/{id}', [GarantiaController::class, 'listar_por_contrato']);

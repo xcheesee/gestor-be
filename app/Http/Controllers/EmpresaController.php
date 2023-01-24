@@ -7,6 +7,11 @@ use App\Http\Resources\EmpresaResource;
 use App\Models\Empresa;
 use Illuminate\Http\Request;
 
+/**
+ * @group Empresa
+ *
+ * APIs para listar, cadastrar, editar e remover dados de Empresa
+ */
 class EmpresaController extends Controller
 {
     //

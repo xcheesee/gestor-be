@@ -1,5 +1,5 @@
 /node_modules
-/app/Console
+/app/Console/Commands
 /public/hot
 /public/storage
 /storage/*.key

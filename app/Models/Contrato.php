@@ -10,6 +10,7 @@ class Contrato extends Model
 {
     protected $fillable = [
         'departamento_id',
+        'empresa_id',
         'licitacao_modelo_id',
         'envio_material_tecnico',
         'minuta_edital',
