@@ -40,13 +40,13 @@ class ValoresPorTipoObjetoChart
         foreach($dados as $dado){
             $k = array_search($dado->departamento->nome,$dataset['departamentos']);
             if($k !== false){
-                $dataset['valores'][$dado->tipo_objeto][$k] += $dado->t_contratado;
+                $dataset['valores'][$dado->tipo_objeto][$k] += round($dado->t_contratado,2);
             }else{
                 $dataset['departamentos'][$i] = $dado->departamento->nome;
                 foreach($dataset['valores'] as $k=>$valor){
                     $dataset['valores'][$k][$i] = 0;
                 }
-                $dataset['valores'][$dado->tipo_objeto][$i] += $dado->t_contratado;
+                $dataset['valores'][$dado->tipo_objeto][$i] += round($dado->t_contratado,2);
                 $i++;
             }
         }
