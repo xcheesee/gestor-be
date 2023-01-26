@@ -30,6 +30,14 @@
     </form>
     <div class="row d-flex justify-content-center m-3" style="height: 400px;">
         <div class="col d-grid gap-2" style="height: 400px;">
+            {!! $chartVtO->container() !!}
+        </div>
+        <div class="col d-grid gap-2" style="height: 400px;">
+
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center m-3" style="height: 400px;">
+        <div class="col d-grid gap-2" style="height: 400px;">
             {!! $chartCvE->container() !!}
         </div>
         <div class="col d-grid gap-2" style="height: 400px;">
@@ -42,4 +50,5 @@
 
 {{ $chartCvE->script() }}
 {{ $chartEpD->script() }}
+{{ $chartVtO->script() }}
 @endsection

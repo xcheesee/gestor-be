@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Charts\ContratadoVsExecutado;
 use App\Charts\ExecucaoPorDepartamento;
+use App\Charts\ValoresPorTipoObjetoChart;
 use App\Models\Departamento;
 use App\Models\ExecucaoFinanceira;
 use Illuminate\Support\Facades\DB;
@@ -59,7 +60,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function dashboard(Request $request, ContratadoVsExecutado $chartCvE, ExecucaoPorDepartamento $chartEpD)
+    public function dashboard(Request $request,
+        ContratadoVsExecutado $chartCvE, ExecucaoPorDepartamento $chartEpD, ValoresPorTipoObjetoChart $chartVtO
+    )
     {
         //dd($request);
         $filtros = array();
@@ -69,72 +72,15 @@ class HomeController extends Controller
         $departamentos = Departamento::pluck('nome', 'id')->all();
 
         $mensagem = $request->session()->get('mensagem');
-        $dataCvE = DB::table('execucao_financeira')
-            ->select(DB::raw('SUM(contratado_inicial) as t_contratado'),DB::raw('SUM(executado) as t_executado'))
-            ->leftJoin("contratos",'contrato_id','=','contratos.id')
-            ->leftJoin("departamentos",'contratos.departamento_id','=','departamentos.id')
-            ->when($filtros['departamento'], function ($query, $val) {
-                return $query->where('contratos.departamento_id','=',$val);
-            })
-            ->where('ano','=',$filtros['ano_pesquisa'])->first();
         //dd($execucoes);
-        $dataset = array('departamentos'=>array(),'valores'=>array(
-            'planejado' => array(),
-            'contratado' => array(),
-            'empenhado' => array(),
-            'executado' => array(),
-            'saldo' => array(),
-        ));
-        $execucoes = ExecucaoFinanceira::query()
-            ->select('execucao_financeira.*')
-            ->leftJoin("contratos",'contrato_id','=','contratos.id')
-            ->leftJoin("departamentos",'contratos.departamento_id','=','departamentos.id')
-            ->when($filtros['departamento'], function ($query, $val) {
-                return $query->where('contratos.departamento_id','=',$val);
-            })
-            ->where('ano','=',$filtros['ano_pesquisa'])
-            ->get();
-
-        $i = 0;
-        foreach($execucoes as $execucao){
-            $k = array_search($execucao->contrato->departamento->nome,$dataset['departamentos']);
-            if($k !== false){
-                $dataset['valores']['planejado'][$k] += $execucao->planejado_inicial;
-                $dataset['valores']['contratado'][$k] += $execucao->contratado_atualizado;
-                $dataset['valores']['empenhado'][$k] += $execucao->empenhado;
-                $dataset['valores']['executado'][$k] += $execucao->executado;
-                $dataset['valores']['saldo'][$k] += $execucao->saldo;
-            }else{
-                $dataset['departamentos'][$i] = $execucao->contrato->departamento->nome;
-                $dataset['valores']['planejado'][$i] = $execucao->planejado_inicial;
-                $dataset['valores']['contratado'][$i] = $execucao->contratado_atualizado;
-                $dataset['valores']['empenhado'][$i] = $execucao->empenhado;
-                $dataset['valores']['executado'][$i] = $execucao->executado;
-                $dataset['valores']['saldo'][$i] = $execucao->saldo;
-                $i++;
-            }
-        }
-        //dd($dataCvE->t_executado);
-        $dataCvE->t_contratado = $dataCvE->t_contratado ? $dataCvE->t_contratado : 0;
-        $dataCvE->t_executado = $dataCvE->t_executado ? $dataCvE->t_executado : 0;
-
-        $grafico = ['dados' => [$dataCvE->t_contratado,$dataCvE->t_executado,($dataCvE->t_contratado - $dataCvE->t_executado)]];
-
-        $dataEpD = [
-            'planejado' => $dataset['valores']['planejado'],
-            'contratado' => $dataset['valores']['contratado'],
-            'empenhado' => $dataset['valores']['empenhado'],
-            'executado' => $dataset['valores']['executado'],
-            'saldo' => $dataset['valores']['saldo'],
-            'departamentos' => $dataset['departamentos'],
-        ];
 
         return view('dashboard.index', [
             'mensagem'=>$mensagem,
             'filtros' => $filtros,
             'departamentos' => $departamentos,
-            'chartCvE'=>$chartCvE->build($grafico),
-            'chartEpD'=>$chartEpD->build($dataEpD)
+            'chartCvE'=>$chartCvE->build($filtros),
+            'chartEpD'=>$chartEpD->build($filtros),
+            'chartVtO'=>$chartVtO->build($filtros)
         ]);
     }
 }

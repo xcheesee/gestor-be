@@ -2,6 +2,7 @@
 
 namespace App\Charts;
 
+use App\Models\ExecucaoFinanceira;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 
 class ExecucaoPorDepartamento
@@ -13,19 +14,66 @@ class ExecucaoPorDepartamento
         $this->chart = $chart;
     }
 
-    public function build($dataset)
+    public function build($filtros)
     {
+        $dataset = array('departamentos'=>array(),'valores'=>array(
+            'planejado' => array(),
+            'contratado' => array(),
+            'empenhado' => array(),
+            'executado' => array(),
+            'saldo' => array(),
+        ));
+        $execucoes = ExecucaoFinanceira::query()
+            ->select('execucao_financeira.*')
+            ->leftJoin("contratos",'contrato_id','=','contratos.id')
+            ->leftJoin("departamentos",'contratos.departamento_id','=','departamentos.id')
+            ->when($filtros['departamento'], function ($query, $val) {
+                return $query->where('contratos.departamento_id','=',$val);
+            })
+            ->where('ano','=',$filtros['ano_pesquisa'])
+            ->get();
+
+        $i = 0;
+        foreach($execucoes as $execucao){
+            $k = array_search($execucao->contrato->departamento->nome,$dataset['departamentos']);
+            if($k !== false){
+                $dataset['valores']['planejado'][$k] += $execucao->planejado_inicial;
+                $dataset['valores']['contratado'][$k] += $execucao->contratado_atualizado;
+                $dataset['valores']['empenhado'][$k] += $execucao->empenhado;
+                $dataset['valores']['executado'][$k] += $execucao->executado;
+                $dataset['valores']['saldo'][$k] += $execucao->saldo;
+            }else{
+                $dataset['departamentos'][$i] = $execucao->contrato->departamento->nome;
+                $dataset['valores']['planejado'][$i] = $execucao->planejado_inicial;
+                $dataset['valores']['contratado'][$i] = $execucao->contratado_atualizado;
+                $dataset['valores']['empenhado'][$i] = $execucao->empenhado;
+                $dataset['valores']['executado'][$i] = $execucao->executado;
+                $dataset['valores']['saldo'][$i] = $execucao->saldo;
+                $i++;
+            }
+        }
+        //dd($dataCvE->t_executado);
+
+        $dataEpD = [
+            'planejado' => $dataset['valores']['planejado'],
+            'contratado' => $dataset['valores']['contratado'],
+            'empenhado' => $dataset['valores']['empenhado'],
+            'executado' => $dataset['valores']['executado'],
+            'saldo' => $dataset['valores']['saldo'],
+            'departamentos' => $dataset['departamentos'],
+        ];
+
         $chart = $this->chart->horizontalBarChart()
-            ->setTitle('Execução Financeira por Departamento - '.date('Y'))
+            ->setTitle('Execução Financeira por Departamento - '.$filtros['ano_pesquisa'])
             ->setSubtitle('Comparativo entre os valores de planejado, contratado, empenhado e executado')
             //->setColors(['#FFC107', '#D32F2F'])
-            ->addData('Planejado', $dataset['planejado'])
-            ->addData('Contratado', $dataset['contratado'])
-            ->addData('Empenhado', $dataset['empenhado'])
-            ->addData('Executado', $dataset['executado'])
-            ->addData('Saldo', $dataset['saldo'])
-            ->setXAxis($dataset['departamentos'])
-            ->setHeight(400);
+            ->addData('Planejado', $dataEpD['planejado'])
+            ->addData('Contratado', $dataEpD['contratado'])
+            ->addData('Empenhado', $dataEpD['empenhado'])
+            ->addData('Executado', $dataEpD['executado'])
+            ->addData('Saldo', $dataEpD['saldo'])
+            ->setXAxis($dataEpD['departamentos'])
+            ->setHeight(380);
 
         return $chart;
     }
