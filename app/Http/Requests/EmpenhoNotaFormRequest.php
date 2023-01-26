@@ -25,7 +25,7 @@ class EmpenhoNotaFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
-            'tipo_empenho' => 'nullable|in:complemento,cancelamento',
+            'tipo_empenho' => 'nullable|in:complemento,cancelamento,novo_empenho',
             'numero_nota' => 'nullable|integer',
             'valor_empenho' => 'required',
         ];
