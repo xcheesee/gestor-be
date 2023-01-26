@@ -27,10 +27,10 @@ class ContratoFormRequest extends FormRequest
         return [
             'departamento_id' => 'required',
             'processo_sei' => 'required',
-            'cnpj_cpf' => 'cpf_ou_cnpj',
-            'telefone_empresa' => ["regex:/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/"],
+            'cnpj_cpf' => 'nullable|cpf_ou_cnpj',
+            //'telefone_empresa' => ["regex:/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/"],
             'tipo_objeto' => 'nullable|in:obra,projeto,serviço,aquisição',
-            'email_empresa' => 'email',
+            'email_empresa' => 'nullable|email',
             /*'objeto' => 'required',
             'credor' => 'required',
             'numero_contrato' => 'required',
@@ -45,6 +45,7 @@ class ContratoFormRequest extends FormRequest
     {
         return [
             'required' => "O campo ':attribute' é obrigatório",
+            'processo_sei.unique' => 'Já existe um contrato cadastrado com este Processo no sistema',
             'tipo_objeto.in' => "Valores possíveis para tipo de objeto: 'obra','projeto','serviço','aquisição'",
             'telefone_empresa.regex' => "Formato inválido para telefone",
             'email' => "O campo ':attribute' precisa ser um e-mail válido",
