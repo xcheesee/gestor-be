@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\AbertosVsHomologados;
 use App\Charts\ContratadoVsExecutado;
 use App\Charts\ExecucaoPorDepartamento;
+use App\Charts\ValoresPorDepto;
 use App\Charts\ValoresPorTipoObjetoChart;
 use App\Models\Departamento;
-use App\Models\ExecucaoFinanceira;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -61,7 +61,8 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function dashboard(Request $request,
-        ContratadoVsExecutado $chartCvE, ExecucaoPorDepartamento $chartEpD, ValoresPorTipoObjetoChart $chartVtO
+        ContratadoVsExecutado $chartCvE, ExecucaoPorDepartamento $chartEpD, ValoresPorTipoObjetoChart $chartVtO,
+        AbertosVsHomologados $chartAvH, ValoresPorDepto $chartVpD
     )
     {
         //dd($request);
@@ -80,7 +81,9 @@ class HomeController extends Controller
             'departamentos' => $departamentos,
             'chartCvE'=>$chartCvE->build($filtros),
             'chartEpD'=>$chartEpD->build($filtros),
-            'chartVtO'=>$chartVtO->build($filtros)
+            'chartVtO'=>$chartVtO->build($filtros),
+            'chartAvH'=>$chartAvH->build($filtros),
+            'chartVpD'=>$chartVpD->build($filtros)
         ]);
     }
 }

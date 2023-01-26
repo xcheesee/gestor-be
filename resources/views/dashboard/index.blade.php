@@ -33,7 +33,12 @@
             {!! $chartVtO->container() !!}
         </div>
         <div class="col d-grid gap-2" style="height: 400px;">
-
+            {!! $chartVpD->container() !!}
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center m-3" style="height: 400px;">
+        <div class="col d-grid gap-2" style="height: 400px;">
+            {!! $chartAvH->container() !!}
         </div>
     </div>
     <div class="row d-flex justify-content-center m-3" style="height: 400px;">
@@ -49,6 +54,8 @@
 <script src="{{ asset('js/apexcharts.js') }}"></script>
 
 {{ $chartCvE->script() }}
+{{ $chartAvH->script() }}
 {{ $chartEpD->script() }}
 {{ $chartVtO->script() }}
+{{ $chartVpD->script() }}
 @endsection

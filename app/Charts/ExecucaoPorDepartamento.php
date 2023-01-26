@@ -37,18 +37,18 @@ class ExecucaoPorDepartamento
         foreach($execucoes as $execucao){
             $k = array_search($execucao->contrato->departamento->nome,$dataset['departamentos']);
             if($k !== false){
-                $dataset['valores']['planejado'][$k] += $execucao->planejado_inicial;
-                $dataset['valores']['contratado'][$k] += $execucao->contratado_atualizado;
-                $dataset['valores']['empenhado'][$k] += $execucao->empenhado;
-                $dataset['valores']['executado'][$k] += $execucao->executado;
-                $dataset['valores']['saldo'][$k] += $execucao->saldo;
+                $dataset['valores']['planejado'][$k] += round($execucao->planejado_inicial);
+                $dataset['valores']['contratado'][$k] += round($execucao->contratado_atualizado);
+                $dataset['valores']['empenhado'][$k] += round($execucao->empenhado);
+                $dataset['valores']['executado'][$k] += round($execucao->executado);
+                $dataset['valores']['saldo'][$k] += round($execucao->saldo);
             }else{
                 $dataset['departamentos'][$i] = $execucao->contrato->departamento->nome;
-                $dataset['valores']['planejado'][$i] = $execucao->planejado_inicial;
-                $dataset['valores']['contratado'][$i] = $execucao->contratado_atualizado;
-                $dataset['valores']['empenhado'][$i] = $execucao->empenhado;
-                $dataset['valores']['executado'][$i] = $execucao->executado;
-                $dataset['valores']['saldo'][$i] = $execucao->saldo;
+                $dataset['valores']['planejado'][$i] = round($execucao->planejado_inicial);
+                $dataset['valores']['contratado'][$i] = round($execucao->contratado_atualizado);
+                $dataset['valores']['empenhado'][$i] = round($execucao->empenhado);
+                $dataset['valores']['executado'][$i] = round($execucao->executado);
+                $dataset['valores']['saldo'][$i] = round($execucao->saldo);
                 $i++;
             }
         }
