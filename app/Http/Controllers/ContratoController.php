@@ -515,4 +515,23 @@ class ContratoController extends Controller
         $contratoResource = new ContratoTotalizadores($retornoJson);
         return $contratoResource;
     }
+
+    public function verifica_sei(Request $request)
+    {
+        $numero_sei = $request->input('processo_sei');
+
+        $numero_sei = str_replace(['-', '.', '/', ',', '*'], '', $numero_sei);
+
+        $contrato = Contrato::where('processo_sei', $numero_sei)->first('processo_sei');
+
+        if ($contrato) {
+            return response()->json([
+                'Mensagem' => 'Contrato com este número SEI ja foi cadastrado.'
+            ], 200);
+        } else {
+            return response()->json([
+                'Mensagem' => 'Nenhum contrato este número SEI foi cadastrado.'
+            ], 404);
+        }
+    }
 }
