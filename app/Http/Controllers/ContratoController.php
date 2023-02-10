@@ -523,18 +523,17 @@ class ContratoController extends Controller
     public function verifica_sei(Request $request)
     {
         $numero_sei = $request->input('processo_sei');
-
         $numero_sei = str_replace(['-', '.', '/', ',', '*'], '', $numero_sei);
 
         $contrato = Contrato::where('processo_sei', $numero_sei)->first('processo_sei');
 
         if ($contrato) {
             return response()->json([
-                'Mensagem' => 'Contrato com este número SEI ja foi cadastrado.'
+                'mensagem' => 'Existe um ou mais contratos com este número SEI no sistema.'
             ], 200);
         } else {
             return response()->json([
-                'Mensagem' => 'Nenhum contrato este número SEI foi cadastrado.'
+                'mensagem' => 'Nenhum contrato com este número SEI foi cadastrado.'
             ], 404);
         }
     }
