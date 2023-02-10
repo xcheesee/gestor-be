@@ -64,7 +64,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 
     Route::get('contratos',[ContratoController::class, 'index']);
     Route::get('contratos_vencimento',[ContratoController::class, 'contratos_vencimento']);
-    Route::get('contratos_verificar', [ContratoController::class, 'verifica_sei']);
+    Route::get('contratos_sei', [ContratoController::class, 'verifica_sei']);
     Route::post('contrato', [ContratoController::class, 'store']);
     Route::get('contrato/{id}', [ContratoController::class, 'show']);
     Route::get('contrato_totais/{id}', [ContratoController::class, 'exibeTotalizadores']);
