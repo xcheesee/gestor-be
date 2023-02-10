@@ -520,6 +520,23 @@ class ContratoController extends Controller
         return $contratoResource;
     }
 
+    /**
+     * Verifica se possui um número de processo SEI cadastrado no sistema, caso exista, retorna o código status 200 OK. 
+     * 
+     * Se não, a requisição ira retornar um codigo status 404 Not Found.
+     * 
+     * @authenticated
+     * 
+     * @bodyparam processo_sei string número do processo SEI. Example: 012300013456984444
+     * 
+     * @response 200 {
+     *      "mensagem": "Existe um ou mais contratos com este número SEI no sistema."
+     *  }
+     * 
+     * @response 404 {
+     *      "mensagem": "Nenhum contrato com este número SEI foi cadastrado."
+     *  }
+     */
     public function verifica_sei(Request $request)
     {
         $numero_sei = $request->input('processo_sei');

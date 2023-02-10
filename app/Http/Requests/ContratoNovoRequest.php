@@ -25,7 +25,7 @@ class ContratoNovoRequest extends FormRequest
     {
         return [
             'departamento_id' => 'required',
-            'processo_sei' => 'required|unique:App\Models\Contrato,processo_sei',
+            'processo_sei' => 'required',
         ];
     }
 
@@ -33,7 +33,6 @@ class ContratoNovoRequest extends FormRequest
     {
         return [
             'required' => "O campo ':attribute' é obrigatório",
-            'processo_sei.unique' => 'Já existe um contrato cadastrado com este Processo no sistema',
         ];
     }
 }
