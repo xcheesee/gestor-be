@@ -95,4 +95,84 @@ class Contrato extends Model
         }
         return $texto;
     }
+
+    public function getDiferencaEnvioMinutaAttribute(){
+        if(!$this->envio_material_tecnico or !$this->minuta_edital){
+            return null;
+        }
+        $date1 = date_create_from_format('Y-m-d', $this->envio_material_tecnico);
+        $date2 = date_create_from_format('Y-m-d', $this->minuta_edital);
+        $diff = (array) date_diff($date1,$date2);
+        return $diff;
+    }
+
+    public function getDiferencaEnvioVencimentoAttribute(){
+        if(!$this->envio_material_tecnico or !$this->data_vencimento){
+            return null;
+        }
+        $date1 = date_create_from_format('Y-m-d', $this->envio_material_tecnico);
+        $date2 = date_create_from_format('Y-m-d', $this->data_vencimento);
+        $diff = (array) date_diff($date1,$date2);
+        return $diff;
+    }
+
+    public function getDiferencaMinutaAberturaAttribute(){
+        if(!$this->minuta_edital or !$this->abertura_certame){
+            return null;
+        }
+        $date1 = date_create_from_format('Y-m-d', $this->minuta_edital);
+        $date2 = date_create_from_format('Y-m-d', $this->abertura_certame);
+        $diff = (array) date_diff($date1,$date2);
+        return $diff;
+    }
+
+    public function getDiferencaAberturaHomologacaoAttribute(){
+        if(!$this->homologacao or !$this->abertura_certame){
+            return null;
+        }
+        $date1 = date_create_from_format('Y-m-d', $this->abertura_certame);
+        $date2 = date_create_from_format('Y-m-d', $this->homologacao);
+        $diff = (array) date_diff($date1,$date2);
+        return $diff;
+    }
+
+    public function getDiferencaHomologacaoVencimentoAttribute(){
+        if(!$this->homologacao or !$this->data_vencimento){
+            return null;
+        }
+        $date1 = date_create_from_format('Y-m-d', $this->homologacao);
+        $date2 = date_create_from_format('Y-m-d', $this->data_vencimento);
+        $diff = (array) date_diff($date1,$date2);
+        return $diff;
+    }
+
+    public function getDiferencaHomologacaoVigenciaAttribute(){
+        if(!$this->homologacao or !$this->data_inicio_vigencia){
+            return null;
+        }
+        $date1 = date_create_from_format('Y-m-d', $this->homologacao);
+        $date2 = date_create_from_format('Y-m-d', $this->data_inicio_vigencia);
+        $diff = (array) date_diff($date1,$date2);
+        return $diff;
+    }
+
+    public function getDiferencaVigenciaVencimentoAttribute(){
+        if(!$this->data_vencimento or !$this->data_inicio_vigencia){
+            return null;
+        }
+        $date1 = date_create_from_format('Y-m-d', $this->data_inicio_vigencia);
+        $date2 = date_create_from_format('Y-m-d', $this->data_vencimento);
+        $diff = (array) date_diff($date1,$date2);
+        return $diff;
+    }
+
+    public function getDiferencaVencimentoPrazoMaximoAttribute(){
+        if(!$this->data_vencimento or !$this->data_prazo_maximo){
+            return null;
+        }
+        $date1 = date_create_from_format('Y-m-d', $this->data_prazo_maximo);
+        $date2 = date_create_from_format('Y-m-d', $this->data_vencimento);
+        $diff = (array) date_diff($date1,$date2);
+        return $diff;
+    }
 }

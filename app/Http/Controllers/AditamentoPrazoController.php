@@ -78,7 +78,6 @@ class AditamentoPrazoController extends Controller
      *         "id": 1,
      *         "contrato_id": 5,
      *         "tipo_aditamento": "Acréscimo de valor",
-     *         "valor_aditamento": 1000,
      *         "dias_reajuste": 60,
      *         "percentual": 184
      *     }

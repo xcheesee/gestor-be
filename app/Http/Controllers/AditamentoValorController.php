@@ -61,7 +61,7 @@ class AditamentoValorController extends Controller
         $aditamento = new AditamentoValor;
         $aditamento->contrato_id = $request->input('contrato_id');
         $aditamento->tipo_aditamento = $request->input('tipo_aditamento');
-        $aditamento->valor_aditamento = $request->input('valor_aditamento');
+        $aditamento->valor_aditamento = str_replace(',','.',str_replace('.','',$request->input('valor_aditamento')));
         $aditamento->percentual = $request->input('percentual');
 
         if ($aditamento->save()) {
@@ -130,7 +130,7 @@ class AditamentoValorController extends Controller
         $aditamento = AditamentoValor::findOrFail($request->id);
         $aditamento->contrato_id = $request->input('contrato_id');
         $aditamento->tipo_aditamento = $request->input('tipo_aditamento');
-        $aditamento->valor_aditamento = $request->input('valor_aditamento');
+        $aditamento->valor_aditamento = str_replace(',','.',str_replace('.','',$request->input('valor_aditamento')));
         $aditamento->percentual = $request->input('percentual');
 
         if ($aditamento->save()) {

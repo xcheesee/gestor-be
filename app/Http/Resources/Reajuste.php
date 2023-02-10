@@ -18,7 +18,8 @@ class Reajuste extends JsonResource
             'id' => $this->id,
             'contrato_id' => $this->contrato_id,
             'indice_reajuste' => $this->indice_reajuste,
-            'indice_reajuste' => $this->indice_reajuste,
+            'valor_reajuste' => $this->valor_reajuste,
+            'percentual' => $this->percentual,
         ];
     }
 }

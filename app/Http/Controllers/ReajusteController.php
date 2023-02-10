@@ -58,8 +58,8 @@ class ReajusteController extends Controller
     {
         $reajuste = new Reajuste;
         $reajuste->contrato_id = $request->input('contrato_id');
-        $reajuste->indice_reajuste = $request->input('indice_reajuste');
-        $reajuste->valor_reajuste = $request->input('valor_reajuste');
+        $reajuste->indice_reajuste = str_replace(',','.',str_replace('.','',$request->input('indice_reajuste')));
+        $reajuste->valor_reajuste = str_replace(',','.',str_replace('.','',$request->input('valor_reajuste')));
         $reajuste->percentual = $request->input('percentual');
 
         if ($reajuste->save()) {
@@ -125,8 +125,8 @@ class ReajusteController extends Controller
     {
         $reajuste = Reajuste::findOrFail($request->id);
         $reajuste->contrato_id = $request->input('contrato_id');
-        $reajuste->indice_reajuste = $request->input('indice_reajuste');
-        $reajuste->valor_reajuste = $request->input('valor_reajuste');
+        $reajuste->indice_reajuste = str_replace(',','.',str_replace('.','',$request->input('indice_reajuste')));
+        $reajuste->valor_reajuste = str_replace(',','.',str_replace('.','',$request->input('valor_reajuste')));
         $reajuste->percentual = $request->input('percentual');
 
         if ($reajuste->save()) {

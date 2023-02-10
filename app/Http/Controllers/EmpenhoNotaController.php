@@ -64,7 +64,7 @@ class EmpenhoNotaController extends Controller
         $empenhonota->tipo_empenho = $request->input('tipo_empenho');
         $empenhonota->data_emissao = $request->input('data_emissao');
         $empenhonota->numero_nota = $request->input('numero_nota');
-        $empenhonota->valor_empenho = $request->input('valor_empenho');
+        $empenhonota->valor_empenho = str_replace(',','.',str_replace('.','',$request->input('valor_empenho')));
 
         if ($empenhonota->save()) {
             return new EmpenhoNotaResource($empenhonota);
@@ -137,7 +137,7 @@ class EmpenhoNotaController extends Controller
         $empenhonota->tipo_empenho = $request->input('tipo_empenho');
         $empenhonota->data_emissao = $request->input('data_emissao');
         $empenhonota->numero_nota = $request->input('numero_nota');
-        $empenhonota->valor_empenho = $request->input('valor_empenho');
+        $empenhonota->valor_empenho = str_replace(',','.',str_replace('.','',$request->input('valor_empenho')));
 
         if ($empenhonota->save()) {
             return new EmpenhoNotaResource($empenhonota);

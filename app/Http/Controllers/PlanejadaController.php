@@ -74,7 +74,7 @@ class PlanejadaController extends Controller
         $planejada->modalidade = $request->input('modalidade');
         $planejada->data_emissao_planejado = $request->input('data_emissao_planejado');
         $planejada->numero_planejado = $request->input('numero_planejado');
-        $planejada->valor_planejado = $request->input('valor_planejado');
+        $planejada->valor_planejado = str_replace(',','.',str_replace('.','',$request->input('valor_planejado')));
 
         if ($planejada->save()) {
             return new PlanejadaResource($planejada);
@@ -160,7 +160,7 @@ class PlanejadaController extends Controller
         $planejada->modalidade = $request->input('modalidade');
         $planejada->data_emissao_planejado = $request->input('data_emissao_planejado');
         $planejada->numero_planejado = $request->input('numero_planejado');
-        $planejada->valor_planejado = $request->input('valor_planejado');
+        $planejada->valor_planejado = str_replace(',','.',str_replace('.','',$request->input('valor_planejado')));
 
         if ($planejada->save()) {
             return new PlanejadaResource($planejada);

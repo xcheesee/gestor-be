@@ -13,6 +13,7 @@ class Reajuste extends Model
         'contrato_id',
         'indice_reajuste',
         'valor_reajuste',
+        'percentual',
     ];
 
     public function contrato()

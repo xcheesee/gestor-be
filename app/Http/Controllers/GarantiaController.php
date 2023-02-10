@@ -64,7 +64,7 @@ class GarantiaController extends Controller
         $garantia->contrato_id = $request->input('contrato_id');
         $garantia->instituicao_financeira = $request->input('instituicao_financeira');
         $garantia->numero_documento = $request->input('numero_documento');
-        $garantia->valor_garantia = $request->input('valor_garantia');
+        $garantia->valor_garantia = str_replace(',','.',str_replace('.','',$request->input('valor_garantia')));
         $garantia->data_validade_garantia = $request->input('data_validade_garantia');
 
         if ($garantia->save()) {
@@ -137,7 +137,7 @@ class GarantiaController extends Controller
         $garantia->contrato_id = $request->input('contrato_id');
         $garantia->instituicao_financeira = $request->input('instituicao_financeira');
         $garantia->numero_documento = $request->input('numero_documento');
-        $garantia->valor_garantia = $request->input('valor_garantia');
+        $garantia->valor_garantia = str_replace(',','.',str_replace('.','',$request->input('valor_garantia')));
         $garantia->data_validade_garantia = $request->input('data_validade_garantia');
 
         if ($garantia->save()) {

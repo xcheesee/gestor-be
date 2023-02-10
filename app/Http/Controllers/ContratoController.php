@@ -151,7 +151,7 @@ class ContratoController extends Controller
     {
         $contrato = new Contrato();
         $contrato->departamento_id = $request->input('departamento_id');
-        $contrato->processo_sei = $request->input('processo_sei');
+        $contrato->processo_sei = str_replace(array('.','-','/'),'',$request->input('processo_sei'));
         // $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id');
         // $contrato->departamento_id = $request->input('departamento_id');
         // $contrato->envio_material_tecnico = $request->input('envio_material_tecnico');
@@ -353,29 +353,33 @@ class ContratoController extends Controller
     {
         $contrato = Contrato::findOrFail($id);
         $contrato->departamento_id = $request->input('departamento_id');
+        $contrato->processo_sei = str_replace(array('.','-','/'),'',$request->input('processo_sei'));
+
         $contrato->empresa_id = $request->input('empresa_id') ? $request->input('empresa_id') : null;
         $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id') ? $request->input('licitacao_modelo_id') : null;
         $contrato->envio_material_tecnico = $request->input('envio_material_tecnico') ? $request->input('envio_material_tecnico') : null;
         $contrato->minuta_edital = $request->input('minuta_edital') ? $request->input('minuta_edital') : null;
         $contrato->abertura_certame = $request->input('abertura_certame') ? $request->input('abertura_certame') : null;
         $contrato->homologacao = $request->input('homologacao') ? $request->input('homologacao') : null;
-        $contrato->processo_sei = $request->input('processo_sei');
         $contrato->credor = $request->input('credor') ? $request->input('credor') : null;
-        $contrato->cnpj_cpf = $request->input('cnpj_cpf') ? $request->input('cnpj_cpf') : null;
+        $contrato->cnpj_cpf = $request->input('cnpj_cpf') ? str_replace(array('.','-','/'),'',$request->input('cnpj_cpf')) : null;
         $contrato->tipo_objeto = $request->input('tipo_objeto') ? $request->input('tipo_objeto') : null;
         $contrato->objeto = $request->input('objeto') ? $request->input('objeto') : null;
-        $contrato->numero_contrato = $request->input('numero_contrato') ? $request->input('numero_contrato') : null;
+        $contrato->numero_contrato = $request->input('numero_contrato') ? str_replace(array('.','-','/'),'',$request->input('numero_contrato')) : null;
         $contrato->data_assinatura = $request->input('data_assinatura') ? $request->input('data_assinatura') : null;
-        $contrato->valor_contrato = $request->input('valor_contrato') ? $request->input('valor_contrato') : null;
-        $contrato->valor_mensal_estimativo = $request->input('valor_mensal_estimativo') ? $request->input('valor_mensal_estimativo') : null;
+        $contrato->valor_contrato = $request->input('valor_contrato') ? str_replace(',','.',str_replace('.','',$request->input('valor_contrato'))) : null;
+        $contrato->valor_mensal_estimativo = $request->input('valor_mensal_estimativo') ? str_replace(',','.',str_replace('.','',$request->input('valor_mensal_estimativo'))) : null;
         $contrato->data_inicio_vigencia = $request->input('data_inicio_vigencia') ? $request->input('data_inicio_vigencia') : null;
         $contrato->data_vencimento = $request->input('data_vencimento') ? $request->input('data_vencimento') : null;
         $contrato->condicao_pagamento = $request->input('condicao_pagamento') ? $request->input('condicao_pagamento') : null;
         $contrato->prazo_a_partir_de = $request->input('prazo_a_partir_de') ? $request->input('prazo_a_partir_de') : null;
         $contrato->data_prazo_maximo = $request->input('data_prazo_maximo') ? $request->input('data_prazo_maximo') : null;
         $contrato->numero_nota_reserva = $request->input('numero_nota_reserva') ? $request->input('numero_nota_reserva') : null;
-        $contrato->valor_reserva = $request->input('valor_reserva') ? $request->input('valor_reserva') : null;
+        $contrato->valor_reserva = $request->input('valor_reserva') ? str_replace(',','.',str_replace('.','',$request->input('valor_reserva'))) : null;
         $contrato->outras_informacoes = $request->input('outras_informacoes') ? $request->input('outras_informacoes') : null;
+		$contrato->nome_empresa = $request->input('nome_empresa') ? $request->input('nome_empresa') : null;
+        $contrato->telefone_empresa = $request->input('telefone_empresa') ? $request->input('telefone_empresa') : null;
+        $contrato->email_empresa = $request->input('email_empresa') ? $request->input('email_empresa') : null;
         $contrato->user_id = auth()->user()->id;
 
         if ($contrato->save()) {

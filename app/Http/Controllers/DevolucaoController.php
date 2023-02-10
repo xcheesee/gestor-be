@@ -65,7 +65,7 @@ class DevolucaoController extends Controller
         $devolucao->ano = $request->input('ano');
         $devolucao->data_devolucao = $request->input('data_devolucao');
         $devolucao->numero_devolucao = $request->input('numero_devolucao');
-        $devolucao->valor_devolucao = $request->input('valor_devolucao');
+        $devolucao->valor_devolucao = str_replace(',','.',str_replace('.','',$request->input('valor_devolucao')));
         if ($devolucao->save()) {
             return new DevolucaoResource($devolucao);
         }
@@ -138,7 +138,7 @@ class DevolucaoController extends Controller
         $devolucao->ano = $request->input('ano');
         $devolucao->data_devolucao = $request->input('data_devolucao');
         $devolucao->numero_devolucao = $request->input('numero_devolucao');
-        $devolucao->valor_devolucao = $request->input('valor_devolucao');
+        $devolucao->valor_devolucao = str_replace(',','.',str_replace('.','',$request->input('valor_devolucao')));
 
         if ($devolucao->save()) {
             return new DevolucaoResource($devolucao);
