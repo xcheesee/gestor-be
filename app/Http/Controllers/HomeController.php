@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Charts\AbertosVsHomologados;
-use App\Charts\ContratadoVsExecutado;
-use App\Charts\ExecucaoPorDepartamento;
-use App\Charts\ValoresPorDepto;
-use App\Charts\ValoresPorTipoObjetoChart;
+use App\Charts\Chart1;
+use App\Charts\Chart2;
+use App\Charts\Chart3;
+use App\Charts\Chart4;
+use App\Charts\Chart5;
 use App\Models\Departamento;
 use Illuminate\Http\Request;
 
@@ -61,8 +61,8 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function dashboard(Request $request,
-        ContratadoVsExecutado $chartCvE, ExecucaoPorDepartamento $chartEpD, ValoresPorTipoObjetoChart $chartVtO,
-        AbertosVsHomologados $chartAvH, ValoresPorDepto $chartVpD
+        Chart1 $chart1, Chart2 $chart2, Chart3 $chart3,
+        Chart4 $chart4, Chart5 $chart5
     )
     {
         //dd($request);
@@ -75,15 +75,31 @@ class HomeController extends Controller
         $mensagem = $request->session()->get('mensagem');
         //dd($execucoes);
 
+        $dataset_chart6 = "{
+            name: 'PRODUCT A',
+            data: [44, 55, 41, 67, 22, 43]
+          }, {
+            name: 'PRODUCT B',
+            data: [13, 23, 20, 8, 13, 27]
+          }, {
+            name: 'PRODUCT C',
+            data: [11, 17, 15, 15, 21, 14]
+          }, {
+            name: 'PRODUCT D',
+            data: [21, 7, 25, 13, 22, 8]
+          }
+        ";
+
         return view('dashboard.index', [
             'mensagem'=>$mensagem,
             'filtros' => $filtros,
             'departamentos' => $departamentos,
-            'chartCvE'=>$chartCvE->build($filtros),
-            'chartEpD'=>$chartEpD->build($filtros),
-            'chartVtO'=>$chartVtO->build($filtros),
-            'chartAvH'=>$chartAvH->build($filtros),
-            'chartVpD'=>$chartVpD->build($filtros)
+            'chart1'=>$chart1->build($filtros),
+            'chart2'=>$chart2->build($filtros),
+            'chart3'=>$chart3->build($filtros),
+            'chart4'=>$chart4->build($filtros),
+            'chart5'=>$chart5->build($filtros),
+            'dataset_chart6'=>$dataset_chart6
         ]);
     }
 }

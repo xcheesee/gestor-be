@@ -5,7 +5,7 @@ namespace App\Charts;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Illuminate\Support\Facades\DB;
 
-class ContratadoVsExecutado
+class Chart4
 {
     protected $chart;
 

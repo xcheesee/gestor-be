@@ -50,6 +50,15 @@ class Contrato extends JsonResource
             'email_empresa' => $this->email_empresa,
             'outras_informacoes' => $this->outras_informacoes,
             'execucao_financeira' => $this->execucao_financeira,
+            'dias_vigente' => $this->dias_vigente,
+            'diferenca_envio_minuta' => $this->diferenca_envio_minuta ? $this->diferenca_envio_minuta['days'] : null,
+            'diferenca_envio_vencimento' => $this->diferenca_envio_vencimento ? $this->diferenca_envio_vencimento['days'] : null,
+            'diferenca_minuta_abertura' => $this->diferenca_minuta_abertura ? $this->diferenca_minuta_abertura['days'] : null,
+            'diferenca_abertura_homologacao' => $this->diferenca_abertura_homologacao ? $this->diferenca_abertura_homologacao['days'] : null,
+            'diferenca_homologacao_vencimento' => $this->diferenca_homologacao_vencimento ? $this->diferenca_homologacao_vencimento['days'] : null,
+            'diferenca_homologacao_vigencia' => $this->diferenca_homologacao_vigencia ? $this->diferenca_homologacao_vigencia['days'] : null,
+            'diferenca_vigencia_vencimento' => $this->diferenca_vigencia_vencimento ? $this->diferenca_vigencia_vencimento['days'] : null,
+            'diferenca_vencimento_prazo_maximo' => $this->diferenca_vencimento_prazo_maximo ? $this->diferenca_vencimento_prazo_maximo['days'] : null,
         ];
     }
 }

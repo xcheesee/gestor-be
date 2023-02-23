@@ -41,7 +41,7 @@ class ContratoController extends Controller
     public function index()
     {
         $contratos = QueryBuilder::for(Contrato::class)
-            ->select('empresas.nome as nome_empresa', 'contratos.*')
+            ->select('empresas.nome as nome_empresa', 'contratos.*', DB::raw('DATEDIFF(data_vencimento,data_inicio_vigencia) AS dias_vigente'))
             ->leftJoin('empresas', 'empresas.id', 'contratos.empresa_id')
             ->allowedFilters([
                     'processo_sei',
@@ -51,7 +51,7 @@ class ContratoController extends Controller
                     AllowedFilter::scope('vencimento_depois_de'),
                     AllowedFilter::scope('vencimento_antes_de'),
                 ])
-            ->allowedSorts('id', 'processo_sei', 'credor', 'nome_empresa', 'numero_contrato', 'data_inicio_vigencia', 'data_vencimento')
+            ->allowedSorts('id', 'processo_sei', 'credor', 'nome_empresa', 'numero_contrato', 'data_inicio_vigencia', 'data_vencimento', 'dias_vigente')
             ->paginate(15);
         return ContratoResource::collection($contratos);
     }
@@ -521,18 +521,18 @@ class ContratoController extends Controller
     }
 
     /**
-     * Verifica se possui um número de processo SEI cadastrado no sistema, caso exista, retorna o código status 200 OK. 
-     * 
+     * Verifica se possui um número de processo SEI cadastrado no sistema, caso exista, retorna o código status 200 OK.
+     *
      * Se não, a requisição ira retornar um codigo status 404 Not Found.
-     * 
+     *
      * @authenticated
-     * 
+     *
      * @bodyparam processo_sei string número do processo SEI. Example: 012300013456984444
-     * 
+     *
      * @response 200 {
      *      "mensagem": "Existe um ou mais contratos com este número SEI no sistema."
      *  }
-     * 
+     *
      * @response 404 {
      *      "mensagem": "Nenhum contrato com este número SEI foi cadastrado."
      *  }

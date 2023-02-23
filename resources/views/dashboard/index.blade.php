@@ -30,32 +30,34 @@
     </form>
     <div class="row d-flex justify-content-center m-3" style="height: 400px;">
         <div class="col d-grid gap-2" style="height: 400px;">
-            {!! $chartVtO->container() !!}
+            {!! $chart1->container() !!}
         </div>
         <div class="col d-grid gap-2" style="height: 400px;">
-            {!! $chartVpD->container() !!}
-        </div>
-    </div>
-    <div class="row d-flex justify-content-center m-3" style="height: 400px;">
-        <div class="col d-grid gap-2" style="height: 400px;">
-            {!! $chartAvH->container() !!}
+            {!! $chart2->container() !!}
         </div>
     </div>
     <div class="row d-flex justify-content-center m-3" style="height: 400px;">
         <div class="col d-grid gap-2" style="height: 400px;">
-            {!! $chartCvE->container() !!}
+            {!! $chart3->container() !!}
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center m-3" style="height: 400px;">
+        <div class="col d-grid gap-2" style="height: 400px;">
+            {!! $chart4->container() !!}
         </div>
         <div class="col d-grid gap-2" style="height: 400px;">
-            {!! $chartEpD->container() !!}
+            {!! $chart5->container() !!}
         </div>
     </div>
 </div>
 
+
 <script src="{{ asset('js/apexcharts.js') }}"></script>
 
-{{ $chartCvE->script() }}
-{{ $chartAvH->script() }}
-{{ $chartEpD->script() }}
-{{ $chartVtO->script() }}
-{{ $chartVpD->script() }}
+{{ $chart1->script() }}
+{{ $chart4->script() }}
+
+@include('utilitarios.charts', ['chart' => $chart2])
+@include('utilitarios.charts', ['chart' => $chart3])
+@include('utilitarios.charts_multi', ['chart' => $chart5])
 @endsection
