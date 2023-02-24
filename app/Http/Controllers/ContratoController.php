@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DepartamentoHelper;
 use App\Http\Requests\ContratoFormRequest;
 use App\Http\Requests\ContratoNovoRequest;
 use App\Models\Contrato as Contrato;
@@ -40,9 +41,13 @@ class ContratoController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
+        $userDeptos = DepartamentoHelper::ids_deptos($user);
+
         $contratos = QueryBuilder::for(Contrato::class)
             ->select('empresas.nome as nome_empresa', 'contratos.*', DB::raw('DATEDIFF(data_vencimento,data_inicio_vigencia) AS dias_vigente'))
             ->leftJoin('empresas', 'empresas.id', 'contratos.empresa_id')
+            ->whereIn('contratos.departamento_id',$userDeptos)
             ->allowedFilters([
                     'processo_sei',
                     AllowedFilter::partial('nome_empresa','empresas.nome'),
