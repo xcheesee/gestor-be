@@ -19,13 +19,9 @@ class Chart5
     public function build($filtros)
     {
         $dataset = array(
-            'departamentos'=>array(),
-            'valores'=>array(
-                'aquisição' => array(),
-                'obra' => array(),
-                'projeto' => array(),
-                'serviço' => array()
-            )
+            'empresas'=>array(),
+            'qtd'=>array(),
+            'valor'=>array()
         );
         $dados = Contrato::query()
             ->select(
