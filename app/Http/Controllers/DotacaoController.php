@@ -66,7 +66,7 @@ class DotacaoController extends Controller
     public function store(DotacaoFormRequest $request)
     {
         $dotacao = new Dotacao;
-        $dotacao->dotacao_tipo_id = $request->input('dotacao_tipo_id') > 0 ? $request->input('dotacao_tipo_id') : null;
+        $dotacao->dotacao_tipo_id = $request->input('dotacao_tipo_id') ? $request->input('dotacao_tipo_id') : null;
         $dotacao->contrato_id = $request->input('contrato_id');
 
         if ($dotacao->save()) {
