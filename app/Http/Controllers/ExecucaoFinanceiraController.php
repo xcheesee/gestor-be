@@ -78,11 +78,11 @@ class ExecucaoFinanceiraController extends Controller
         $executada->ano = $request->input('ano');
         $executada->planejado_inicial = $request->input('planejado_inicial');
         $executada->contratado_inicial = $request->input('contratado_inicial');
-        $executada->valor_reajuste = str_replace(',','.',str_replace('.','',$request->input('valor_reajuste')));
-        $executada->valor_aditivo = str_replace(',','.',str_replace('.','',$request->input('valor_aditivo')));
-        $executada->valor_cancelamento = str_replace(',','.',str_replace('.','',$request->input('valor_cancelamento')));
-        $executada->empenhado = $request->input('empenhado');
-        $executada->executado = $request->input('executado');
+        $executada->valor_reajuste = 0; //str_replace(',','.',str_replace('.','',$request->input('valor_reajuste')));
+        $executada->valor_aditivo = 0; //str_replace(',','.',str_replace('.','',$request->input('valor_aditivo')));
+        $executada->valor_cancelamento = 0; //str_replace(',','.',str_replace('.','',$request->input('valor_cancelamento')));
+        $executada->empenhado = 0; //$request->input('empenhado');
+        $executada->executado = 0; //$request->input('executado');
         if ($executada->save()) {
             return new ExecucaoFinanceiraResource($executada);
         }

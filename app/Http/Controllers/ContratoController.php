@@ -9,6 +9,7 @@ use App\Models\Contrato as Contrato;
 use App\Http\Resources\Contrato as ContratoResource;
 use App\Http\Resources\ContratoTotalizadores;
 use App\Http\Resources\ContratoVencimento as ContratoVencimentoResource;
+use App\Models\AditamentoPrazo;
 use App\Models\ExecucaoFinanceira;
 use App\Models\Planejada;
 use App\Models\Dotacao;
@@ -157,6 +158,7 @@ class ContratoController extends Controller
         $contrato = new Contrato();
         $contrato->departamento_id = $request->input('departamento_id');
         $contrato->processo_sei = str_replace(array('.','-','/'),'',$request->input('processo_sei'));
+        $contrato->estado_id = 1; //Cria contratos com o ID da primeira etapa
         // $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id');
         // $contrato->departamento_id = $request->input('departamento_id');
         // $contrato->envio_material_tecnico = $request->input('envio_material_tecnico');
@@ -208,6 +210,8 @@ class ContratoController extends Controller
      *         "email_empresa": "teste@prefeitura.com",
      *         "licitacao_modelo_id": 1,
      *         "licitacao_modelo": "Concorrência",
+     *         "estado_id": 1,
+     *         "estado": "Elaboração Material Técnico",
      *         "envio_material_tecnico": "2022-06-20",
      *         "minuta_edital": "2022-06-21",
      *         "abertura_certame": "2022-06-22",
@@ -267,6 +271,28 @@ class ContratoController extends Controller
             $execucao_financeira[$executada->mes.'-'.$executada->ano]['empenhado'] = $executada->empenhado;
             $execucao_financeira[$executada->mes.'-'.$executada->ano]['saldo'] = $executada->saldo;
         }
+
+        $vl_contrato = $contrato->valor_contrato;
+        if($vl_contrato){
+            $aditamentos_valor = AditamentoValor::query()->where('contrato_id','=',$id)->get();
+            foreach($aditamentos_valor as $adt_val){
+                if($adt_val->tipo_aditamento == 'Acréscimo de valor') $vl_contrato += $adt_val->valor_aditamento;
+                elseif($adt_val->tipo_aditamento == 'Redução de valor') $vl_contrato -= $adt_val->valor_aditamento;
+            }
+        }
+        $contrato->adt_valor_corrigido = $vl_contrato;
+
+        $dt_vencto = date_create_from_format('Y-m-d', $contrato->data_vencimento);
+        if($vl_contrato){
+            $aditamentos_prazo = AditamentoPrazo::query()->where('contrato_id','=',$id)->get();
+            foreach($aditamentos_prazo as $adt_prz){
+                if($adt_prz->tipo_aditamento == 'Prorrogação de prazo')
+                    date_add($dt_vencto,date_interval_create_from_date_string($adt_prz->dias_reajuste." days"));
+                elseif($adt_prz->tipo_aditamento == 'Supressão de prazo')
+                    date_sub($dt_vencto,date_interval_create_from_date_string($adt_prz->dias_reajuste." days"));
+            }
+        }
+        $contrato->adt_prazo_corrigido = $dt_vencto->format("Y-m-d");
 
         $execucaoFinanceira = (object) $execucao_financeira;
         $contrato->execucao_financeira = $execucaoFinanceira;
@@ -330,6 +356,8 @@ class ContratoController extends Controller
      *         "email_empresa": "teste@prefeitura.com",
      *         "licitacao_modelo_id": 1,
      *         "licitacao_modelo": "Concorrência",
+     *         "estado_id": 2,
+     *         "estado": "Em Contratação",
      *         "envio_material_tecnico": "2022-06-20",
      *         "minuta_edital": "2022-06-21",
      *         "abertura_certame": "2022-06-22",
@@ -362,6 +390,7 @@ class ContratoController extends Controller
 
         $contrato->empresa_id = $request->input('empresa_id') ? $request->input('empresa_id') : null;
         $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id') ? $request->input('licitacao_modelo_id') : null;
+        $contrato->estado_id = $request->input('estado_id') ? $request->input('estado_id') : $contrato->estado_id;
         $contrato->envio_material_tecnico = $request->input('envio_material_tecnico') ? $request->input('envio_material_tecnico') : null;
         $contrato->minuta_edital = $request->input('minuta_edital') ? $request->input('minuta_edital') : null;
         $contrato->abertura_certame = $request->input('abertura_certame') ? $request->input('abertura_certame') : null;
@@ -472,10 +501,21 @@ class ContratoController extends Controller
         $executadas = ExecucaoFinanceira::query()->where('contrato_id','=',$id)->get();
         $aditamentos = AditamentoValor::query()->where('contrato_id','=',$id)->get();
 
+        $vl_contrato = $contrato->valor_contrato;
+        if($vl_contrato){
+            $aditamentos_valor = AditamentoValor::query()->where('contrato_id','=',$id)->get();
+            foreach($aditamentos_valor as $adt_val){
+                if($adt_val->tipo_aditamento == 'Acréscimo de valor') $vl_contrato += $adt_val->valor_aditamento;
+                elseif($adt_val->tipo_aditamento == 'Redução de valor') $vl_contrato -= $adt_val->valor_aditamento;
+            }
+        }
+        $contrato->adt_valor_corrigido = $vl_contrato;
+
         //array que irá retornar todos os valores solicitados. Os de contrato e reserva já se encontram no contrato, os demais precisamos somar
         $retorno = array();
         $retorno['id'] = $contrato->id;
         $retorno['valor_contrato'] = $contrato->valor_contrato;
+        $retorno['valor_contrato_aditamentos'] = $contrato->adt_valor_corrigido;
         $retorno['valor_reserva'] = $contrato->valor_reserva > 0 ? $contrato->valor_reserva : 0;
         $retorno['valor_dotacoes'] = 0;
         $retorno['valor_empenhos'] = 0;
@@ -514,7 +554,7 @@ class ContratoController extends Controller
         foreach($aditamentos as $aditamento) {
             if ($aditamento->tipo_aditamento === "Redução de valor" || $aditamento->tipo_aditamento === NULL) {
                  $retorno['valor_aditamentos'] -= $aditamento->valor_aditamento;
-            } else {
+            } elseif ($aditamento->tipo_aditamento === "Acréscimo de valor") {
                 $retorno['valor_aditamentos'] += $aditamento->valor_aditamento;
             }
         }

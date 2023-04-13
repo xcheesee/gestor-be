@@ -13,6 +13,7 @@ use App\Http\Controllers\DotacaoRecursoController;
 use App\Http\Controllers\DotacaoTipoController;
 use App\Http\Controllers\EmpenhoNotaController;
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\EstadoController;
 use App\Http\Controllers\ExecucaoFinanceiraController;
 use App\Http\Controllers\GarantiaController;
 use App\Http\Controllers\GestaoFiscalizacaoController;
@@ -174,6 +175,8 @@ Route::post('subprefeitura', [SubprefeituraController::class, 'store']);
 Route::get('subprefeitura/{id}', [SubprefeituraController::class, 'show']);
 Route::put('subprefeitura/{id}', [SubprefeituraController::class, 'update']);
 Route::delete('subprefeitura/{id}', [SubprefeituraController::class, 'destroy']);
+
+Route::get('estados',[EstadoController::class, 'index']);
 
 Route::get('licitacaomodelos',[LicitacaoModeloController::class, 'index']);
 Route::post('licitacaomodelo', [LicitacaoModeloController::class, 'store']);

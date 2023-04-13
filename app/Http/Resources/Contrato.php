@@ -25,6 +25,8 @@ class Contrato extends JsonResource
             'empresa_email' => $this->empresa ? $this->empresa->email : null,
             'licitacao_modelo_id' => $this->licitacao_modelo_id,
             'licitacao_modelo' => $this->licitacao_modelo ? $this->licitacao_modelo->nome : null,
+            'estado_id' => $this->estado_id,
+            'estado' => $this->estado ? $this->estado->valor : null,
             'envio_material_tecnico' => $this->envio_material_tecnico,
             'minuta_edital' => $this->minuta_edital,
             'abertura_certame' => $this->abertura_certame,
@@ -58,7 +60,8 @@ class Contrato extends JsonResource
             'diferenca_homologacao_vencimento' => $this->diferenca_homologacao_vencimento ? $this->diferenca_homologacao_vencimento['days'] : null,
             'diferenca_homologacao_vigencia' => $this->diferenca_homologacao_vigencia ? $this->diferenca_homologacao_vigencia['days'] : null,
             'diferenca_vigencia_vencimento' => $this->diferenca_vigencia_vencimento ? $this->diferenca_vigencia_vencimento['days'] : null,
-            'diferenca_vencimento_prazo_maximo' => $this->diferenca_vencimento_prazo_maximo ? $this->diferenca_vencimento_prazo_maximo['days'] : null,
+            'adt_valor_corrigido' => $this->adt_valor_corrigido ? $this->adt_valor_corrigido : null,
+            'adt_prazo_corrigido' => $this->adt_prazo_corrigido ? $this->adt_prazo_corrigido : null,
         ];
     }
 }

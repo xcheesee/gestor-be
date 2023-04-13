@@ -53,6 +53,11 @@ class Contrato extends Model
         return $this->belongsTo(LicitacaoModelo::class);
     }
 
+    public function estado()
+    {
+        return $this->belongsTo(Estado::class);
+    }
+
     public function scopeInicioDepoisDe(Builder $query, $date): Builder
     {
         return $query->where('data_inicio_vigencia', '>=', Carbon::parse($date));
