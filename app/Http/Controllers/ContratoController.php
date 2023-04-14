@@ -282,17 +282,19 @@ class ContratoController extends Controller
         }
         $contrato->adt_valor_corrigido = $vl_contrato;
 
-        $dt_vencto = date_create_from_format('Y-m-d', $contrato->data_vencimento);
-        if($vl_contrato){
-            $aditamentos_prazo = AditamentoPrazo::query()->where('contrato_id','=',$id)->get();
-            foreach($aditamentos_prazo as $adt_prz){
-                if($adt_prz->tipo_aditamento == 'Prorrogação de prazo')
-                    date_add($dt_vencto,date_interval_create_from_date_string($adt_prz->dias_reajuste." days"));
-                elseif($adt_prz->tipo_aditamento == 'Supressão de prazo')
-                    date_sub($dt_vencto,date_interval_create_from_date_string($adt_prz->dias_reajuste." days"));
+        if ($contrato->data_vencimento){
+            $dt_vencto = date_create_from_format('Y-m-d', $contrato->data_vencimento);
+            if($vl_contrato){
+                $aditamentos_prazo = AditamentoPrazo::query()->where('contrato_id','=',$id)->get();
+                foreach($aditamentos_prazo as $adt_prz){
+                    if($adt_prz->tipo_aditamento == 'Prorrogação de prazo')
+                        date_add($dt_vencto,date_interval_create_from_date_string($adt_prz->dias_reajuste." days"));
+                    elseif($adt_prz->tipo_aditamento == 'Supressão de prazo')
+                        date_sub($dt_vencto,date_interval_create_from_date_string($adt_prz->dias_reajuste." days"));
+                }
             }
+            $contrato->adt_prazo_corrigido = $dt_vencto->format("Y-m-d");
         }
-        $contrato->adt_prazo_corrigido = $dt_vencto->format("Y-m-d");
 
         $execucaoFinanceira = (object) $execucao_financeira;
         $contrato->execucao_financeira = $execucaoFinanceira;
