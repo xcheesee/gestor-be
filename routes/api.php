@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExecFinanceiraController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -190,3 +191,7 @@ Route::post('reajuste', [ReajusteController::class, 'store']);
 Route::get('reajuste/{id}', [ReajusteController::class, 'show']);
 Route::put('reajuste/{id}', [ReajusteController::class, 'update']);
 Route::delete('reajuste/{id}', [ReajusteController::class, 'destroy']);
+
+Route::get('exec_financeira/{id}', [ExecFinanceiraController::class, 'searchAnoExec']);
+Route::get('exec_financeira', [ExecFinanceiraController::class, 'indexAnoExec']);
+Route::post('exec_financeira', [ExecFinanceiraController::class, 'createAnoExec']);
