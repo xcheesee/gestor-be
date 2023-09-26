@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AnoDeExecResource;
 use App\Models\AnoDeExecucao;
+use App\Models\MesDeExecucao;
 use Illuminate\Http\Request;
 
 class ExecFinanceiraController extends Controller
 {
-    public function indexAnoExec()
+    public function indexAnoExec($id)
     {
-        $anos = AnoDeExecucao::all();
+        $anos = AnoDeExecucao::where('id_contrato', $id)->get();
+
         return AnoDeExecResource::collection($anos);
     }
 
@@ -20,6 +22,7 @@ class ExecFinanceiraController extends Controller
 
         $ano->ano = $request->input('ano');
         $ano->id_contrato = $request->input('id_contrato');
+        $ano->mes_inicial = $request->input('mes_inicial');
         $ano->planejado = $request->input('planejado');
         $ano->reservado = $request->input('reservado');
         $ano->contratado = $request->input('contratado');
@@ -32,16 +35,8 @@ class ExecFinanceiraController extends Controller
         }
     }
 
-    public function searchAnoExec($id) 
+    public function createMesExec()
     {
-        $ano = AnoDeExecucao::find($id);
-        if($ano){
-            return new AnoDeExecResource($ano);
-        }
-        return response()->json([
-            'mensagem' => 'Ano de Execução não encontrado!'
-        ]);
+        
     }
-
-
 }

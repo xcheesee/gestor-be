@@ -192,6 +192,5 @@ Route::get('reajuste/{id}', [ReajusteController::class, 'show']);
 Route::put('reajuste/{id}', [ReajusteController::class, 'update']);
 Route::delete('reajuste/{id}', [ReajusteController::class, 'destroy']);
 
-Route::get('exec_financeira/{id}', [ExecFinanceiraController::class, 'searchAnoExec']);
-Route::get('exec_financeira', [ExecFinanceiraController::class, 'indexAnoExec']);
+Route::get('exec_financeira/{id}', [ExecFinanceiraController::class, 'indexAnoExec']);
 Route::post('exec_financeira', [ExecFinanceiraController::class, 'createAnoExec']);

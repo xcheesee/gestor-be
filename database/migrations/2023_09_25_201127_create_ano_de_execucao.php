@@ -17,6 +17,7 @@ class CreateAnoDeExecucao extends Migration
             $table->id();
             $table->integer('ano');
             $table->unsignedBigInteger('id_contrato');
+            $table->string('mes_inicial');
             $table->string('planejado');
             $table->string('reservado');
             $table->string('contratado');

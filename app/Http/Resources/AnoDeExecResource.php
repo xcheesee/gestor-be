@@ -15,8 +15,9 @@ class AnoDeExecResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'ano' => $this->id,
+            'ano' => $this->ano,
             'id_contrato' => $this->id_contrato,
+            'mes_inicial' => $this->mes_inicial,
             'planejado' => $this->planejado,
             'reservado' => $this->reservado,
             'contratado' => $this->contratado
