@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AnoDeExecResource extends JsonResource
+class MesDeExecResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,13 +15,9 @@ class AnoDeExecResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'ano' => $this->ano,
-            'id_contrato' => $this->id_contrato,
-            'mes_inicial' => $this->mes_inicial,
-            'planejado' => $this->planejado,
-            'reservado' => $this->reservado,
-            'contratado' => $this->contratado
+            'id_ano_execucao' => $this->id_ano_execucao,
+            'mes' => $this->mes,
+            'execucao' => $this->execucao,
         ];
     }
 }

@@ -194,3 +194,6 @@ Route::delete('reajuste/{id}', [ReajusteController::class, 'destroy']);
 
 Route::get('exec_financeira/{id}', [ExecFinanceiraController::class, 'indexAnoExec']);
 Route::post('exec_financeira', [ExecFinanceiraController::class, 'createAnoExec']);
+
+Route::post('exec_mes', [ExecFinanceiraController::class, 'createMesExec']);
+Route::get('exec_mes', [ExecFinanceiraController::class, 'createMesExec']);
