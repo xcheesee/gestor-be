@@ -15,6 +15,7 @@ class MesDeExecResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id, 
             'id_ano_execucao' => $this->id_ano_execucao,
             'mes' => $this->mes,
             'execucao' => $this->execucao,
