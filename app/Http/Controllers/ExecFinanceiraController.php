@@ -12,9 +12,9 @@ class ExecFinanceiraController extends Controller
 {
     public function indexAnoExec($id)
     {
-        $anos = AnoDeExecucao::where('id_contrato', $id)->get();
+        $anos = AnoDeExecucao::where('id_contrato', $id)->first();
 
-        return AnoDeExecResource::collection($anos);
+        return new AnoDeExecResource($anos);
     }
 
     public function createAnoExec(Request $request)
