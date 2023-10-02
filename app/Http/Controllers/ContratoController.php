@@ -33,6 +33,7 @@ class ContratoController extends Controller
      *
      * @queryParam filter[processo_sei] Filtro de número do processo. Example: 0123000134569000
      * @queryParam filter[nome_empresa] Filtro de nome completo ou parte do nome da empresa. Example: Teste SA
+     * @queryParam filter[departamento] Filtro de nome completo ou parte do nome da unidade requisitora. Example: Teste SA
      * @queryParam filter[inicio_depois_de] Filtro inicial de período da data de início da vigência. Example: 2022-01-01
      * @queryParam filter[inicio_antes_de] Filtro final de período da data de início da vigência. Example: 2022-05-20
      * @queryParam filter[vencimento_depois_de] Filtro inicial de período da data de vencimento do contrato. Example: 2023-01-01
@@ -46,18 +47,21 @@ class ContratoController extends Controller
         $userDeptos = DepartamentoHelper::ids_deptos($user);
 
         $contratos = QueryBuilder::for(Contrato::class)
-            ->select('empresas.nome as nome_empresa', 'contratos.*', DB::raw('DATEDIFF(data_vencimento,data_inicio_vigencia) AS dias_vigente'))
+            ->select('empresas.nome as nome_empresa', 'departamentos.nome as nome_departamento', 'contratos.*', DB::raw('DATEDIFF(data_vencimento,data_inicio_vigencia) AS dias_vigente'))
             ->leftJoin('empresas', 'empresas.id', 'contratos.empresa_id')
+            ->leftJoin('departamentos', 'departamentos.id', 'contratos.departamento_id')
             ->whereIn('contratos.departamento_id',$userDeptos)
             ->allowedFilters([
                     'processo_sei',
                     AllowedFilter::partial('nome_empresa','empresas.nome'),
+                    AllowedFilter::partial('departamento','departamentos.nome'),
                     AllowedFilter::scope('inicio_depois_de'),
                     AllowedFilter::scope('inicio_antes_de'),
                     AllowedFilter::scope('vencimento_depois_de'),
                     AllowedFilter::scope('vencimento_antes_de'),
                 ])
-            ->allowedSorts('id', 'processo_sei', 'credor', 'nome_empresa', 'numero_contrato', 'data_inicio_vigencia', 'data_vencimento', 'dias_vigente')
+            ->allowedSorts('id', 'processo_sei', 'credor', 'nome_departamento', 'nome_empresa', 'numero_contrato',
+                           'data_inicio_vigencia', 'data_vencimento', 'dias_vigente')
             ->paginate(15);
         return ContratoResource::collection($contratos);
     }
@@ -390,7 +394,7 @@ class ContratoController extends Controller
         $contrato->departamento_id = $request->input('departamento_id');
         $contrato->processo_sei = str_replace(array('.','-','/'),'',$request->input('processo_sei'));
 
-        $contrato->empresa_id = $request->input('empresa_id') ? $request->input('empresa_id') : null;
+        $contrato->empresa_id = $request->input('empresa_id') && $request->input('empresa_id') != 'null'? $request->input('empresa_id') : null;
         $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id') ? $request->input('licitacao_modelo_id') : null;
         $contrato->estado_id = $request->input('estado_id') ? $request->input('estado_id') : $contrato->estado_id;
         $contrato->envio_material_tecnico = $request->input('envio_material_tecnico') ? $request->input('envio_material_tecnico') : null;
@@ -417,6 +421,8 @@ class ContratoController extends Controller
         $contrato->telefone_empresa = $request->input('telefone_empresa') ? $request->input('telefone_empresa') : null;
         $contrato->email_empresa = $request->input('email_empresa') ? $request->input('email_empresa') : null;
         $contrato->user_id = auth()->user()->id;
+
+        //dd($request->input('empresa_id'));
 
         if ($contrato->save()) {
             return new ContratoResource($contrato);
