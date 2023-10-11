@@ -607,4 +607,28 @@ class ContratoController extends Controller
             ], 404);
         }
     }
+
+    /**
+     * Atualiza o ativo do contrato para false ou true
+     *
+     * @authenticated
+     *
+     * @urlParam id integer required ID do contrato. Example: 14
+     * 
+     * @response 200 {
+     *      "mensagem": "Contrato deletado!"
+     *  }
+     * 
+     */
+    public function atualizaAtivoContrato(Request $request, $id)
+    {
+        $contrato = Contrato::find($id);
+        
+        $contrato->ativo = 0;
+        $contrato->update();
+
+        return response()->json([
+            'mensagem' => "Contrato deletado!",
+        ],202);
+    }
 }

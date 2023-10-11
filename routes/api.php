@@ -63,7 +63,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
         return auth()->user();
     });
     Route::post('logout', [AuthController::class, 'logout']);
-
+    
     Route::get('contratos',[ContratoController::class, 'index']);
     Route::get('contratos_vencimento',[ContratoController::class, 'contratos_vencimento']);
     Route::get('contratos_sei', [ContratoController::class, 'verifica_sei']);
@@ -72,12 +72,13 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::get('contrato_totais/{id}', [ContratoController::class, 'exibeTotalizadores']);
     Route::put('contrato/{id}', [ContratoController::class, 'update']);
     Route::delete('contrato/{id}', [ContratoController::class, 'destroy']);
+    Route::delete('contrato/ativo/{id}', [ContratoController::class, 'atualizaAtivoContrato']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
+    //     return $request->user();
+    // });
+    
 Route::get('aditamentos_prazo', [AditamentoPrazoController::class, 'index']);
 Route::get('aditamentos_prazo/{id}', [AditamentoPrazoController::class, 'listar_por_contrato']);
 Route::post('aditamento_prazo', [AditamentoPrazoController::class, 'store']);
