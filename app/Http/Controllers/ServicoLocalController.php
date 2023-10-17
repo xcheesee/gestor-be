@@ -60,6 +60,7 @@ class ServicoLocalController extends Controller
     {
         $servicoLocal = new ServicoLocal;
         $servicoLocal->contrato_id = $request->input('contrato_id');
+        $servicoLocal->regiao = $request->input('regiao');
         $servicoLocal->distrito_id = $request->input('distrito_id');
         $servicoLocal->subprefeitura_id = $request->input('subprefeitura_id');
         $servicoLocal->unidade = $request->input('unidade');
@@ -130,6 +131,7 @@ class ServicoLocalController extends Controller
         $servicoLocal = ServicoLocal::findOrFail($request->id);
         $servicoLocal->contrato_id = $request->input('contrato_id');
         $servicoLocal->distrito_id = $request->input('distrito_id');
+        $servicoLocal->regiao = $request->input('regiao');
         $servicoLocal->subprefeitura_id = $request->input('subprefeitura_id');
         $servicoLocal->unidade = $request->input('unidade');
 
@@ -189,6 +191,7 @@ class ServicoLocalController extends Controller
     {
         $servicosLocais = ServicoLocal::query()
             ->where('contrato_id','=',$id)
+            ->orderBy('regiao')
             ->get();
 
         return ServicoLocalResource::collection($servicosLocais);

@@ -25,9 +25,10 @@ class ServicoLocalFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
-            'distrito_id' => 'required',
-            'subprefeitura_id' => 'required',
-            'unidade' => 'required',
+            'regiao' => 'required',
+            // 'distrito_id' => 'required',
+            // 'subprefeitura_id' => 'required',
+            // 'unidade' => 'required',
         ];
     }
 

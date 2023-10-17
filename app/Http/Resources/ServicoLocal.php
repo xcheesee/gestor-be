@@ -16,7 +16,7 @@ class ServicoLocal extends JsonResource
     {
         return [
             'id' => $this->id,
-            'regiao' => $this->subprefeitura ? $this->subprefeitura->regiao : null,
+            'regiao' => $this->regiao,
             'contrato_id' => $this->contrato_id,
             'distrito_id' => $this->distrito_id,
             'distrito' => $this->distrito ? $this->distrito->nome : null,
