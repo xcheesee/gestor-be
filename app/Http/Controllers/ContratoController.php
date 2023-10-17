@@ -51,6 +51,7 @@ class ContratoController extends Controller
             ->leftJoin('empresas', 'empresas.id', 'contratos.empresa_id')
             ->leftJoin('departamentos', 'departamentos.id', 'contratos.departamento_id')
             ->whereIn('contratos.departamento_id',$userDeptos)
+            ->where('contratos.ativo', 1)
             ->allowedFilters([
                     'processo_sei',
                     AllowedFilter::partial('nome_empresa','empresas.nome'),
@@ -63,6 +64,7 @@ class ContratoController extends Controller
             ->allowedSorts('id', 'processo_sei', 'credor', 'nome_departamento', 'nome_empresa', 'numero_contrato',
                            'data_inicio_vigencia', 'data_vencimento', 'dias_vigente')
             ->paginate(15);
+
         return ContratoResource::collection($contratos);
     }
 
