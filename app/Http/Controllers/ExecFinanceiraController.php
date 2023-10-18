@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AnoDeExecResource;
 use App\Http\Resources\MesDeExecResource;
+use App\Models\AditamentoValor;
 use App\Models\AnoDeExecucao;
+use App\Models\EmpenhoNota;
 use App\Models\MesDeExecucao;
+use App\Models\Reajuste;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 /**
  * @group ExecFinanceira
@@ -138,5 +144,58 @@ class ExecFinanceiraController extends Controller
         return response()->json([
             'mensagem' => "Valores de execução do mês $request->id_ano_execucao foi cadastrado com sucesso!"
         ]);
+    }
+
+    public function teste_data($id)
+    {
+        $ano = AnoDeExecucao::where('id', $id)->first();
+
+        $empenhos = EmpenhoNota::where('contrato_id', $ano->id_contrato)
+                                ->where(DB::raw('YEAR(data_emissao)'), $ano->ano)
+                                ->orderBy(DB::raw('MONTH(data_emissao)'), 'asc')
+                                ->get();
+                                
+        $aditamentos = AditamentoValor::where('contrato_id', $ano->id_contrato)
+                                ->where(DB::raw('YEAR(data_aditamento)'), $ano->ano)
+                                ->orderBy(DB::raw('MONTH(data_aditamento)'), 'asc')
+                                ->get();
+                                
+        $reajustes = Reajuste::where('contrato_id', $ano->id_contrato)
+                                ->where(DB::raw('YEAR(data_reajuste)'), $ano->ano)
+                                ->orderBy(DB::raw('MONTH(data_reajuste)'), 'asc')
+                                ->get();
+
+        $empenho_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
+        $aditamento_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
+        $reajuste_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
+        
+        foreach ($empenhos as $empenho)
+        {
+            $mes_existente = date('m', strtotime($empenho->data_emissao));
+            $mes_int = intval($mes_existente);
+            $empenho_valor_meses[$mes_int - 1] = $empenho->valor_empenho;
+        }
+
+        foreach ($aditamentos as $aditamento)
+        {
+            $mes_existente = date('m', strtotime($aditamento->data_aditamento));
+            $mes_int = intval($mes_existente);
+            $aditamento_valor_meses[$mes_int - 1] = $aditamento->valor_aditamento;
+        }
+
+        foreach ($reajustes as $reajuste)
+        {
+            $mes_existente = date('m', strtotime($reajuste->data_reajuste));
+            $mes_int = intval($mes_existente);
+            $reajuste_valor_meses[$mes_int - 1] = $reajuste->valor_reajuste;
+        }
+
+        $obs = [
+            'empenhos' => $empenho_valor_meses,
+            'aditamentos' => $aditamento_valor_meses,
+            'reajustes' => $reajuste_valor_meses
+        ];
+        
+        return response()->json($obs);
     }
 }
