@@ -63,6 +63,7 @@ class AditamentoValorController extends Controller
         $aditamento->tipo_aditamento = $request->input('tipo_aditamento');
         $aditamento->valor_aditamento = str_replace(',','.',str_replace('.','',$request->input('valor_aditamento')));
         $aditamento->percentual = $request->input('percentual');
+        $aditamento->data_aditamento = $request->input('data_aditamento');
 
         if ($aditamento->save()) {
             return new AditamentoValorResource($aditamento);
@@ -132,6 +133,7 @@ class AditamentoValorController extends Controller
         $aditamento->tipo_aditamento = $request->input('tipo_aditamento');
         $aditamento->valor_aditamento = str_replace(',','.',str_replace('.','',$request->input('valor_aditamento')));
         $aditamento->percentual = $request->input('percentual');
+        $aditamento->data_aditamento = $request->input('data_aditamento');
 
         if ($aditamento->save()) {
             return new AditamentoValorResource($aditamento);

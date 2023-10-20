@@ -20,6 +20,7 @@ class AditamentoValor extends JsonResource
             'tipo_aditamento' => $this->tipo_aditamento,
             'valor_aditamento' => $this->valor_aditamento,
             'percentual' => $this->percentual,
+            'data_aditamento' => $this->data_aditamento,
         ];
     }
 }

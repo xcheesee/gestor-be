@@ -146,7 +146,61 @@ class ExecFinanceiraController extends Controller
         ]);
     }
 
-    public function teste_data($id)
+    /**
+     * Retornará todos os valores para o ano de cada mês, Empenhos, Aditamentos, Reajustes.
+     * Cada indice na lista representa um valor de mês em sequencia, por exemplo:
+     * indice 0 = mês 1,
+     * indice 1 = mês 2,
+     * indice 2 = mês 3
+     * 
+     * @UrlParam id_ano_execucao integer required ID do ano de execução. Example: 2
+     *
+     * @response 202 {
+     *      "empenhos": [
+     *          11707.08,
+     *          "",
+     *          511415.75,
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          ""
+     *      ],
+     *      "aditamentos": [
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          6666666.17,
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          ""
+     *      ],
+     *      "reajustes": [
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          65465,
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          "",
+     *          ""
+     *      ]
+     *   }       
+     */
+    public function indexValoresMesesAno($id)
     {
         $ano = AnoDeExecucao::where('id', $id)->first();
 

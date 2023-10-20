@@ -20,6 +20,7 @@ class Reajuste extends JsonResource
             'indice_reajuste' => $this->indice_reajuste,
             'valor_reajuste' => $this->valor_reajuste,
             'percentual' => $this->percentual,
+            'data_reajuste' => $this->data_reajuste,
         ];
     }
 }

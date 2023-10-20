@@ -61,6 +61,7 @@ class ReajusteController extends Controller
         $reajuste->indice_reajuste = str_replace(',','.',str_replace('.','',$request->input('indice_reajuste')));
         $reajuste->valor_reajuste = str_replace(',','.',str_replace('.','',$request->input('valor_reajuste')));
         $reajuste->percentual = $request->input('percentual');
+        $reajuste->data_reajuste = $request->input('data_reajuste');
 
         if ($reajuste->save()) {
             return new ReajusteResource($reajuste);
@@ -128,6 +129,7 @@ class ReajusteController extends Controller
         $reajuste->indice_reajuste = str_replace(',','.',str_replace('.','',$request->input('indice_reajuste')));
         $reajuste->valor_reajuste = str_replace(',','.',str_replace('.','',$request->input('valor_reajuste')));
         $reajuste->percentual = $request->input('percentual');
+        $reajuste->data_reajuste = $request->input('data_reajuste');
 
         if ($reajuste->save()) {
             return new ReajusteResource($reajuste);

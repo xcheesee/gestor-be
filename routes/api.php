@@ -197,5 +197,5 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('exec_financeira', [ExecFinanceiraController::class, 'createAnoExec']);
     Route::get('exec_mes/{id}', [ExecFinanceiraController::class, 'indexMesExec']);
     Route::post('exec_mes', [ExecFinanceiraController::class, 'createMesExec']);
-    Route::get('empenho_nota_teste/{id}', [ExecFinanceiraController::class, 'teste_data']);
+    Route::get('exec_valores_meses/{id}', [ExecFinanceiraController::class, 'indexValoresMesesAno']);
     
