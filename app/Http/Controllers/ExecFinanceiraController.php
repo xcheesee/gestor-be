@@ -131,22 +131,21 @@ class ExecFinanceiraController extends Controller
                 $mes->empenhado = $meses_empenhado[$i - 1];
                 $mes->save();
             } else {
-                if ($meses_execucao[$i - 1] != null || $meses_empenhado[$i - 1] != null){
+                if($meses_execucao[$i - 1] > -1 || $meses_empenhado[$i - 1] > -1){
                     $mes = new MesDeExecucao;
                     $mes->id_ano_execucao = $request->id_ano_execucao;
                     $mes->mes = $i;
-                    $mes->execucao = $meses_execucao[$i - 1];
+                    $mes->execucao = $meses_execucao[$i -1];
                     $mes->empenhado = $meses_empenhado[$i - 1];
                     $mes->save();
                 }
             }
         }
-
         return response()->json([
-            'mensagem' => "Valores de execução do ano foi salvo com sucesso!"
+            'mensagem' => "Valores de execução do ano foram salvos com sucesso!"
         ]);
     }
-
+        
     /**
      * Retornará todos os valores para o ano de cada mês, Empenhos, Aditamentos, Reajustes.
      * Cada indice na lista representa um valor de mês em sequencia, por exemplo:

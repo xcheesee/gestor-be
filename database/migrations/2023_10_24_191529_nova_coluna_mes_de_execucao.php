@@ -15,6 +15,7 @@ class NovaColunaMesDeExecucao extends Migration
     {
         Schema::table("mes_de_execucao", function (Blueprint $table) {
             $table->float('empenhado')->nullable()->after('execucao');
+            $table->float('execucao')->nullable()->change();
         });
     }
 
