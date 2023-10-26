@@ -116,33 +116,34 @@ class ExecFinanceiraController extends Controller
      */
     public function createMesExec(Request $request)
     {
-        $meses_execucao = $request->data;
+        $meses_execucao = $request->data_execucao;
+        $meses_empenhado = $request->data_empenhado;
         
         $meses_existentes = MesDeExecucao::where('id_ano_execucao', $request->id_ano_execucao)->orderBy('mes')->get();
 
-        $contador = 1;
-        foreach ($meses_execucao as $valor) 
+        for ($i = 1; $i <= 12; $i++)
         {
-            $mes = $meses_existentes->where('mes', $contador)->first();
+            $mes = $meses_existentes->where('mes', $i)->first();
             
-            if ($mes) 
+            if($mes)
             {
-                $mes->execucao = $valor;
+                $mes->execucao = $meses_execucao[$i - 1];
+                $mes->empenhado = $meses_empenhado[$i - 1];
                 $mes->save();
-            } else { 
-                if ($valor != null){
+            } else {
+                if ($meses_execucao[$i - 1] != null || $meses_empenhado[$i - 1] != null){
                     $mes = new MesDeExecucao;
                     $mes->id_ano_execucao = $request->id_ano_execucao;
-                    $mes->mes = $contador;
-                    $mes->execucao = $valor;
+                    $mes->mes = $i;
+                    $mes->execucao = $meses_execucao[$i - 1];
+                    $mes->empenhado = $meses_empenhado[$i - 1];
                     $mes->save();
                 }
-            }   
-            $contador++;
+            }
         }
 
         return response()->json([
-            'mensagem' => "Valores de execução do mês $request->id_ano_execucao foi cadastrado com sucesso!"
+            'mensagem' => "Valores de execução do ano foi salvo com sucesso!"
         ]);
     }
 
@@ -223,25 +224,45 @@ class ExecFinanceiraController extends Controller
         $aditamento_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
         $reajuste_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
         
+        $total_empenho = 0;
         foreach ($empenhos as $empenho)
         {
             $mes_existente = date('m', strtotime($empenho->data_emissao));
             $mes_int = intval($mes_existente);
-            $empenho_valor_meses[$mes_int - 1] = $empenho->valor_empenho;
+
+            if ($empenho->tipo_empenho == 'cancelamento'){
+                $total_empenho -= $empenho->valor_empenho;
+            } else {
+                $total_empenho += $empenho->valor_empenho;
+            }
+
+            $empenho_valor_meses[$mes_int - 1] = $total_empenho;
         }
 
+        $total_aditamento = 0;
         foreach ($aditamentos as $aditamento)
         {
             $mes_existente = date('m', strtotime($aditamento->data_aditamento));
             $mes_int = intval($mes_existente);
-            $aditamento_valor_meses[$mes_int - 1] = $aditamento->valor_aditamento;
+            
+            if ($aditamento->tipo_aditamento == "Redução de valor"){
+                $total_aditamento -= $aditamento->valor_aditamento;
+            } else {
+                $total_aditamento += $aditamento->valor_aditamento;
+            }
+
+            $aditamento_valor_meses[$mes_int - 1] = $total_aditamento;
         }
 
+        $total_reajuste = 0;
         foreach ($reajustes as $reajuste)
         {
             $mes_existente = date('m', strtotime($reajuste->data_reajuste));
             $mes_int = intval($mes_existente);
-            $reajuste_valor_meses[$mes_int - 1] = $reajuste->valor_reajuste;
+
+            $total_reajuste += $reajuste->valor_reajuste;
+
+            $reajuste_valor_meses[$mes_int - 1] = $total_reajuste;
         }
 
         $obs = [

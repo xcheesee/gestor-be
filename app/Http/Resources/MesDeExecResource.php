@@ -19,6 +19,7 @@ class MesDeExecResource extends JsonResource
             'id_ano_execucao' => $this->id_ano_execucao,
             'mes' => $this->mes,
             'execucao' => $this->execucao,
+            'empenhado' => $this->empenhado,
         ];
     }
 }
