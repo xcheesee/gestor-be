@@ -27,6 +27,8 @@ class ServicoLocal extends Model
 
     public function subprefeitura()
     {
-        return $this->belongsTo(Subprefeitura::class);
+        return $this->hasMany(ServicoLocalSubprefeitura::class);
     }
+
+    
 }

@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ServicoLocalFormRequest;
 use App\Models\ServicoLocal as ServicoLocal;
 use App\Http\Resources\ServicoLocal as ServicoLocalResource;
+use App\Models\ServicoLocalSubprefeitura;
+use App\Models\Subprefeitura;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @group ServicoLocal
@@ -22,8 +25,10 @@ class ServicoLocalController extends Controller
      */
     public function index()
     {
-        $servicosLocais = ServicoLocal::get();
-        return ServicoLocalResource::collection($servicosLocais);
+        $servicosLocais = ServicoLocal::with('subprefeitura')->get();
+        
+        return $servicosLocais;
+        //return ServicoLocalResource::collection($servicosLocais);
     }
 
     /**
@@ -59,23 +64,29 @@ class ServicoLocalController extends Controller
     public function store(ServicoLocalFormRequest $request)
     {
         $subprefeituras = explode(",", $request->input('subprefeitura_id'));
-        
-        $serivocCadastrados = array();
 
-        foreach($subprefeituras as $sub) {
-            $servicoLocal = new ServicoLocal;
-            $servicoLocal->contrato_id = $request->input('contrato_id');
-            $servicoLocal->regiao = $request->input('regiao');
-            $servicoLocal->distrito_id = $request->input('distrito_id');
-            $servicoLocal->subprefeitura_id = $sub;
-            $servicoLocal->unidade = $request->input('unidade');
+        $servicoLocal = new ServicoLocal;
+        $servicoLocal->contrato_id = $request->input('contrato_id');
+        $servicoLocal->regiao = $request->input('regiao');
+        $servicoLocal->distrito_id = $request->input('distrito_id');
+        $servicoLocal->unidade = $request->input('unidade');
 
-            $servicoLocal->save();
-            array_push($serivocCadastrados, $servicoLocal);
+        DB::beginTransaction();
+
+        $servicoLocal->save();
+
+        foreach ($subprefeituras as $sub)
+        {
+            $locaisSubprefeitura = new ServicoLocalSubprefeitura();
+            $locaisSubprefeitura->servico_local_id = $servicoLocal->id;
+            $locaisSubprefeitura->subprefeitura_id = $sub;
+
+            $locaisSubprefeitura->save();
         }
 
-        return ServicoLocalResource::collection($serivocCadastrados);
-    
+        DB::commit();
+
+        return response()->json($servicoLocal);
     }
 
     /**
