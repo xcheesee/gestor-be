@@ -58,16 +58,24 @@ class ServicoLocalController extends Controller
      */
     public function store(ServicoLocalFormRequest $request)
     {
-        $servicoLocal = new ServicoLocal;
-        $servicoLocal->contrato_id = $request->input('contrato_id');
-        $servicoLocal->regiao = $request->input('regiao');
-        $servicoLocal->distrito_id = $request->input('distrito_id');
-        $servicoLocal->subprefeitura_id = $request->input('subprefeitura_id');
-        $servicoLocal->unidade = $request->input('unidade');
+        $subprefeituras = explode(",", $request->input('subprefeitura_id'));
+        
+        $serivocCadastrados = array();
 
-        if ($servicoLocal->save()) {
-            return new ServicoLocalResource($servicoLocal);
+        foreach($subprefeituras as $sub) {
+            $servicoLocal = new ServicoLocal;
+            $servicoLocal->contrato_id = $request->input('contrato_id');
+            $servicoLocal->regiao = $request->input('regiao');
+            $servicoLocal->distrito_id = $request->input('distrito_id');
+            $servicoLocal->subprefeitura_id = $sub;
+            $servicoLocal->unidade = $request->input('unidade');
+
+            $servicoLocal->save();
+            array_push($serivocCadastrados, $servicoLocal);
         }
+
+        return ServicoLocalResource::collection($serivocCadastrados);
+    
     }
 
     /**
