@@ -193,9 +193,9 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::put('reajuste/{id}', [ReajusteController::class, 'update']);
     Route::delete('reajuste/{id}', [ReajusteController::class, 'destroy']);
     
-    Route::get('exec_financeira/{id}', [ExecFinanceiraController::class, 'indexAnoExec']);
-    Route::post('exec_financeira', [ExecFinanceiraController::class, 'createAnoExec']);
+    Route::get('exec_financeira_ano/{id}', [ExecFinanceiraController::class, 'indexAnoExec']);
+    Route::post('exec_financeira_ano', [ExecFinanceiraController::class, 'createAnoExec']);
+    Route::delete('exec_financeira/{id}', [ExecFinanceiraController::class, 'deleteAnoExec']);
+    Route::get('exec_valores_meses/{id}', [ExecFinanceiraController::class, 'indexValoresMesesAno']);
     Route::get('exec_mes/{id}', [ExecFinanceiraController::class, 'indexMesExec']);
     Route::post('exec_mes', [ExecFinanceiraController::class, 'createMesExec']);
-    Route::get('exec_valores_meses/{id}', [ExecFinanceiraController::class, 'indexValoresMesesAno']);
-    

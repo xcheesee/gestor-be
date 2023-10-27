@@ -11,8 +11,7 @@ use App\Models\MesDeExecucao;
 use App\Models\Reajuste;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Spatie\QueryBuilder\QueryBuilder;
-use Spatie\QueryBuilder\AllowedFilter;
+
 
 /**
  * @group ExecFinanceira
@@ -22,9 +21,10 @@ use Spatie\QueryBuilder\AllowedFilter;
 class ExecFinanceiraController extends Controller
 {
     /**
-     * Lista notas de valores executados mensais
+     * Lista todos os anos de execução de um especifico contrato, ou seja deve ser passado
+     * o ID do contrato.
      *
-     *
+     * @urlParam id_contrato integer required ID do contrato. Example: 38
      */
     public function indexAnoExec($id)
     {
@@ -76,6 +76,8 @@ class ExecFinanceiraController extends Controller
     }
 
     /**
+     * Listar meses do ano
+     * 
      * Retornará todos os meses de execução a partir do ID do ano
      * 
      * @urlParam id integer required ID do ano de execução. Example: 2
@@ -86,13 +88,15 @@ class ExecFinanceiraController extends Controller
      *               "id": 1,
      *               "id_ano_execucao": 1,
      *               "mes": 6,
-     *               "execucao": "35"
+     *               "execucao": "35",
+     *               "empenhado": 9
      *           },
      *           {
      *               "id": 2,
      *               "id_ano_execucao": 1,
      *               "mes": 7,
-     *               "execucao": "20"
+     *               "execucao": "20",
+     *               "empenhado": 9
      *           },
      *        ]
      *      }
@@ -105,11 +109,17 @@ class ExecFinanceiraController extends Controller
     }
 
     /**
-     * Cria um novo mes de execução ou mais para um ano de execução
-     * (A Data deverá ser passada desta forma [null, null, null, null, null, 35, 20, 4, 500, 200, -6, null])
+     * Criar mês de execução
+     * 
+     * Cria um novo mês de execução ou mais para um ano de execução.
+     * 
+     * Cada indice representa um dia do mês (ignore o indice 0 da lista) Exemplo de como as listas devem ser:  
+     * 
+     * data_execucao: [0, null, 68746, null, 1, 6, 7, 8, 9, 10, 11, 12],
+     * 
+     * data_empenhado: [null, null, null, null, null, null, null, 400, 9, 9999, 11, 12]
      * 
      * @bodyParam id_ano_execucao integer required ID do ano de execução. Example: 2
-     * @bodyParam data[] integer required valores de execução de cada mês. Example: [null, null, null, null, null, 35, 20, 4, 500, 200, -6, null]
      *
      * @response 202 {
      *     "mensagem": "Valores de execução do mês 1 foi cadastrado com sucesso!",
@@ -147,11 +157,19 @@ class ExecFinanceiraController extends Controller
     }
         
     /**
-     * Retornará todos os valores para o ano de cada mês, Empenhos, Aditamentos, Reajustes.
+     * Listar valores meses do ano
+     * 
+     * Retornará todos os valores dos meses do ano, Empenhos, Aditamentos, Reajustes.
+     * 
      * Cada indice na lista representa um valor de mês em sequencia, por exemplo:
+     * 
      * indice 0 = mês 1,
+     * 
      * indice 1 = mês 2,
+     * 
      * indice 2 = mês 3
+     * 
+     * ...
      * 
      * @UrlParam id_ano_execucao integer required ID do ano de execução. Example: 2
      *
@@ -271,5 +289,30 @@ class ExecFinanceiraController extends Controller
         ];
         
         return response()->json($obs);
+    }
+
+    /**
+     * Deletar ano de execução.
+     * 
+     * Deletará o ano de execução a partir de seu ID e todos os seus meses de execução.
+     * 
+     * @urlParam id integer required ID do ano. Example: 2 
+     */
+    public function deleteAnoExec($id)
+    {
+        $ano = AnoDeExecucao::where('id', $id)->first();
+        $meses_ano = MesDeExecucao::where('id_ano_execucao', $id)->get();
+
+        foreach ($meses_ano as $mes)
+        {
+            $mes->delete();
+        }
+
+        $ano->delete();
+
+        return response()->json([
+            'mensagem' => "Ano de execução com o id $id e seus respectivos meses foram deletados!"
+        ]);
+        
     }
 }
