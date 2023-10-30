@@ -21,8 +21,9 @@ class ServicoLocal extends JsonResource
             'distrito_id' => $this->distrito_id,
             'distrito' => $this->distrito ? $this->distrito->nome : null,
             'subprefeitura_id' => $this->subprefeitura_id,
-            'subprefeitura' => $this->subprefeitura ? $this->subprefeitura->nome : null,
             'unidade' => $this->unidade,
+            //'subprefeitura' => $this->subprefeitura ? $this->subprefeitura->nome : null,
+            'subprefeitura' => $this->subprefeitura,
         ];
     }
 }
