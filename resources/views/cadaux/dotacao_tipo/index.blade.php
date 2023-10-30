@@ -7,7 +7,7 @@
 @section('conteudo')
 @include('layouts.mensagem', ['mensagem' => $mensagem])
 
-<div class="row d-flex justify-content-center mt-3 containerTabela">
+<div class="row d-flex justify-content-center mt-3 containerTabela ps-5 pe-5 ms-5 me-5">
     <form class="form-inline" method="GET">
         <div class="row align-items-end">
             <div class="col col-3 mb-2">
@@ -42,15 +42,15 @@
             </div>
         </div>
     </form>
-    <div class="row">
-        <table class="table">
+    <div class="row ps-5 pe-5">
+        <table class="table table-striped table-hover">
             <thead class="thead-dark">
                 <tr>
                     <th class="col-md-1">@sortablelink('id', 'ID')</th>
                     <th class="col-md-2">@sortablelink('numero_dotacao', 'Nº Dotação')</th>
                     <th class="col-md-3">@sortablelink('descricao', 'Descrição')</th>
                     <th class="col-md-4">@sortablelink('tipo_despesa', 'Tipo de Despesa')</th>
-                    <th class="col-md-2">Ação</th>
+                    <th class="col-md-2 text-end">Ação</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,7 +60,7 @@
                         <td>{{ $dotacao_tipo->numero_dotacao }}</td>
                         <td>{{ $dotacao_tipo->descricao }}</td>
                         <td>{!! $dotacao_tipo->tipo_despesa !!}</td>
-                        <td>
+                        <td class="text-end">
                             <a class="btn btn-success" href="{{ route('cadaux-dotacao_tipos-show',$dotacao_tipo->id) }}"><i class="far fa-eye"></i></a>
                             <a class="btn btn-success" href="{{ route('cadaux-dotacao_tipos-edit',$dotacao_tipo->id) }}"><i class="fas fa-edit"></i></a>
                             @can('permission-edit')

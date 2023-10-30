@@ -7,7 +7,7 @@
 @section('conteudo')
 @include('layouts.mensagem', ['mensagem' => $mensagem])
 
-<div class="row d-flex justify-content-center mt-3 containerTabela">
+<div class="row d-flex justify-content-center mt-3 containerTabela ps-5 pe-5 ms-5 me-5">
     <form method="GET">
         <div class="row align-items-end">
             <div class="col col-3 mb-2">
@@ -35,14 +35,14 @@
             </div>
         </div>
     </form>
-    <div class="row">
-        <table class="table">
+    <div class="row ps-5 pe-5">
+        <table class="table table-striped table-hover">
             <thead class="thead-dark">
                 <tr>
                     <th class="col-md-1">@sortablelink('id', 'ID')</th>
                     <th class="col-md-1">@sortablelink('subprefeitura.nome', 'Subprefeitura')</th>
                     <th class="col-md-4">@sortablelink('nome', 'Nome')</th>
-                    <th class="col-md-2">Ação</th>
+                    <th class="col-md-2 text-end">Ação</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,7 +51,7 @@
                         <td>{{ $distrito->id }}</td>
                         <td>@if($distrito->subprefeitura) {{ $distrito->subprefeitura->nome }} @endif</td>
                         <td>{!! $distrito->nome !!}</td>
-                        <td>
+                        <td class="text-end">
                             <a class="btn btn-success" href="{{ route('cadaux-distritos-show',$distrito->id) }}"><i class="far fa-eye"></i></a>
                             <a class="btn btn-success" href="{{ route('cadaux-distritos-edit',$distrito->id) }}"><i class="fas fa-edit"></i></a>
                             @can('permission-edit')
