@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="row">
-        <table class="table">
+        <table class="table table-striped table-hover">
             <thead class="thead-dark">
                 <tr>
                     <th class="col-sm-1">ID</th>

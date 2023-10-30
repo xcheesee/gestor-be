@@ -36,7 +36,7 @@
         </div>
     </form>
     <div class="row">
-        <table class="table">
+        <table class="table table-striped table-hover">
             <thead class="thead-dark">
                 <tr>
                     <th class="col-md-1">@sortablelink('id', 'ID')</th>

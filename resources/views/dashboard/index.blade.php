@@ -35,8 +35,6 @@
         <div class="col d-grid gap-2" style="height: 400px;">
             {!! $chart2->container() !!}
         </div>
-    </div>
-    <div class="row d-flex justify-content-center m-3" style="height: 400px;">
         <div class="col d-grid gap-2" style="height: 400px;">
             {!! $chart3->container() !!}
         </div>

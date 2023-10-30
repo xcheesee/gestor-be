@@ -22,9 +22,9 @@
     <script src="{{ asset('js/tools.js') }}"></script>
     <title>{{ config('app.name', 'NDTIC WEB App') }}</title>
 </head>
-<body>
-    <header>
-    <nav  class="navbar navbar-expand-xl navbar-dark bg-primary mb-5 fixed-top">
+<body class="d-flex flex-column">
+    <header class="py-3 bg-primary text-white">
+    <nav class="navbar navbar-expand-xl navbar-dark bg-primary mb-5 fixed-top">
         <div class="container-fluid">
             <a class="ndtic-brand navbar-brand mb-0" href="{{ route('home') }}">
                 <!--<img src="{{ asset('img/horizontal_branco.png') }}" width="180px" height="auto">-->
@@ -62,10 +62,14 @@
     </nav>
     </header>
 
-    <div class="d-flex flex-column bgMainColor" style="min-height: 100vh;">
-        <div class="container mt-5 p-5" style="flex: 1 0 auto;">
-            <h2 class="mb-4">@yield('cabecalho')</h2>
-            @yield('conteudo')
+    <div>
+        <div class="d-flex">
+            <main class="bg-body-secondary col-sm p-3" style="min-height: 89.6vh">
+                <div class="bg-light p-5 rounded">
+                    <h2 class="mb-4">@yield('cabecalho')</h2>
+                    @yield('conteudo')
+                </div>
+            </main>
         </div>
 
         <footer class="footer d-flex flex-shrink-0 justify-content-center align-items-center pt-2 pb-3" style="height: 30px;">
