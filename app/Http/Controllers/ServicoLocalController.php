@@ -207,7 +207,7 @@ class ServicoLocalController extends Controller
      * }
      */
     public function listar_por_contrato($id)
-    {
+    {   
         $servicosLocais = ServicoLocal::query()
             ->where('contrato_id','=',$id)
             ->orderBy('regiao')

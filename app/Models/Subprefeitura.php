@@ -14,4 +14,9 @@ class Subprefeitura extends Model
         'regiao',
         'nome',
     ];
+
+    public function subprefeiturasLocais()
+    {
+        return $this->hasMany(ServicoLocalSubprefeitura::class);
+    }
 }
