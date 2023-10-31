@@ -132,7 +132,7 @@ class ServicoLocalController extends Controller
      *
      * @bodyParam contrato_id integer required ID do contrato. Example: 5
      * @bodyParam distrito_id integer required ID do distrito. Example: 13
-     * @bodyParam subprefeitura_id integer required ID da subprefeitura. Example: 5
+     * @bodyParam subprefeitura_id integer required ID das subprefeituras. Example: 5, 8, 15, 10,
      * @bodyParam unidade string required Nome da unidade. Example: Unidade exemplo
      *
      * @response 200 {
@@ -140,23 +140,38 @@ class ServicoLocalController extends Controller
      *         "id": 1,
      *         "contrato_id": 5,
      *         "distrito_id": 13,
-     *         "subprefeitura_id": 5,
+     *         "subprefeitura_id": "5, 8, 15, 10"
      *         "unidade": "Unidade exemplo"
      *     }
      * }
      */
     public function update(ServicoLocalFormRequest $request, $id)
     {
-        $servicoLocal = ServicoLocal::findOrFail($request->id);
-        $servicoLocal->contrato_id = $request->input('contrato_id');
-        $servicoLocal->distrito_id = $request->input('distrito_id');
-        $servicoLocal->regiao = $request->input('regiao');
-        $servicoLocal->subprefeitura_id = $request->input('subprefeitura_id');
-        $servicoLocal->unidade = $request->input('unidade');
+        $servicoLocal = ServicoLocal::findOrFail($id);
+        $subprefeituras = explode(",", $request->input('subprefeitura_id'));
 
-        if ($servicoLocal->save()) {
-            return new ServicoLocalResource($servicoLocal);
+        $servicoLocal->contrato_id = $request->input('contrato_id');
+        $servicoLocal->regiao = $request->input('regiao');
+        $servicoLocal->distrito_id = $request->input('distrito_id');
+        $servicoLocal->unidade = $request->input('unidade');
+        $servicoLocal->save();
+        
+        
+        $localSubprefeituras = ServicoLocalSubprefeitura::where('servico_local_id', $id)->get();
+        foreach ($localSubprefeituras as $localSub){
+            $localSub->delete();
         }
+
+        foreach ($subprefeituras as $sub)
+        {
+            $locaisSubprefeitura = new ServicoLocalSubprefeitura();
+            $locaisSubprefeitura->servico_local_id = $servicoLocal->id;
+            $locaisSubprefeitura->subprefeitura_id = $sub;
+
+            $locaisSubprefeitura->save();
+        }
+        
+        return response()->json($servicoLocal);
     }
 
     /**
