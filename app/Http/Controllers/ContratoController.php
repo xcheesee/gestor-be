@@ -33,7 +33,7 @@ class ContratoController extends Controller
      *
      * @queryParam filter[processo_sei] Filtro de número do processo. Example: 0123000134569000
      * @queryParam filter[nome_empresa] Filtro de nome completo ou parte do nome da empresa. Example: Teste SA
-     * @queryParam filter[departamento] Filtro de nome completo ou parte do nome da unidade requisitora. Example: Teste SA
+     * @queryParam filter[departamento] Filtro de nome completo ou parte do nome da unidade requisitora. Example: NDTIC
      * @queryParam filter[inicio_depois_de] Filtro inicial de período da data de início da vigência. Example: 2022-01-01
      * @queryParam filter[inicio_antes_de] Filtro final de período da data de início da vigência. Example: 2022-05-20
      * @queryParam filter[vencimento_depois_de] Filtro inicial de período da data de vencimento do contrato. Example: 2023-01-01
@@ -50,12 +50,15 @@ class ContratoController extends Controller
             ->select('empresas.nome as nome_empresa', 'departamentos.nome as nome_departamento', 'contratos.*', DB::raw('DATEDIFF(data_vencimento,data_inicio_vigencia) AS dias_vigente'))
             ->leftJoin('empresas', 'empresas.id', 'contratos.empresa_id')
             ->leftJoin('departamentos', 'departamentos.id', 'contratos.departamento_id')
+            ->leftJoin('licitacao_modelos', 'licitacao_modelos.id', 'contratos.licitacao_modelo_id')
             ->whereIn('contratos.departamento_id',$userDeptos)
             ->where('contratos.ativo', 1)
             ->allowedFilters([
-                    'processo_sei',
+                    'processo_sei','numero_contrato',
                     AllowedFilter::partial('nome_empresa','empresas.nome'),
+                    AllowedFilter::partial('cnpj_empresa','empresas.cnpj'),
                     AllowedFilter::partial('departamento','departamentos.nome'),
+                    AllowedFilter::partial('licitacao','licitacao_modelos.nome'),
                     AllowedFilter::scope('inicio_depois_de'),
                     AllowedFilter::scope('inicio_antes_de'),
                     AllowedFilter::scope('vencimento_depois_de'),
@@ -616,16 +619,16 @@ class ContratoController extends Controller
      * @authenticated
      *
      * @urlParam id integer required ID do contrato. Example: 14
-     * 
+     *
      * @response 200 {
      *      "mensagem": "Contrato deletado!"
      *  }
-     * 
+     *
      */
     public function atualizaAtivoContrato(Request $request, $id)
     {
         $contrato = Contrato::find($id);
-        
+
         $contrato->ativo = 0;
         $contrato->update();
 
