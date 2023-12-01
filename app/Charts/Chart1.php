@@ -16,11 +16,10 @@ class Chart1
         $this->chart = $chart;
     }
 
-    public function build($filtros): \ArielMejiaDev\LarapexCharts\LineChart
+    public function build($filtros): \ArielMejiaDev\LarapexCharts\PieChart
     {
         $dados = Contrato::query()
-            ->select('departamento_id','departamentos.nome as depto',
-                      DB::raw('ROUND(AVG(DATEDIFF(minuta_edital,envio_material_tecnico)),0) AS envio_minuta'),
+            ->select(DB::raw('ROUND(AVG(DATEDIFF(minuta_edital,envio_material_tecnico)),0) AS envio_minuta'),
                       DB::raw('ROUND(AVG(DATEDIFF(abertura_certame,minuta_edital)),0) AS minuta_abertura'),
                       DB::raw('ROUND(AVG(DATEDIFF(homologacao,abertura_certame)),0) AS abertura_homol'),
                       DB::raw('ROUND(AVG(DATEDIFF(data_inicio_vigencia,homologacao)),0) AS homol_inicio'))
@@ -32,25 +31,21 @@ class Chart1
                 $query->where(DB::raw('YEAR(minuta_edital)'),'=',$filtros['ano_pesquisa'])
                       ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$filtros['ano_pesquisa']);
             })
-            ->groupBy('departamento_id','departamentos.nome')
-            ->get();
+            ->first();
 
-        $dataset = array(
-            'deptos' => array(),
-            'valores' => array(),
-        );
+        // dd($dados);
 
-        $grafico = $this->chart->lineChart()
+        $grafico = $this->chart->pieChart()
             ->setTitle('Média de dias entre as etapas do contrato')
             ->setSubtitle('Do envio de material até início da vigência - Ano de referência: '.$filtros['ano_pesquisa'])
-            ->setXAxis(['Envio à Minuta','Minuta à Certame','Certame à Homologação','Homologação à Início'])
+            ->setLabels(['Envio à Minuta','Minuta à Certame','Certame à Homologação','Homologação à Início'])
+            ->addData([intval($dados->envio_minuta),intval($dados->minuta_abertura),intval($dados->abertura_homol),intval($dados->homol_inicio)])
+            ->setToolbar(true)
             ->setHeight(380);
 
-        foreach($dados as $dado){
-            if (!in_array($dado->depto,$dataset['deptos'])) $dataset['deptos'][]=$dado->depto;
-            $dataset['valores'][$dado->depto] = [$dado->envio_minuta,$dado->minuta_abertura,$dado->abertura_homol,$dado->homol_inicio];
-            $grafico->addData($dado->depto, $dataset['valores'][$dado->depto]);
-        }
+        // foreach($dados as $dado){
+        //     $grafico->addData([$dado->envio_minuta,$dado->minuta_abertura,$dado->abertura_homol,$dado->homol_inicio]);
+        // }
 
         return $grafico;
     }

@@ -54,6 +54,7 @@ class Chart5
             ->addData('Qtd', $dataset['qtd'])
             ->addData('Valor', $dataset['valor'])
             ->setXAxis($dataset['empresas'])
+            ->setToolbar(true)
             ->setHeight(380);
 
         $grafico->altY1 = ['series'=>'Qtd','title'=>'Quantidade de Contratos'];

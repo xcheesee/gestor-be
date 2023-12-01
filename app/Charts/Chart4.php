@@ -16,25 +16,36 @@ class Chart4
 
     public function build($filtros)
     {
-        $dataCvE = DB::table('execucao_financeira')
-            ->select(DB::raw('SUM(contratado_inicial) as t_contratado'),DB::raw('SUM(executado) as t_executado'))
+        $eixos = $dados = array();
+
+        $data = DB::table('servico_locais')
+            ->select(DB::raw("REPLACE(REPLACE(unidade, ' ',''),'Parque','Parque ') AS local_servico"),DB::raw('SUM(valor_contrato) as t_valor_contrato'))
             ->leftJoin("contratos",'contrato_id','=','contratos.id')
             ->leftJoin("departamentos",'contratos.departamento_id','=','departamentos.id')
             ->when($filtros['departamento'], function ($query, $val) {
                 return $query->where('contratos.departamento_id','=',$val);
             })
-            ->where('ano','=',$filtros['ano_pesquisa'])->first();
+            ->where(function($query) use ($filtros){
+                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$filtros['ano_pesquisa'])
+                      ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$filtros['ano_pesquisa']);
+            })
+            ->groupBy(DB::raw('local_servico'))
+            ->orderBy(DB::raw('local_servico'))
+            ->get();
 
-        $dataCvE->t_contratado = $dataCvE->t_contratado ? $dataCvE->t_contratado : 0;
-        $dataCvE->t_executado = $dataCvE->t_executado ? $dataCvE->t_executado : 0;
+        foreach($data as $reg){
+            $eixos []= $reg->local_servico;
+            $dados []= $reg->t_valor_contrato;
+        }
+        //dd($eixos);
 
-        $grafico = ['dados' => [$dataCvE->t_contratado,$dataCvE->t_executado,($dataCvE->t_contratado - $dataCvE->t_executado)]];
-
-        return $this->chart->pieChart()
-            ->setTitle('Contratado x Executado - '.$filtros['ano_pesquisa'])
+        return $this->chart->areaChart()
+            ->setTitle('Contratos por Local - '.$filtros['ano_pesquisa'])
             ->setSubtitle('Valores em R$')
-            ->addData($grafico['dados'])
-            ->setLabels(['Contratado', 'Executado', 'Restante'])
-            ->setHeight(380);
+            ->setXAxis($eixos)
+            ->addData('valores',$dados)
+            ->setToolbar(true)
+            ->setHeight(380)
+            ;
     }
 }
