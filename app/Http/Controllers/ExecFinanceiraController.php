@@ -63,13 +63,14 @@ class ExecFinanceiraController extends Controller
         $ano->ano = $request->input('ano');
         $ano->id_contrato = $request->input('id_contrato');
         $ano->mes_inicial = $request->input('mes_inicial');
-        $ano->planejado = number_format(str_replace(",",".",str_replace(".","",$request->planejado)), 2, '.', '');
-        $ano->reservado = number_format(str_replace(",",".",str_replace(".","",$request->reservado)), 2, '.', '');
-        $ano->contratado = number_format(str_replace(",",".",str_replace(".","",$request->contratado)), 2, '.', '');
+        $ano->planejado = number_format(str_replace(",", ".", str_replace(".", "", $request->planejado)), 2, '.', '');
+        $request->reservado === null ? $ano->reservado = null : $ano->reservado = number_format(str_replace(",", ".", str_replace(".", "", $request->reservado)), 2, '.', '');
+        $ano->contratado = number_format(str_replace(",", ".", str_replace(".", "", $request->contratado)), 2, '.', '');
 
-        if($ano->save());{
+        if ($ano->save()); 
+        {
             return response()->json([
-                'mensagem' => 'Ano de Execução cadastrado com sucesso!', 
+                'mensagem' => 'Ano de Execução cadastrado com sucesso!',
                 'ano' => new AnoDeExecResource($ano)
             ], 202);
         }
@@ -101,8 +102,8 @@ class ExecFinanceiraController extends Controller
      *        ]
      *      }
      */
-    public function indexMesExec($id) 
-    {   
+    public function indexMesExec($id)
+    {
         $meses = MesDeExecucao::where('id_ano_execucao', $id)->get();
 
         return MesDeExecResource::collection($meses);
@@ -126,26 +127,31 @@ class ExecFinanceiraController extends Controller
      */
     public function createMesExec(Request $request)
     {
+        $ano_de_exec = AnoDeExecucao::find($request->id_ano_execucao);
+
+        $ano_de_exec->update([
+            'planejado' => $request->planejado,
+            'contratado' => $request->contratado
+        ]);
+
         $meses_execucao = $request->data_execucao;
         $meses_empenhado = $request->data_empenhado;
-        
+
         $meses_existentes = MesDeExecucao::where('id_ano_execucao', $request->id_ano_execucao)->orderBy('mes')->get();
 
-        for ($i = 1; $i <= 12; $i++)
-        {
+        for ($i = 1; $i <= 12; $i++) {
             $mes = $meses_existentes->where('mes', $i)->first();
-            
-            if($mes)
-            {
+
+            if ($mes) {
                 $mes->execucao = $meses_execucao[$i - 1];
                 $mes->empenhado = $meses_empenhado[$i - 1];
                 $mes->save();
             } else {
-                if($meses_execucao[$i - 1] > -1 || $meses_empenhado[$i - 1] > -1){
+                if ($meses_execucao[$i - 1] > -1 || $meses_empenhado[$i - 1] > -1) {
                     $mes = new MesDeExecucao;
                     $mes->id_ano_execucao = $request->id_ano_execucao;
                     $mes->mes = $i;
-                    $mes->execucao = $meses_execucao[$i -1];
+                    $mes->execucao = $meses_execucao[$i - 1];
                     $mes->empenhado = $meses_empenhado[$i - 1];
                     $mes->save();
                 }
@@ -155,7 +161,7 @@ class ExecFinanceiraController extends Controller
             'mensagem' => "Valores de execução do ano foram salvos com sucesso!"
         ]);
     }
-        
+
     /**
      * Listar valores meses do ano
      * 
@@ -223,31 +229,30 @@ class ExecFinanceiraController extends Controller
         $ano = AnoDeExecucao::where('id', $id)->first();
 
         $empenhos = EmpenhoNota::where('contrato_id', $ano->id_contrato)
-                                ->where(DB::raw('YEAR(data_emissao)'), $ano->ano)
-                                ->orderBy(DB::raw('MONTH(data_emissao)'), 'asc')
-                                ->get();
-                                
+            ->where(DB::raw('YEAR(data_emissao)'), $ano->ano)
+            ->orderBy(DB::raw('MONTH(data_emissao)'), 'asc')
+            ->get();
+
         $aditamentos = AditamentoValor::where('contrato_id', $ano->id_contrato)
-                                ->where(DB::raw('YEAR(data_aditamento)'), $ano->ano)
-                                ->orderBy(DB::raw('MONTH(data_aditamento)'), 'asc')
-                                ->get();
-                                
+            ->where(DB::raw('YEAR(data_aditamento)'), $ano->ano)
+            ->orderBy(DB::raw('MONTH(data_aditamento)'), 'asc')
+            ->get();
+
         $reajustes = Reajuste::where('contrato_id', $ano->id_contrato)
-                                ->where(DB::raw('YEAR(data_reajuste)'), $ano->ano)
-                                ->orderBy(DB::raw('MONTH(data_reajuste)'), 'asc')
-                                ->get();
+            ->where(DB::raw('YEAR(data_reajuste)'), $ano->ano)
+            ->orderBy(DB::raw('MONTH(data_reajuste)'), 'asc')
+            ->get();
 
         $empenho_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
         $aditamento_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
         $reajuste_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
-        
+
         $total_empenho = 0;
-        foreach ($empenhos as $empenho)
-        {
+        foreach ($empenhos as $empenho) {
             $mes_existente = date('m', strtotime($empenho->data_emissao));
             $mes_int = intval($mes_existente);
 
-            if ($empenho->tipo_empenho == 'cancelamento'){
+            if ($empenho->tipo_empenho == 'cancelamento') {
                 $total_empenho -= $empenho->valor_empenho;
             } else {
                 $total_empenho += $empenho->valor_empenho;
@@ -257,12 +262,11 @@ class ExecFinanceiraController extends Controller
         }
 
         $total_aditamento = 0;
-        foreach ($aditamentos as $aditamento)
-        {
+        foreach ($aditamentos as $aditamento) {
             $mes_existente = date('m', strtotime($aditamento->data_aditamento));
             $mes_int = intval($mes_existente);
-            
-            if ($aditamento->tipo_aditamento == "Redução de valor"){
+
+            if ($aditamento->tipo_aditamento == "Redução de valor") {
                 $total_aditamento -= $aditamento->valor_aditamento;
             } else {
                 $total_aditamento += $aditamento->valor_aditamento;
@@ -272,8 +276,7 @@ class ExecFinanceiraController extends Controller
         }
 
         $total_reajuste = 0;
-        foreach ($reajustes as $reajuste)
-        {
+        foreach ($reajustes as $reajuste) {
             $mes_existente = date('m', strtotime($reajuste->data_reajuste));
             $mes_int = intval($mes_existente);
 
@@ -287,7 +290,7 @@ class ExecFinanceiraController extends Controller
             'aditamentos' => $aditamento_valor_meses,
             'reajustes' => $reajuste_valor_meses
         ];
-        
+
         return response()->json($obs);
     }
 
@@ -303,8 +306,7 @@ class ExecFinanceiraController extends Controller
         $ano = AnoDeExecucao::where('id', $id)->first();
         $meses_ano = MesDeExecucao::where('id_ano_execucao', $id)->get();
 
-        foreach ($meses_ano as $mes)
-        {
+        foreach ($meses_ano as $mes) {
             $mes->delete();
         }
 
@@ -313,6 +315,6 @@ class ExecFinanceiraController extends Controller
         return response()->json([
             'mensagem' => "Ano de execução com o id $id e seus respectivos meses foram deletados!"
         ]);
-        
+
     }
 }
