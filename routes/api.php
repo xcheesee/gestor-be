@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExecFinanceiraController;
+use App\Http\Controllers\NotasDeReservaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -199,3 +200,9 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::get('exec_valores_meses/{id}', [ExecFinanceiraController::class, 'indexValoresMesesAno']);
     Route::get('exec_mes/{id}', [ExecFinanceiraController::class, 'indexMesExec']);
     Route::post('exec_mes', [ExecFinanceiraController::class, 'createMesExec']);
+
+    Route::get('notas_reserva', [NotasDeReservaController::class, 'index']);
+    Route::post('nota_reserva', [NotasDeReservaController::class, 'create']);
+    Route::get('nota_reserva/{id}', [NotasDeReservaController::class, 'show']);
+    Route::put('nota_reserva/{id}', [NotasDeReservaController::class, 'edit']);
+    Route::delete('nota_reserva/{id}', [NotasDeReservaController::class, 'delete']);

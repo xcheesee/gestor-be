@@ -130,8 +130,8 @@ class ExecFinanceiraController extends Controller
         $ano_de_exec = AnoDeExecucao::find($request->id_ano_execucao);
 
         $ano_de_exec->update([
-            'planejado' => $request->planejado,
-            'contratado' => $request->contratado
+            'planejado' => number_format(str_replace(",", ".", str_replace(".", "", $request->planejado)), 2, '.', ''),
+            'contratado' => number_format(str_replace(",", ".", str_replace(".", "", $request->contratado)), 2, '.', '')
         ]);
 
         $meses_execucao = $request->data_execucao;
