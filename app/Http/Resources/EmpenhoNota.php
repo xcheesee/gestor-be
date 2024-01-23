@@ -19,6 +19,8 @@ class EmpenhoNota extends JsonResource
             'contrato_id' => $this->contrato_id,
             'tipo_empenho' => $this->tipo_empenho,
             'data_emissao' => $this->data_emissao,
+            'ano_referencia' => $this->ano_referencia,
+            'mes_referencia' => $this->mes_referencia,
             'numero_nota' => $this->numero_nota,
             'valor_empenho' => $this->valor_empenho,
         ];

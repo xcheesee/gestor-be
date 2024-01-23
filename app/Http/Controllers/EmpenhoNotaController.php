@@ -44,6 +44,8 @@ class EmpenhoNotaController extends Controller
      * @bodyParam tipo_empenho string tipo da nota de Empenho ('complemento','cancelamento'). Example: complemento
      * @bodyParam data_emissao date Data na qual esta nota de Empenho foi emitida. Example: 2022-05-21
      * @bodyParam numero_nota integer Número desta nota de Empenho. Example: 1024
+     * @bodyParam ano_referencia integer Ano referenia para nota de empenho. Example: 2024
+     * @bodyParam mes_referencia integer Mês referenia para nota de empenho. Example: 1
      * @bodyParam valor_empenho float required Valor desta nota de Empenho. Example: 1000.00
      *
      * @response 200 {
@@ -53,6 +55,8 @@ class EmpenhoNotaController extends Controller
      *         "tipo_empenho": "complemento",
      *         "data_emissao": "2022-05-21",
      *         "numero_nota": 1024,
+     *         "ano_referencia": 2024,
+     *         "mes_referencia": 1,
      *         "valor_empenho": 1000.00
      *     }
      * }
@@ -64,6 +68,8 @@ class EmpenhoNotaController extends Controller
         $empenhonota->tipo_empenho = $request->input('tipo_empenho');
         $empenhonota->data_emissao = $request->input('data_emissao');
         $empenhonota->numero_nota = $request->input('numero_nota');
+        $empenhonota->ano_referencia = $request->input('ano_referencia');
+        $empenhonota->mes_referencia = $request->input('mes_referencia');
         $empenhonota->valor_empenho = str_replace(',','.',str_replace('.','',$request->input('valor_empenho')));
 
         if ($empenhonota->save()) {
@@ -126,6 +132,8 @@ class EmpenhoNotaController extends Controller
      *         "tipo_empenho": "complemento",
      *         "data_emissao": "2022-05-21",
      *         "numero_nota": 1024,
+     *         "ano_referencia": 2024,
+     *         "mes_referencia": 1,
      *         "valor_empenho": 1000.00
      *     }
      * }
@@ -136,6 +144,8 @@ class EmpenhoNotaController extends Controller
         $empenhonota->contrato_id = $request->input('contrato_id');
         $empenhonota->tipo_empenho = $request->input('tipo_empenho');
         $empenhonota->data_emissao = $request->input('data_emissao');
+        $empenhonota->mes_referencia = $request->input('mes_referencia');
+        $empenhonota->ano_referencia = $request->input('ano_referencia');
         $empenhonota->numero_nota = $request->input('numero_nota');
         $empenhonota->valor_empenho = str_replace(',','.',str_replace('.','',$request->input('valor_empenho')));
 

@@ -229,8 +229,8 @@ class ExecFinanceiraController extends Controller
         $ano = AnoDeExecucao::where('id', $id)->first();
 
         $empenhos = EmpenhoNota::where('contrato_id', $ano->id_contrato)
-            ->where(DB::raw('YEAR(data_emissao)'), $ano->ano)
-            ->orderBy(DB::raw('MONTH(data_emissao)'), 'asc')
+            ->where('ano_referencia', $ano->ano)
+            ->orderBy('mes_referencia', 'asc')
             ->get();
 
         $aditamentos = AditamentoValor::where('contrato_id', $ano->id_contrato)
@@ -249,7 +249,7 @@ class ExecFinanceiraController extends Controller
 
         $total_empenho = 0;
         foreach ($empenhos as $empenho) {
-            $mes_existente = date('m', strtotime($empenho->data_emissao));
+            $mes_existente = $empenho->mes_referencia;
             $mes_int = intval($mes_existente);
 
             if ($empenho->tipo_empenho == 'cancelamento') {
