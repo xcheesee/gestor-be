@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNotasDeReservasTable extends Migration
+class CreateNotasLiquidacaosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateNotasDeReservasTable extends Migration
      */
     public function up()
     {
-        Schema::create('notas_de_reservas', function (Blueprint $table) {
+        Schema::create('notas_liquidacao', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contrato_id');
-            $table->integer('numero_nota_reserva');
-            $table->date('data_emissao');
-            $table->enum('tipo_nota', ['nova', 'correcao', 'cancelamento', 'renovacao']);
+            $table->integer('numero_nota_liquidacao')->nullable();
+            $table->date('data_pagamento');
+            $table->integer('mes_referencia');
+            $table->integer('ano_referencia');
             $table->float('valor', 16, 2);
             $table->timestamps();
 
@@ -33,6 +34,6 @@ class CreateNotasDeReservasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notas_de_reservas');
+        Schema::dropIfExists('notas_liquidacao');
     }
 }

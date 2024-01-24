@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ExecFinanceiraController;
 use App\Http\Controllers\NotasDeReservaController;
+use App\Http\Controllers\NotasLiquidacaoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -201,8 +202,15 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::get('exec_mes/{id}', [ExecFinanceiraController::class, 'indexMesExec']);
     Route::post('exec_mes', [ExecFinanceiraController::class, 'createMesExec']);
 
-    Route::get('notas_reserva', [NotasDeReservaController::class, 'index']);
+    Route::get('notas_reserva/{id}', [NotasDeReservaController::class, 'index']);
     Route::post('nota_reserva', [NotasDeReservaController::class, 'create']);
     Route::get('nota_reserva/{id}', [NotasDeReservaController::class, 'show']);
     Route::put('nota_reserva/{id}', [NotasDeReservaController::class, 'edit']);
     Route::delete('nota_reserva/{id}', [NotasDeReservaController::class, 'delete']);
+
+    Route::get('notas_liquidacao/{id}', [NotasLiquidacaoController::class, 'index']);
+    Route::post('nota_liquidacao', [NotasLiquidacaoController::class, 'create']);
+    Route::get('nota_liquidacao/{id}', [NotasLiquidacaoController::class, 'show']);
+    Route::put('nota_liquidacao/{id}', [NotasLiquidacaoController::class, 'edit']);
+    Route::delete('nota_liquidacao/{id}', [NotasLiquidacaoController::class, 'delete']);
+    

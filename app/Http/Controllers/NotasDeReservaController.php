@@ -6,7 +6,7 @@ use App\Models\NotasDeReserva;
 use Illuminate\Http\Request;
 
 /**
- * @group ExecFinanceira
+ * @group NotasDeReserva
  *
  * APIs para listar, cadastrar, editar dados de Notas de Reserva
  */
@@ -15,8 +15,8 @@ class NotasDeReservaController extends Controller
     /**
      * Lista todas as Notas Reservas cadastradas.
      */
-    public function index() {
-        $notas = NotasDeReserva::all();
+    public function index($id) {
+        $notas = NotasDeReserva::where('contrato_id', $id)->get();
 
         return response()->json([
             'data' => $notas
@@ -45,10 +45,11 @@ class NotasDeReservaController extends Controller
     public function create(Request $request) {
         $nota = new NotasDeReserva();
         
-        $nota->numero_nota_reserva = $request->numero_nota_reserva;
-        $nota->data_emissao = $request->data_emissao;
-        $nota->tipo_nota = $request->tipo_nota;
-        $nota->valor = number_format(str_replace(",", ".", str_replace(".", "", $request->valor)), 2, '.', '');
+        $nota->contrato_id = $request->input('contrato_id');
+        $nota->numero_nota_reserva = $request->input('numero_nota_reserva');
+        $nota->data_emissao = $request->input('data_emissao');
+        $nota->tipo_nota = $request->input('tipo_nota');
+        $nota->valor = number_format(str_replace(",", ".", str_replace(".", "", $request->input('valor'))), 2, '.', '');
         
         if($nota->save()) {
             return response()->json([
@@ -112,10 +113,11 @@ class NotasDeReservaController extends Controller
     public function edit(Request $request, $id) {
         $nota = NotasDeReserva::find($id);
 
-        $nota->numero_nota_reserva = $request->numero_nota_reserva;
-        $nota->data_emissao = $request->data_emissao;
-        $nota->tipo_nota = $request->tipo_nota;
-        $nota->valor = number_format(str_replace(",", ".", str_replace(".", "", $request->valor)), 2, '.', '');
+        $nota->contrato_id = $request->input('contrato_id');
+        $nota->numero_nota_reserva = $request->input('numero_nota_reserva');
+        $nota->data_emissao = $request->input('data_emissao');
+        $nota->tipo_nota = $request->input('tipo_nota');
+        $nota->valor = number_format(str_replace(",", ".", str_replace(".", "", $request->input('valor'))), 2, '.', '');
 
         if($nota->update()) {
             return response()->json([
@@ -129,12 +131,7 @@ class NotasDeReservaController extends Controller
      * Deleta uma nota reserva
      * 
      * @UrlParam id integer required ID da nota reserva. Example: 2
-     * 
-     * @bodyParam numero_nota_reserva integer required numero da nota reserva. Example: 1574862
-     * @bodyParam data_emissao date required data de emissão da nota reserva. Example: 2024/01/23
-     * @bodyParam tipo_nota enum required tipo da nota reserva ('nova','correcao','cancelamento','renovacao'). Example: nova
-     * @bodyParam valor float required Valor da nota reserva. Example: 52000.00
-     * 
+
      * @response 202 {
      *     "mensagem": "Nota excluida com sucesso.",
      *     }
