@@ -18,9 +18,28 @@ class NotasDeReservaController extends Controller
     public function index() {
         $notas = NotasDeReserva::all();
 
-        return response()->json($notas);
+        return response()->json($notas, 202);
     }
 
+    /**
+     * Cria uma nova nota de reserva
+     * 
+     * @bodyParam numero_nota_reserva integer required numero da nota reserva. Example: 1574862
+     * @bodyParam data_emissao date required data de emissão da nota reserva. Example: 2024/01/23
+     * @bodyParam tipo_nota enum required tipo da nota reserva ('nova','correcao','cancelamento','renovacao'). Example: nova
+     * @bodyParam valor float required Valor da nota reserva. Example: 52000000.00
+     *
+     * @response 202 {
+     *     "mensagem": "Nota de reserva criada com sucesso!",
+     *     "notaReserva"{
+     *           "id": 2,
+     *           "numero_nota_reserva": 1574862,
+     *           "data_emissao": "2024-01-23",
+     *           "tipo_nota": nova,
+     *           "valor": 52000000,
+     *          }
+     *      }
+     */
     public function create(Request $request) {
         $nota = new NotasDeReserva();
         
@@ -28,25 +47,66 @@ class NotasDeReservaController extends Controller
         $nota->data_emissao = $request->data_emissao;
         $nota->tipo_nota = $request->tipo_nota;
         $nota->valor = number_format(str_replace(",", ".", str_replace(".", "", $request->valor)), 2, '.', '');
-
+        
         if($nota->save()) {
-            return ('Nota reserva criada com sucesso!');
+            return response()->json([
+                'mensagem' => 'Nota de reserva criada com sucesso!',
+                'notaReserva' => $nota
+            ], 202);
         }
         
     }
-
+    
+    
+    /**
+     * Mostra uma nota reserva
+     * 
+     * @UrlParam id integer required ID da nota reserva. Example: 1
+     * 
+     * @response 202 {
+     *     "mensagem": "Nota Encontrada!",
+     *     "notaReserva"{
+     *           "id": 1,
+     *           "numero_nota_reserva": 1574862,
+     *           "data_emissao": "2024-01-23",
+     *           "tipo_nota": nova,
+     *           "valor": "52000.00",
+     *          }
+     *      }
+     */
     public function show($id) {
         $nota = NotasDeReserva::find($id);
 
         if($nota) {
             return response()->json([
-                'Mensagem' => 'Nota Encontrada!',
-                'NotaReserva' => $nota,
-            ]);
+                'mensagem' => 'Nota Encontrada!',
+                'notaReserva' => $nota,
+            ], 202);
         }
 
     }
 
+    /**
+     * Edita um nota reserva
+     * 
+     * @UrlParam id integer required ID da nota reserva. Example: 1
+     * 
+     * @bodyParam numero_nota_reserva integer required numero da nota reserva. Example: 1574862
+     * @bodyParam data_emissao date required data de emissão da nota reserva. Example: 2024/01/23
+     * @bodyParam tipo_nota enum required tipo da nota reserva ('nova','correcao','cancelamento','renovacao'). Example: nova
+     * @bodyParam valor float required Valor da nota reserva. Example: 52000.00
+     * 
+     * @response 202 {
+     *     "mensagem": "Nota editada com sucesso!",
+     *     "notaReserva"{
+     *           "id": 1,
+     *           "numero_nota_reserva": 1574862,
+     *           "data_emissao": "2024-01-23",
+     *           "tipo_nota": "nova",
+     *           "valor": "52000.00",
+     *          }
+     *      }
+     */
     public function edit(Request $request, $id) {
         $nota = NotasDeReserva::find($id);
 
@@ -56,15 +116,34 @@ class NotasDeReservaController extends Controller
         $nota->valor = number_format(str_replace(",", ".", str_replace(".", "", $request->valor)), 2, '.', '');
 
         if($nota->update()) {
-            return ('Nota reserva editada com sucesso!');
+            return response()->json([
+                'mensagem' => 'Nota editada com sucesso!',
+                'notaReserva' => $nota
+            ], 202);
         }
     }
 
+    /**
+     * Deleta uma nota reserva
+     * 
+     * @UrlParam id integer required ID da nota reserva. Example: 2
+     * 
+     * @bodyParam numero_nota_reserva integer required numero da nota reserva. Example: 1574862
+     * @bodyParam data_emissao date required data de emissão da nota reserva. Example: 2024/01/23
+     * @bodyParam tipo_nota enum required tipo da nota reserva ('nova','correcao','cancelamento','renovacao'). Example: nova
+     * @bodyParam valor float required Valor da nota reserva. Example: 52000.00
+     * 
+     * @response 202 {
+     *     "mensagem": "Nota excluida com sucesso.",
+     *     }
+     */
     public function delete($id) {
         $nota = NotasDeReserva::find($id);
 
         if($nota->delete()) {
-            return ('Nota excluida com sucesso.');
+            return response()->json([
+                'mensagem' => 'Nota excluida com sucesso.',
+            ], 202);
         }
     }
 }
