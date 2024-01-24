@@ -18,7 +18,9 @@ class NotasDeReservaController extends Controller
     public function index() {
         $notas = NotasDeReserva::all();
 
-        return response()->json($notas, 202);
+        return response()->json([
+            'data' => $notas
+        ], 202);
     }
 
     /**
