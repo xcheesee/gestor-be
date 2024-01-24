@@ -18,7 +18,7 @@ class CreateNotasDeReservasTable extends Migration
             $table->integer('numero_nota_reserva');
             $table->date('data_emissao');
             $table->enum('tipo_nota', ['nova', 'correcao', 'cancelamento', 'renovacao']);
-            $table->float('valor');
+            $table->float('valor', 16, 2);
             $table->timestamps();
         });
     }
