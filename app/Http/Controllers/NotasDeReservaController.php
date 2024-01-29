@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class NotasDeReservaController extends Controller
 {
     /**
-     * Lista todas as Notas Reservas cadastradas.
+     * Lista todas as Notas Reservas de um contrato.
      */
     public function index($id) {
         $notas = NotasDeReserva::where('contrato_id', $id)->get();
@@ -26,6 +26,7 @@ class NotasDeReservaController extends Controller
     /**
      * Cria uma nova nota de reserva
      * 
+     * @bodyparam contrato_id interger required numero do contrato. Example: 1
      * @bodyParam numero_nota_reserva integer required numero da nota reserva. Example: 1574862
      * @bodyParam data_emissao date required data de emissão da nota reserva. Example: 2024/01/23
      * @bodyParam tipo_nota enum required tipo da nota reserva ('nova','correcao','cancelamento','renovacao'). Example: nova

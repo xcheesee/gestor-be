@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DevolucoesController;
 use App\Http\Controllers\ExecFinanceiraController;
 use App\Http\Controllers\NotasDeReservaController;
 use App\Http\Controllers\NotasLiquidacaoController;
@@ -214,3 +215,8 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::put('nota_liquidacao/{id}', [NotasLiquidacaoController::class, 'edit']);
     Route::delete('nota_liquidacao/{id}', [NotasLiquidacaoController::class, 'delete']);
     
+    Route::get('devolucoes/{id}', [DevolucoesController::class, 'index']);
+    Route::post('devolucao', [DevolucoesController::class, 'create']);
+    Route::get('devolucao/{id}', [DevolucoesController::class, 'show']);
+    Route::put('devolucao/{id}', [DevolucoesController::class, 'edit']);
+    Route::delete('devolucao/{id}', [DevolucoesController::class, 'delete']);
