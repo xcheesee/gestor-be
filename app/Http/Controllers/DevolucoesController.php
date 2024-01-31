@@ -61,7 +61,7 @@ class DevolucoesController extends Controller
 
         $devolucao->contrato_id = $request->input('contrato_id');
         $devolucao->data_devolucao = $request->input('data_devolucao');
-        $devolucao->numero_devolucao = $request->input('numero_devolucao');
+        $devolucao->numero_devolucao = str_replace('.','',$request->input('numero_devolucao'));
         $devolucao->valor = str_replace(',','.',str_replace('.','',$request->input('valor')));
 
         if($devolucao->save()){
