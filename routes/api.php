@@ -222,4 +222,4 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::put('devolucao/{id}', [DevolucoesController::class, 'edit']);
     Route::delete('devolucao/{id}', [DevolucoesController::class, 'delete']);
 
-    Route::get('teste/{id}', [TotalizadoresContratoController::class, 'ExibirTotais']);
+    Route::get('totalizadores_contrato/{id}', [TotalizadoresContratoController::class, 'ExibirTotais']);
