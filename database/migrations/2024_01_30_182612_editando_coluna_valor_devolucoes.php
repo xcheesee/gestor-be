@@ -14,7 +14,7 @@ class EditandoColunaValorDevolucoes extends Migration
     public function up()
     {
         Schema::table('devolucoes', function (Blueprint $table) {
-            $table->bigInteger('numero_devolucao')->change();
+            $table->integer('numero_devolucao')->change();
         });
     }
 
@@ -25,6 +25,8 @@ class EditandoColunaValorDevolucoes extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('devolucoes', function (Blueprint $table) {
+            $table->float('numero_devolucao', 5, 3)->change();
+        });
     }
 }

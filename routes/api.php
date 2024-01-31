@@ -4,6 +4,7 @@ use App\Http\Controllers\DevolucoesController;
 use App\Http\Controllers\ExecFinanceiraController;
 use App\Http\Controllers\NotasDeReservaController;
 use App\Http\Controllers\NotasLiquidacaoController;
+use App\Http\Controllers\TotalizadoresContratoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -220,3 +221,5 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::get('devolucao/{id}', [DevolucoesController::class, 'show']);
     Route::put('devolucao/{id}', [DevolucoesController::class, 'edit']);
     Route::delete('devolucao/{id}', [DevolucoesController::class, 'delete']);
+
+    Route::get('teste/{id}', [TotalizadoresContratoController::class, 'ExibirTotais']);
