@@ -8,6 +8,8 @@ use App\Models\AditamentoValor;
 use App\Models\AnoDeExecucao;
 use App\Models\EmpenhoNota;
 use App\Models\MesDeExecucao;
+use App\Models\NotasDeReserva;
+use App\Models\NotasLiquidacao;
 use App\Models\Reajuste;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,8 +32,24 @@ class ExecFinanceiraController extends Controller
     {
         $anos = AnoDeExecucao::where('id_contrato', $id)->get();
 
-        return AnoDeExecResource::collection($anos);
+        $total_reserva = NotasDeReserva::where('contrato_id', $id)
+            ->select(
+                DB::raw('YEAR(data_emissao) as ano'),
+                DB::raw('SUM(valor) as valor_total')
+            )
+            ->groupBy('ano')
+            ->get();
+
+        $resultado = $anos->map(function ($ano) use ($total_reserva) {
+            $ano->reservado = $total_reserva->where('ano', $ano->ano)->first()->valor_total ?? 0;
+            return $ano;
+        });
+
+        return response()->json([
+            'data' => $resultado
+        ]);
     }
+
 
     /**
      * Cria um novo ano de execução
@@ -64,11 +82,11 @@ class ExecFinanceiraController extends Controller
         $ano->id_contrato = $request->input('id_contrato');
         $ano->mes_inicial = $request->input('mes_inicial');
         $ano->planejado = number_format(str_replace(",", ".", str_replace(".", "", $request->planejado)), 2, '.', '');
-        $request->reservado === null ? $ano->reservado = null : $ano->reservado = number_format(str_replace(",", ".", str_replace(".", "", $request->reservado)), 2, '.', '');
+        //$request->reservado === null ? $ano->reservado = null : $ano->reservado = number_format(str_replace(",", ".", str_replace(".", "", $request->reservado)), 2, '.', '');
         $ano->contratado = number_format(str_replace(",", ".", str_replace(".", "", $request->contratado)), 2, '.', '');
 
-        if ($ano->save()); 
-        {
+        if ($ano->save())
+            ; {
             return response()->json([
                 'mensagem' => 'Ano de Execução cadastrado com sucesso!',
                 'ano' => new AnoDeExecResource($ano)
@@ -110,17 +128,11 @@ class ExecFinanceiraController extends Controller
     }
 
     /**
-     * Criar mês de execução
-     * 
-     * Cria um novo mês de execução ou mais para um ano de execução.
-     * 
-     * Cada indice representa um dia do mês (ignore o indice 0 da lista) Exemplo de como as listas devem ser:  
-     * 
-     * data_execucao: [0, null, 68746, null, 1, 6, 7, 8, 9, 10, 11, 12],
-     * 
-     * data_empenhado: [null, null, null, null, null, null, null, 400, 9, 9999, 11, 12]
+     * Edita Ano de execução
      * 
      * @bodyParam id_ano_execucao integer required ID do ano de execução. Example: 2
+     * @bodyParam planejado integer required valor do planejado. Example: 2541351.00
+     * @bodyParam contratado integer required valor do cotratado. Example: 54542.00
      *
      * @response 202 {
      *     "mensagem": "Valores de execução do mês 1 foi cadastrado com sucesso!",
@@ -134,29 +146,32 @@ class ExecFinanceiraController extends Controller
             'contratado' => number_format(str_replace(",", ".", str_replace(".", "", $request->contratado)), 2, '.', '')
         ]);
 
-        $meses_execucao = $request->data_execucao;
-        $meses_empenhado = $request->data_empenhado;
+        // A logica a baixo era utilizada pra fazer o antigo metodo de cadastro recebido pelo front. Se não for utilizar, pode apagar.
 
-        $meses_existentes = MesDeExecucao::where('id_ano_execucao', $request->id_ano_execucao)->orderBy('mes')->get();
+        //$meses_execucao = $request->data_execucao;
+        //$meses_empenhado = $request->data_empenhado;
 
-        for ($i = 1; $i <= 12; $i++) {
-            $mes = $meses_existentes->where('mes', $i)->first();
+        //$meses_existentes = MesDeExecucao::where('id_ano_execucao', $request->id_ano_execucao)->orderBy('mes')->get();
 
-            if ($mes) {
-                $mes->execucao = $meses_execucao[$i - 1];
-                $mes->empenhado = $meses_empenhado[$i - 1];
-                $mes->save();
-            } else {
-                if ($meses_execucao[$i - 1] > -1 || $meses_empenhado[$i - 1] > -1) {
-                    $mes = new MesDeExecucao;
-                    $mes->id_ano_execucao = $request->id_ano_execucao;
-                    $mes->mes = $i;
-                    $mes->execucao = $meses_execucao[$i - 1];
-                    $mes->empenhado = $meses_empenhado[$i - 1];
-                    $mes->save();
-                }
-            }
-        }
+        //for ($i = 1; $i <= 12; $i++) {
+        //    $mes = $meses_existentes->where('mes', $i)->first();
+
+        //    if ($mes) {
+        //        $mes->execucao = $meses_execucao[$i - 1];
+        //        $mes->empenhado = $meses_empenhado[$i - 1];
+        //        $mes->save();
+        //    } else {
+        //        if ($meses_execucao[$i - 1] > -1 || $meses_empenhado[$i - 1] > -1) {
+        //            $mes = new MesDeExecucao;
+        //            $mes->id_ano_execucao = $request->id_ano_execucao;
+        //            $mes->mes = $i;
+        //            $mes->execucao = $meses_execucao[$i - 1];
+        //            $mes->empenhado = $meses_empenhado[$i - 1];
+        //            $mes->save();
+        //        }
+        //    }
+        //}
+
         return response()->json([
             'mensagem' => "Valores de execução do ano foram salvos com sucesso!"
         ]);
@@ -243,9 +258,22 @@ class ExecFinanceiraController extends Controller
             ->orderBy(DB::raw('MONTH(data_reajuste)'), 'asc')
             ->get();
 
+        $executados = NotasLiquidacao::where('contrato_id', $ano->id_contrato)
+            ->where(DB::raw('ano_referencia'), $ano->ano)
+            ->orderBy(DB::raw('mes_referencia'), 'asc')
+            ->get();
+
+        $reservas = NotasDeReserva::where('contrato_id', $ano->id_contrato)
+            ->where(DB::raw('YEAR(data_emissao)'), $ano->ano)
+            ->orderBy(DB::raw('MONTH(data_emissao)'), 'asc')
+            ->get();
+
+
         $empenho_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
         $aditamento_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
         $reajuste_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
+        $executado_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
+        $reservado_valor_meses = ['', '', '', '', '', '', '', '', '', '', '', ''];
 
         $total_empenho = 0;
         foreach ($empenhos as $empenho) {
@@ -285,10 +313,32 @@ class ExecFinanceiraController extends Controller
             $reajuste_valor_meses[$mes_int - 1] = $total_reajuste;
         }
 
+        $total_executado = 0;
+        foreach ($executados as $executado) {
+            $mes_existente = $executado->mes_referencia;
+            $mes_int = intval($mes_existente);
+
+            $total_executado += $executado->valor;
+
+            $executado_valor_meses[$mes_int - 1] = $total_executado;
+        }
+
+        $total_reservado = 0;
+        foreach ($reservas as $reserva) {
+            $mes_existente = date('m', strtotime($reserva->data_emissao));
+            $mes_int = intval($mes_existente);
+
+            $total_reservado += $reserva->valor;
+
+            $reservado_valor_meses[$mes_int - 1] = $total_reservado;
+        }
+
         $obs = [
             'empenhos' => $empenho_valor_meses,
             'aditamentos' => $aditamento_valor_meses,
-            'reajustes' => $reajuste_valor_meses
+            'reajustes' => $reajuste_valor_meses,
+            'executado' => $executado_valor_meses,
+            'reservado' => $reservado_valor_meses
         ];
 
         return response()->json($obs);
