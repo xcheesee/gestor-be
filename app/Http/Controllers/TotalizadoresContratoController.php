@@ -21,11 +21,13 @@ class TotalizadoresContratoController extends Controller
         $devolucoes = Devolucoes::where('contrato_id', $contrato_id)->get();
 
         $total_reserva = 0;
+        //TODO: verificar se a nota de reserva é de cancelamento, pois neste caso o valor deve ser subtraído
         foreach ($notas_reserva as $nota_reserva) {
             $total_reserva += $nota_reserva->valor;
         }
 
         $total_empenho = 0;
+        //TODO: verificar se a nota de empenho é de cancelamento, pois neste caso o valor deve ser subtraído
         foreach ($notas_empenho as $nota_empenho) {
             $total_empenho += $nota_empenho->valor_empenho;
         }
@@ -58,7 +60,7 @@ class TotalizadoresContratoController extends Controller
         ->select(DB::raw('ano_referencia'), DB::raw('ROUND(AVG(valor), 2) as media_anual'))
         ->groupBy('ano_referencia')
         ->get();
-        
+
         $media_anual_realizado = array();
         foreach ($media_realizado_ano as $media) {
             array_push($media_anual_realizado, $media);
