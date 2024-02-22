@@ -42,6 +42,7 @@ class Contrato extends JsonResource
             'valor_mensal_estimativo' => $this->valor_mensal_estimativo,
             'data_inicio_vigencia' => $this->data_inicio_vigencia,
             'data_vencimento' => $this->data_vencimento,
+            'data_vencimento_aditada' => $this->data_vencimento_aditada ? $this->data_vencimento_aditada : null,
             'condicao_pagamento' => $this->condicao_pagamento,
             'prazo_a_partir_de' => $this->prazo_a_partir_de,
             'data_prazo_maximo' => $this->data_prazo_maximo,
@@ -61,7 +62,6 @@ class Contrato extends JsonResource
             'diferenca_homologacao_vigencia' => $this->diferenca_homologacao_vigencia ? $this->diferenca_homologacao_vigencia['days'] : null,
             'diferenca_vigencia_vencimento' => $this->diferenca_vigencia_vencimento ? $this->diferenca_vigencia_vencimento['days'] : null,
             'adt_valor_corrigido' => $this->adt_valor_corrigido ? $this->adt_valor_corrigido : null,
-            'adt_prazo_corrigido' => $this->adt_prazo_corrigido ? $this->adt_prazo_corrigido : null,
         ];
     }
 }

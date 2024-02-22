@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ContratoHelper;
 use App\Http\Requests\AditamentoPrazoFormRequest;
 use App\Models\AditamentoPrazo;
 use App\Http\Resources\AditamentoPrazo as AditamentoPrazoResource;
+use App\Models\Contrato;
 use Illuminate\Http\Request;
 
 /**
@@ -62,6 +64,14 @@ class AditamentoPrazoController extends Controller
         $aditamento->dias_reajuste = $request->input('dias_reajuste');
 
         if ($aditamento->save()) {
+            /* TODO: Verificar se Suspensão e Rescisão vão ocasionar em alteração de status do contrato. */
+
+            //atualiza o campo de data de vencimento aditada do contrato
+            $contrato = Contrato::findOrFail($aditamento->contrato_id);
+            $contrato->data_vencimento_aditada = ContratoHelper::calculaDataVencimentoAditada($contrato);
+            $contrato->save();
+
+
             return new AditamentoPrazoResource($aditamento);
         }
     }
@@ -128,6 +138,11 @@ class AditamentoPrazoController extends Controller
         $aditamento->dias_reajuste = $request->input('dias_reajuste');
 
         if ($aditamento->save()) {
+            //atualiza o campo de data de vencimento aditada do contrato
+            $contrato = Contrato::findOrFail($aditamento->contrato_id);
+            $contrato->data_vencimento_aditada = ContratoHelper::calculaDataVencimentoAditada($contrato);
+            $contrato->save();
+
             return new AditamentoPrazoResource($aditamento);
         }
     }
@@ -154,6 +169,11 @@ class AditamentoPrazoController extends Controller
         $aditamento = AditamentoPrazo::findOrFail($id);
 
         if ($aditamento->delete()) {
+            //atualiza o campo de data de vencimento aditada do contrato
+            $contrato = Contrato::findOrFail($aditamento->contrato_id);
+            $contrato->data_vencimento_aditada = ContratoHelper::calculaDataVencimentoAditada($contrato);
+            $contrato->save();
+
             return response()->json([
                 'message' => 'Aditamento deletado com sucesso!',
                 'data' => new AditamentoPrazoResource($aditamento)
