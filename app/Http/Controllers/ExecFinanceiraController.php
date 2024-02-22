@@ -35,7 +35,7 @@ class ExecFinanceiraController extends Controller
         $total_reserva = NotasDeReserva::where('contrato_id', $id)
             ->select(
                 DB::raw('YEAR(data_emissao) as ano'),
-                DB::raw('SUM(valor) as valor_total')
+                DB::raw('SUM(CASE WHEN tipo_nota = "cancelamento" THEN -valor ELSE valor END) as valor_total')
             )
             ->groupBy('ano')
             ->get();
@@ -328,7 +328,11 @@ class ExecFinanceiraController extends Controller
             $mes_existente = date('m', strtotime($reserva->data_emissao));
             $mes_int = intval($mes_existente);
 
-            $total_reservado += $reserva->valor;
+            if ($reserva->tipo_nota == 'cancelamento') {
+                $total_reservado -= $reserva->valor;
+            } else {
+                $total_reservado += $reserva->valor;
+            }
 
             $reservado_valor_meses[$mes_int - 1] = $total_reservado;
         }
