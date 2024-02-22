@@ -20,22 +20,29 @@ class TotalizadoresContratoController extends Controller
         $notas_liquidacao = NotasLiquidacao::where('contrato_id', $contrato_id)->get();
         $devolucoes = Devolucoes::where('contrato_id', $contrato_id)->get();
 
-        $total_reserva = 0;
-        //TODO: verificar se a nota de reserva é de cancelamento, pois neste caso o valor deve ser subtraído
+        $total_reserva = 0.0;
         foreach ($notas_reserva as $nota_reserva) {
-            $total_reserva += $nota_reserva->valor;
+            if ($nota_reserva->tipo_nota == 'cancelamento'){
+                $total_reserva -= $nota_reserva->valor;
+            } else {
+                $total_reserva += $nota_reserva->valor;
+            }
         }
-
-        $total_empenho = 0;
-        //TODO: verificar se a nota de empenho é de cancelamento, pois neste caso o valor deve ser subtraído
+        
+        $total_empenho = 0.0;
         foreach ($notas_empenho as $nota_empenho) {
-            $total_empenho += $nota_empenho->valor_empenho;
+            if ($nota_empenho->tipo_empenho == 'cancelamento'){
+                $total_empenho -= $nota_empenho->valor_empenho; 
+            } else {
+                $total_empenho += $nota_empenho->valor_empenho;
+            }
         }
 
         $realizado = 0;
         foreach ($notas_liquidacao as $nota_liquidacao) {
             $realizado += $nota_liquidacao->valor;
         }
+        
 
         $total_devolucoes = 0;
         foreach ($devolucoes as $devolucao) {
