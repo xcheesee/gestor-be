@@ -78,8 +78,9 @@ class Contrato extends Model
         return $query->where('data_vencimento', '<=', Carbon::parse($date));
     }
 
+    //Aqui vamos usar sempre a data de vencimento com os aditamentos para pegar contratos prestes a vencer
     public function getDiferencaAteVencimentoAttribute(){
-        $date1 = date_create_from_format('Y-m-d', $this->data_vencimento);
+        $date1 = date_create_from_format('Y-m-d', $this->data_vencimento_aditada);
         $date2 = date_create_from_format('Y-m-d', date('Y-m-d'));
         $diff = (array) date_diff($date1,$date2);
         return $diff;

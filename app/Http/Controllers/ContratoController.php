@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ContratoHelper;
 use App\Helpers\DepartamentoHelper;
 use App\Http\Requests\ContratoFormRequest;
 use App\Http\Requests\ContratoNovoRequest;
@@ -104,7 +105,7 @@ class ContratoController extends Controller
      */
     public function contratos_vencimento() {
 
-        $contratosVencimento = Contrato::query()->whereRaw('DATEDIFF(data_vencimento, NOW()) <= 182')->get();
+        $contratosVencimento = Contrato::query()->whereRaw('DATEDIFF(data_vencimento_aditada, NOW()) <= 182')->get();
         return ContratoVencimentoResource::collection($contratosVencimento);
     }
 
@@ -281,6 +282,7 @@ class ContratoController extends Controller
             $execucao_financeira[$executada->mes.'-'.$executada->ano]['saldo'] = $executada->saldo;
         }
 
+        //calculando aditamento de valores e influência no valor do contrato
         $vl_contrato = $contrato->valor_contrato;
         if($vl_contrato){
             $aditamentos_valor = AditamentoValor::query()->where('contrato_id','=',$id)->get();
@@ -290,20 +292,6 @@ class ContratoController extends Controller
             }
         }
         $contrato->adt_valor_corrigido = $vl_contrato;
-
-        if ($contrato->data_vencimento){
-            $dt_vencto = date_create_from_format('Y-m-d', $contrato->data_vencimento);
-            if($vl_contrato){
-                $aditamentos_prazo = AditamentoPrazo::query()->where('contrato_id','=',$id)->get();
-                foreach($aditamentos_prazo as $adt_prz){
-                    if($adt_prz->tipo_aditamento == 'Prorrogação de prazo')
-                        date_add($dt_vencto,date_interval_create_from_date_string($adt_prz->dias_reajuste." days"));
-                    elseif($adt_prz->tipo_aditamento == 'Supressão de prazo')
-                        date_sub($dt_vencto,date_interval_create_from_date_string($adt_prz->dias_reajuste." days"));
-                }
-            }
-            $contrato->adt_prazo_corrigido = $dt_vencto->format("Y-m-d");
-        }
 
         $execucaoFinanceira = (object) $execucao_financeira;
         $contrato->execucao_financeira = $execucaoFinanceira;
@@ -427,6 +415,11 @@ class ContratoController extends Controller
         $contrato->email_empresa = $request->input('email_empresa') ? $request->input('email_empresa') : null;
         $contrato->user_id = auth()->user()->id;
 
+        //lidando com a data de vencimento aditada
+        if ($contrato->data_vencimento){
+            $contrato->data_vencimento_aditada = ContratoHelper::calculaDataVencimentoAditada($contrato);
+        }
+
         //dd($request->input('empresa_id'));
 
         if ($contrato->save()) {
@@ -454,20 +447,29 @@ class ContratoController extends Controller
      *         "email_empresa": "teste@prefeitura.com",
      *         "licitacao_modelo_id": 1,
      *         "licitacao_modelo": "Concorrência",
+     *         "estado_id": 2,
+     *         "estado": "Em Contratação",
+     *         "envio_material_tecnico": "2022-06-20",
+     *         "minuta_edital": "2022-06-21",
+     *         "abertura_certame": "2022-06-22",
+     *         "homologacao": "2022-06-23",
      *         "processo_sei": "0123000134569000",
      *         "credor": "Teste Silva",
      *         "cnpj_cpf": "45106963896",
+     *         "tipo_objeto": "serviço",
      *         "objeto": "teste",
      *         "numero_contrato": "2343rbte67b63",
-     *         "data_assinatura": "2022-05-21",
-     *         "valor_contrato": 1600,
-     *         "data_inicio_vigencia": "2022-05-24",
-     *         "data_fim_vigencia": "2023-05-21",
+     *         "data_assinatura": "2022-05-20",
+     *         "valor_contrato": 1200.00,
+     *         "valor_mensal_estimativo": 100.00,
+     *         "data_inicio_vigencia": "2022-05-23",
+     *         "data_vencimento": "2023-05-20",
      *         "condicao_pagamento": "Após 10 dias após adimplemento",
-     *         "prazo_contrato_meses": 12,
      *         "prazo_a_partir_de": "A partir do início da vigência",
-     *         "data_prazo_maximo": "2023-06-21",
-     *         "outras_informacoes": "Exemplo. Nenhuma outra informação"
+     *         "data_prazo_maximo": "2023-06-20",
+     *         "numero_nota_reserva": "1024",
+     *         "valor_reserva": "200.00",
+     *         "outras_informacoes": "Exemplo. Nenhuma outra informação",
      *     }
      * }
      */
@@ -635,5 +637,37 @@ class ContratoController extends Controller
         return response()->json([
             'mensagem' => "Contrato deletado!",
         ],202);
+    }
+
+    //método temporário para atualizar os contratos antigos que não possuem data de vencimento aditada
+    public function atualizaDatasVencimentoAditadas(Request $request)
+    {
+        $contratos = Contrato::all();
+        $qtd_atualizados = 0;
+
+        foreach($contratos as $contrato){
+            if ($contrato->data_vencimento && !$contrato->data_vencimento_aditada){
+                $dt_vencto = date_create_from_format('Y-m-d', $contrato->data_vencimento);
+                $aditamentos_prazo = AditamentoPrazo::query()->where('contrato_id','=',$contrato->id)->get();
+                foreach($aditamentos_prazo as $adt_prz){
+                    if($adt_prz->tipo_aditamento == 'Prorrogação de prazo')
+                        date_add($dt_vencto,date_interval_create_from_date_string($adt_prz->dias_reajuste." days"));
+                    elseif($adt_prz->tipo_aditamento == 'Supressão de prazo')
+                        date_sub($dt_vencto,date_interval_create_from_date_string($adt_prz->dias_reajuste." days"));
+                }
+
+                $adt_prazo_corrigido = $dt_vencto->format("Y-m-d");
+
+                if ($adt_prazo_corrigido != $contrato->data_vencimento_aditada){
+                    $contrato->data_vencimento_aditada = $adt_prazo_corrigido;
+                    $contrato->save();
+                    $qtd_atualizados++;
+                }
+            }
+        }
+
+        return response()->json([
+            'mensagem' => "Contratos atualizados: ".$qtd_atualizados,
+        ],200);
     }
 }
