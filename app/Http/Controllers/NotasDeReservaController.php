@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NotasDeReservaFormRequest;
 use App\Models\NotasDeReserva;
 use Illuminate\Http\Request;
 
@@ -43,7 +44,7 @@ class NotasDeReservaController extends Controller
      *          }
      *      }
      */
-    public function create(Request $request) {
+    public function create(NotasDeReservaFormRequest $request) {
         $nota = new NotasDeReserva();
         
         $nota->contrato_id = $request->input('contrato_id');
