@@ -27,7 +27,10 @@ class EmpenhoNotaFormRequest extends FormRequest
             'contrato_id' => 'required',
             'tipo_empenho' => 'nullable|in:complemento,cancelamento,novo_empenho',
             'numero_nota' => 'nullable|integer',
+            'data_emissao' => 'nullable|date_format:Y/m/d',
             'valor_empenho' => 'required',
+            'mes_referencia' => 'required',
+            'ano_referencia' => 'required'
         ];
     }
 
@@ -35,8 +38,9 @@ class EmpenhoNotaFormRequest extends FormRequest
     {
         return [
             'required' => "O campo ':attribute' é obrigatório",
-            'tipo_empenho.in' => "Valores possíveis para tipo empenho: 'complemento', 'cancelamento'",
+            'tipo_empenho.in' => "Valores possíveis para tipo empenho: 'complemento', 'cancelamento', 'novo_empenho",
             'integer' => "O valor do campo ':attribute' deve ser um número inteiro",
+            'date_format' => "O valor do campo :attribute deve ser um data no formato yyyy/mm/dd"
         ];
     }
 }

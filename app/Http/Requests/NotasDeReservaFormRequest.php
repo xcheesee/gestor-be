@@ -26,8 +26,8 @@ class NotasDeReservaFormRequest extends FormRequest
         return [
             'contrato_id' => 'required',
             'numero_nota_reserva' => 'required',
-            'data_emissao' => 'required',
-            'tipo_nota' => 'required',
+            'data_emissao' => 'required|date_format:Y/m/d',
+            'tipo_nota' => 'required|in:nova,correcao,cancelamento,renovacao',
             'valor' => 'required'
         ];
     }
@@ -35,7 +35,9 @@ class NotasDeReservaFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => "O campo ':attribute' é obrigatório"
+            'required' => "O campo ':attribute' é obrigatório",
+            'date_format' => "O campo :attribute deve ser no formato yyyy/mm/dd",
+            'tipo_nota.in' => "Valores possiveis para tipo empenho: 'nova', 'correcao', 'cancelamento', 'renovacao'"
         ];
     }
 }
