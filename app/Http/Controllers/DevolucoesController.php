@@ -126,7 +126,7 @@ class DevolucoesController extends Controller
      *          }
      *      }
      */
-    public function edit(Request $request, $id)
+    public function edit(DevolucaoFormRequest $request, $id)
     {
         $devolucao = Devolucoes::find($id);
         
