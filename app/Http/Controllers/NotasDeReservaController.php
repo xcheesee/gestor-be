@@ -112,7 +112,7 @@ class NotasDeReservaController extends Controller
      *          }
      *      }
      */
-    public function edit(Request $request, $id) {
+    public function edit(NotasDeReservaFormRequest $request, $id) {
         $nota = NotasDeReserva::find($id);
 
         $nota->contrato_id = $request->input('contrato_id');
