@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DevolucaoFormRequest;
 use App\Models\Devolucoes;
 use Illuminate\Http\Request;
 
@@ -55,7 +56,7 @@ class DevolucoesController extends Controller
      *      }
      *  }
      */
-    public function create(Request $request)
+    public function create(DevolucaoFormRequest $request)
     {
         $devolucao = new Devolucoes();
 
@@ -131,7 +132,7 @@ class DevolucoesController extends Controller
         
         $devolucao->contrato_id = $request->input('contrato_id');
         $devolucao->data_devolucao = $request->input('data_devolucao');
-        $devolucao->numero_devolucao = $request->input('numero_devolucao');
+        $devolucao->numero_devolucao = str_replace('.','',$request->input('numero_devolucao'));
         $devolucao->valor = str_replace(',','.',str_replace('.','',$request->input('valor')));
 
         if($devolucao->update()){

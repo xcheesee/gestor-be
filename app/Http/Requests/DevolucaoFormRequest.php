@@ -25,10 +25,9 @@ class DevolucaoFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
-            'ano' => 'required|integer|min:2000',
-            //'data_emissao_devolucao' => 'required',
-            //'numero_devolucao' => 'integer',
-            'valor_devolucao' => 'required',
+            'data_devolucao' => 'required|date_format:Y-m-d',
+            'numero_devolucao' => 'required',
+            'valor' => ['required', 'regex:/^\d{1,13}(\.\d{1,2})?$/'],
         ];
     }
 
@@ -36,8 +35,8 @@ class DevolucaoFormRequest extends FormRequest
     {
         return [
             'required' => "O campo ':attribute' é obrigatório",
-            'integer' => "O valor do campo ':attribute' deve ser um número inteiro",
-            'ano.min' => "o valor de ano deve ser maior ou igual a 2000",
+            'date_format' => "O valor do campo :attribute deve ser um data no formato yyyy-mm-dd",
+            'valor.regex' => "O valor do campo :attribute deve ser no formato (13,2) 0000000000000,00"
         ];
     }
 }

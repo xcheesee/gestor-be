@@ -19,7 +19,6 @@ use App\Http\Controllers\DotacaoTipoController;
 use App\Http\Controllers\EmpenhoNotaController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\EstadoController;
-use App\Http\Controllers\ExecucaoFinanceiraController;
 use App\Http\Controllers\GarantiaController;
 use App\Http\Controllers\GestaoFiscalizacaoController;
 use App\Http\Controllers\LicitacaoModeloController;
@@ -154,13 +153,6 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::get('empenho_nota/{id}', [EmpenhoNotaController::class, 'show']);
     Route::put('empenho_nota/{id}', [EmpenhoNotaController::class, 'update']);
     Route::delete('empenho_nota/{id}', [EmpenhoNotaController::class, 'destroy']);
-
-    Route::get('execucoes_financeiras', [ExecucaoFinanceiraController::class, 'index']);
-    Route::get('execucoes_financeiras/{id}', [ExecucaoFinanceiraController::class, 'listar_por_contrato']);
-    Route::post('execucao_financeira', [ExecucaoFinanceiraController::class, 'store']);
-    Route::get('execucao_financeira/{id}', [ExecucaoFinanceiraController::class, 'show']);
-    Route::put('execucao_financeira/{id}', [ExecucaoFinanceiraController::class, 'update']);
-    Route::delete('execucao_financeira/{id}', [ExecucaoFinanceiraController::class, 'destroy']);
 
     Route::get('origem_recursos', [OrigemRecursoController::class, 'index']);
     Route::post('origem_recurso', [OrigemRecursoController::class, 'store']);
