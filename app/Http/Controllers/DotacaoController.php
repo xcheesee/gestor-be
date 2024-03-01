@@ -182,6 +182,14 @@ class DotacaoController extends Controller
     {
         $dotacao = Dotacao::findOrFail($id);
 
+        $dotacao_recursos = DotacaoRecurso::where('dotacao_id', $id)->get();
+
+        if(count($dotacao_recursos) > 0) {
+            return response()->json([
+                    "errors" => ["Dotacoes" => "Você não pode excluir esta Dotação, existem recursos dela cadastrados. Exclua-os primeiro antes de continuar."]
+            ]);
+        }
+
         if ($dotacao->delete()) {
             return response()->json([
                 'message' => 'Dotação deletada com sucesso!',

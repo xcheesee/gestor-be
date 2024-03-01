@@ -25,6 +25,7 @@ class GarantiaFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
+            'valor_garantia' => ['required', 'regex:/^\d{1,16}(\.\d{1,2})?$/'],
         ];
     }
 
@@ -32,6 +33,7 @@ class GarantiaFormRequest extends FormRequest
     {
         return [
             'required' => "O campo ':attribute' é obrigatório",
+            'valor_garantia.regex' => "O valor do campo :attribute tem limite de 100000000000000 (Cem Trilhões)"
         ];
     }
 }

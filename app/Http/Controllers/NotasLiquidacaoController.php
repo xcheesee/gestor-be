@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NotasLiquidacaoFormRequest;
 use App\Models\NotasLiquidacao;
 use Illuminate\Http\Request;
 
@@ -46,7 +47,7 @@ class NotasLiquidacaoController extends Controller
      *          }
      *      }
      */
-    public function create(Request $request)
+    public function create(NotasLiquidacaoFormRequest $request)
     {
         $nota = new NotasLiquidacao();
 
@@ -124,7 +125,7 @@ class NotasLiquidacaoController extends Controller
      *      }
      *  }
      */
-    public function edit(Request $request, $id)
+    public function edit(NotasLiquidacaoFormRequest $request, $id)
     {
         $nota = NotasLiquidacao::find($id);
 

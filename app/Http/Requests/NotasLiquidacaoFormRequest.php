@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ServicoLocalFormRequest extends FormRequest
+class NotasLiquidacaoFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +25,10 @@ class ServicoLocalFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
-            'regiao' => 'required|in:N,S,L,CO',
-            'subprefeitura_id' => 'required'
-            // 'distrito_id' => 'required',
-            // 'subprefeitura_id' => 'required',
-            // 'unidade' => 'required',
+            'data_pagamento' => 'required|date_format:Y-m-d',
+            'mes_referencia' => 'required|integer',
+            'ano_referencia' => 'required|integer',
+            'valor' => ['required', 'regex:/^\d{1,16}(\.\d{1,2})?$/']
         ];
     }
 
@@ -37,7 +36,8 @@ class ServicoLocalFormRequest extends FormRequest
     {
         return [
             'required' => "O campo ':attribute' é obrigatório",
-            'regiao.in' => "Valores possiveis para tipo empenho: 'N', 'S', 'L', 'CO'"
+            'date_format' => "O campo :attribute deve ser no formato yyyy-mm-dd",
+            'valor.regex' => "O valor do campo :attribute tem limite de 100000000000000 (Cem Trilhões)",
         ];
     }
 }

@@ -36,7 +36,7 @@ class DevolucaoFormRequest extends FormRequest
         return [
             'required' => "O campo ':attribute' é obrigatório",
             'date_format' => "O valor do campo :attribute deve ser um data no formato yyyy-mm-dd",
-            'valor.regex' => "O valor do campo :attribute deve ser no formato (13,2) 0000000000000,00"
+            'valor.regex' => "O valor do campo :attribute tem limite de 100000000000000 (Cem Trilhões)"
         ];
     }
 }
