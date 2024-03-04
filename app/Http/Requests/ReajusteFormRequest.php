@@ -25,6 +25,9 @@ class ReajusteFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
+            'indice_reajuste' => 'required',
+            'valor_reajuste' => 'required',
+            'data_reajuste' => 'nullable|date_format:Y-m-d',
 
         ];
     }
@@ -33,6 +36,9 @@ class ReajusteFormRequest extends FormRequest
     {
         return [
             'required' => "O campo ':attribute' é obrigatório",
+            'indice_reajuste.required' => "O Indice de reajuste deve ser no minimo 0",
+            'valor_reajuste.required' => "O Valor de rejuste deve ser no minio 0",
+            'date_format' => "A data deve ser no formato yyyy-mm-dd"
         ];
     }
 }
