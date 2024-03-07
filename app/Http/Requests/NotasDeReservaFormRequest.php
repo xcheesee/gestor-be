@@ -26,7 +26,8 @@ class NotasDeReservaFormRequest extends FormRequest
         return [
             'contrato_id' => 'required',
             'numero_nota_reserva' => 'required',
-            'data_emissao' => 'required|date_format:Y-m-d',
+            'data_emissao' => 'required',
+            //'data_emissao' => 'required|date_format:Y-m-d',
             'tipo_nota' => 'required|in:nova,correcao,cancelamento,renovacao',
             'valor' => 'required'
         ];

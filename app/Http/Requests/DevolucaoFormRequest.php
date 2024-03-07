@@ -25,7 +25,8 @@ class DevolucaoFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
-            'data_devolucao' => 'required|date_format:Y-m-d',
+            'data_devolucao' => 'required',
+            //'data_devolucao' => 'required|date_format:Y-m-d',
             'numero_devolucao' => 'required',
             'valor' => ['required', 'regex:/^\d{1,13}(\.\d{1,2})?$/'],
         ];

@@ -27,7 +27,7 @@ class ReajusteFormRequest extends FormRequest
             'contrato_id' => 'required',
             'indice_reajuste' => 'required',
             'valor_reajuste' => 'required',
-            'data_reajuste' => 'nullable|date_format:Y-m-d',
+            //'data_reajuste' => 'nullable|date_format:Y-m-d',
 
         ];
     }

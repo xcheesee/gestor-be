@@ -25,7 +25,8 @@ class NotasLiquidacaoFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
-            'data_pagamento' => 'required|date_format:Y-m-d',
+            'data_pagamento' => 'required',
+            //'data_pagamento' => 'required|date_format:Y-m-d',
             'mes_referencia' => 'required|integer',
             'ano_referencia' => 'required|integer',
             'valor' => ['required', 'regex:/^\d{1,16}(\.\d{1,2})?$/']
