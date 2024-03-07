@@ -25,7 +25,8 @@ class GarantiaFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
-            'valor_garantia' => ['required', 'regex:/^\d{1,16}(\.\d{1,2})?$/'],
+            'valor_garantia' => 'required',
+            //'valor_garantia' => ['required', 'regex:/^\d{1,16}(\.\d{1,2})?$/'],
         ];
     }
 

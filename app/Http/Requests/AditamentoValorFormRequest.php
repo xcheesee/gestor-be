@@ -25,7 +25,8 @@ class AditamentoValorFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
-            'valor_aditamento' => ['required', 'regex:/^\d{1,16}(\.\d{1,2})?$/'],
+            'valor_aditamento' => 'required',
+            //'valor_aditamento' => ['required', 'regex:/^\d{1,16}(\.\d{1,2})?$/'],
             'tipo_aditamento' => 'nullable|in:Acréscimo de valor,Redução de valor',
             //'data_aditamento' => 'nullable|date_format:Y-m-d',
 

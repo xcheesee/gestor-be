@@ -29,7 +29,8 @@ class NotasLiquidacaoFormRequest extends FormRequest
             //'data_pagamento' => 'required|date_format:Y-m-d',
             'mes_referencia' => 'required|integer',
             'ano_referencia' => 'required|integer',
-            'valor' => ['required', 'regex:/^\d{1,16}(\.\d{1,2})?$/']
+            'valor' => 'required',
+            //'valor' => ['required', 'regex:/^\d{1,16}(\.\d{1,2})?$/']
         ];
     }
 
@@ -38,7 +39,7 @@ class NotasLiquidacaoFormRequest extends FormRequest
         return [
             'required' => "O campo ':attribute' é obrigatório",
             'date_format' => "O campo :attribute deve ser no formato yyyy-mm-dd",
-            'valor.regex' => "O valor do campo :attribute tem limite de 100000000000000 (Cem Trilhões)",
+            //'valor.regex' => "O valor do campo :attribute tem limite de 100000000000000 (Cem Trilhões)",
         ];
     }
 }

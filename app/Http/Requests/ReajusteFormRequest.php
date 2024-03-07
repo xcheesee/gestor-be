@@ -36,8 +36,8 @@ class ReajusteFormRequest extends FormRequest
     {
         return [
             'required' => "O campo ':attribute' é obrigatório",
-            'indice_reajuste.required' => "O Indice de reajuste deve ser no minimo 0",
-            'valor_reajuste.required' => "O Valor de rejuste deve ser no minio 0",
+            //'indice_reajuste.required' => "O Indice de reajuste deve ser no minimo 0",
+            //'valor_reajuste.required' => "O Valor de rejuste deve ser no minio 0",
             'date_format' => "A data deve ser no formato yyyy-mm-dd"
         ];
     }
