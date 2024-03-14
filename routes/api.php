@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\AditamentoPrazoController;
 use App\Http\Controllers\AditamentoValorController;
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\CertidaoController;
 use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\DistritoController;
@@ -26,6 +27,7 @@ use App\Http\Controllers\OrigemRecursoController;
 use App\Http\Controllers\ServicoLocalController;
 use App\Http\Controllers\SubprefeituraController;
 use App\Http\Controllers\ReajusteController;
+use App\Http\Controllers\SubcategoriaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -214,5 +216,12 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::get('devolucao/{id}', [DevolucoesController::class, 'show']);
     Route::put('devolucao/{id}', [DevolucoesController::class, 'edit']);
     Route::delete('devolucao/{id}', [DevolucoesController::class, 'delete']);
+
+    //categorias e subcategorias
+    Route::get('categorias', [CategoriaController::class, 'index']);
+    Route::get('categoria/{id}', [CategoriaController::class, 'show']);
+    Route::get('subcategorias', [SubcategoriaController::class, 'index']);
+    Route::get('subcategorias/{cat_id}', [SubcategoriaController::class, 'listar_subcategorias']);
+    Route::get('subcategoria/{id}', [SubcategoriaController::class, 'show']);
 
     Route::get('totalizadores_contrato/{id}', [TotalizadoresContratoController::class, 'ExibirTotais']);

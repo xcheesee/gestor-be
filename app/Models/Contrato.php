@@ -12,6 +12,9 @@ class Contrato extends Model
         'departamento_id',
         'empresa_id',
         'licitacao_modelo_id',
+        'categoria_id',
+        'subcategoria_id',
+        'estado_id',
         'envio_material_tecnico',
         'minuta_edital',
         'abertura_certame',
@@ -56,6 +59,16 @@ class Contrato extends Model
     public function estado()
     {
         return $this->belongsTo(Estado::class);
+    }
+
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class);
+    }
+
+    public function subcategoria()
+    {
+        return $this->belongsTo(Subcategoria::class);
     }
 
     public function scopeInicioDepoisDe(Builder $query, $date): Builder

@@ -388,6 +388,8 @@ class ContratoController extends Controller
         $contrato->processo_sei = str_replace(array('.','-','/'),'',$request->input('processo_sei'));
 
         $contrato->empresa_id = $request->input('empresa_id') && $request->input('empresa_id') != 'null'? $request->input('empresa_id') : null;
+        $contrato->categoria_id = $request->input('categoria_id') && $request->input('categoria_id') != 'null'? $request->input('categoria_id') : null;
+        $contrato->subcategoria_id = $request->input('subcategoria_id') && $request->input('subcategoria_id') != 'null'? $request->input('subcategoria_id') : null;
         $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id') ? $request->input('licitacao_modelo_id') : null;
         $contrato->estado_id = $request->input('estado_id') ? $request->input('estado_id') : $contrato->estado_id;
         $contrato->envio_material_tecnico = $request->input('envio_material_tecnico') ? $request->input('envio_material_tecnico') : null;
