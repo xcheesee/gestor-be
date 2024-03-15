@@ -388,8 +388,6 @@ class ContratoController extends Controller
         $contrato->processo_sei = str_replace(array('.','-','/'),'',$request->input('processo_sei'));
 
         $contrato->empresa_id = $request->input('empresa_id') && $request->input('empresa_id') != 'null'? $request->input('empresa_id') : null;
-        $contrato->categoria_id = $request->input('categoria_id') && $request->input('categoria_id') != 'null'? $request->input('categoria_id') : null;
-        $contrato->subcategoria_id = $request->input('subcategoria_id') && $request->input('subcategoria_id') != 'null'? $request->input('subcategoria_id') : null;
         $contrato->licitacao_modelo_id = $request->input('licitacao_modelo_id') ? $request->input('licitacao_modelo_id') : null;
         $contrato->estado_id = $request->input('estado_id') ? $request->input('estado_id') : $contrato->estado_id;
         $contrato->envio_material_tecnico = $request->input('envio_material_tecnico') ? $request->input('envio_material_tecnico') : null;
@@ -398,7 +396,6 @@ class ContratoController extends Controller
         $contrato->homologacao = $request->input('homologacao') ? $request->input('homologacao') : null;
         $contrato->credor = $request->input('credor') ? $request->input('credor') : null;
         $contrato->cnpj_cpf = $request->input('cnpj_cpf') ? str_replace(array('.','-','/'),'',$request->input('cnpj_cpf')) : null;
-        $contrato->tipo_objeto = $request->input('tipo_objeto') ? $request->input('tipo_objeto') : null;
         $contrato->objeto = $request->input('objeto') ? $request->input('objeto') : null;
         $contrato->numero_contrato = $request->input('numero_contrato') ? str_replace(array('.','-','/'),'',$request->input('numero_contrato')) : null;
         $contrato->data_assinatura = $request->input('data_assinatura') ? $request->input('data_assinatura') : null;
@@ -416,6 +413,26 @@ class ContratoController extends Controller
         $contrato->telefone_empresa = $request->input('telefone_empresa') ? $request->input('telefone_empresa') : null;
         $contrato->email_empresa = $request->input('email_empresa') ? $request->input('email_empresa') : null;
         $contrato->user_id = auth()->user()->id;
+
+        //temporário, posteriormente o tipo_objeto não será mais usado:
+        if ($request->input('categoria_id') && $request->input('categoria_id') != 'null'){
+            $contrato->categoria_id = $request->input('categoria_id');
+        }else{
+            $contrato->tipo_objeto = $request->input('tipo_objeto') ? $request->input('tipo_objeto') : null;
+            switch($request->input('tipo_objeto')){
+                case 'obra':
+                    $contrato->categoria_id = 1; break;
+                case 'projeto':
+                    $contrato->categoria_id = 2; break;
+                case 'serviço':
+                    $contrato->categoria_id = 2; break;
+                case 'aquisição':
+                    $contrato->categoria_id = 3; break;
+                default: $contrato->categoria_id = null;
+            }
+        }
+        $contrato->subcategoria_id = $request->input('subcategoria_id') && $request->input('subcategoria_id') != 'null'? $request->input('subcategoria_id') : null;
+
 
         //lidando com a data de vencimento aditada
         if ($contrato->data_vencimento){
