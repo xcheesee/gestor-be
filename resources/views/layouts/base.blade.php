@@ -6,7 +6,7 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('css/bootstrap.ndtic.css') }}" rel="stylesheet">
     <link href="{{ asset('css/all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/ndtic.css') }}" rel="stylesheet">
@@ -20,9 +20,10 @@
     <script src="{{ asset('js/FileSaver.js') }}"></script>
     <script src="{{ asset('js/tableexport.js') }}"></script>
     <script src="{{ asset('js/tools.js') }}"></script>
+    <script src="{{ asset('js/echarts.js') }}"></script>
     <title>{{ config('app.name', 'NDTIC WEB App') }}</title>
 </head>
-<body class="d-flex flex-column">
+<body class="d-flex flex-column bg-body-secondary">
     <header class="py-3 bg-primary text-white">
     <nav class="navbar navbar-expand-xl navbar-dark bg-primary mb-5 fixed-top">
         <div class="container-fluid">
@@ -62,19 +63,22 @@
     </nav>
     </header>
 
+    <div id="spinner-div" class="pt-5">
+        <div class="spinner-border text-success align-middle" role="status">
+        </div>
+    </div>
     <div>
         <div class="d-flex">
-            <main class="bg-body-secondary col-sm p-3" style="min-height: 89.6vh">
-                <div class="bg-light p-5 rounded">
+            <main class="col-sm p-3" style="min-height: 92.6vh">
+                <div class="p-5">
                     <h2 class="mb-4">@yield('cabecalho')</h2>
                     @yield('conteudo')
                 </div>
             </main>
         </div>
 
-        <footer class="footer d-flex flex-shrink-0 justify-content-center align-items-center pt-2 pb-3" style="height: 30px;">
-            <div>Desenvolvido pela NDTIC - SVMA</div>
-            <div class="ms-3"><img src="{{ asset('img/Logo64_original.png') }}" height="24px" width="24px" class="ml-3"/></div>
+        <footer class="footer d-flex flex-shrink-0 justify-content-center align-items-center pt-2" style="height: 20px; left: 0; bottom: 0; width: 100%;">
+            <div class="ms-2"><p class="mb-0" style="font-size: 12px;">Desenvolvido pela NDTIC - SVMA</p></div>
         </footer>
     </div>
 </body>

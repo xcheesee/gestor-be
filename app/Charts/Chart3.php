@@ -3,20 +3,13 @@
 namespace App\Charts;
 
 use App\Models\Contrato;
-use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Illuminate\Support\Facades\DB;
 
 //Contratos a vencer por departamento
 class Chart3
 {
-    protected $chart;
 
-    public function __construct(LarapexChart $chart)
-    {
-        $this->chart = $chart;
-    }
-
-    public function build($filtros)
+    public static function build($filtros)
     {
         $dados = Contrato::query()
             ->select('contratos.id',DB::raw('DATEDIFF(data_vencimento, NOW()) AS dias_vencimento'))
@@ -25,10 +18,12 @@ class Chart3
                 return $query->where('departamento_id','=',$val);
             })
             ->whereRaw('data_vencimento IS NOT NULL')
-            ->where(function($query) use ($filtros){
-                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$filtros['ano_pesquisa'])
-                      ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$filtros['ano_pesquisa']);
+            ->when($filtros['ano_pesquisa'], function ($query, $val) {
+                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$val)
+                    ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$val);
             })
+            ->where('contratos.ativo','=','1')
+            ->whereNotIn('contratos.estado_id',[4,5]) //removendo contratos finalizados e suspensos
             ->get();
 
         $dataset = array(
@@ -38,12 +33,12 @@ class Chart3
             'vencido' => 0,
         );
 
-        $grafico = $this->chart->barChart()
-            ->setTitle('Contratos a vencer')
-            ->setSubtitle('Ano de referência: '.$filtros['ano_pesquisa'])
-            ->setXAxis(['90 dias','60 dias','30 dias','vencido'])
-            ->setToolbar(true)
-            ->setHeight(380);
+        // $grafico = $this->chart->barChart()
+        //     ->setTitle('Contratos a vencer')
+        //     ->setSubtitle('Ano de referência: '.$filtros['ano_pesquisa'])
+        //     ->setXAxis(['90 dias','60 dias','30 dias','vencido'])
+        //     ->setToolbar(true)
+        //     ->setHeight(380);
 
         $i = 0;
         foreach($dados as $dado){
@@ -59,7 +54,33 @@ class Chart3
         }
         // dd($dados);
 
-        $grafico->addData("modalidades", [$dataset['90 dias'], $dataset['60 dias'], $dataset['30 dias'], $dataset['vencido']]);
+        $grafico = [
+            'title' => ['text' => 'Contratos a vencer', 'left' => 'center'],
+            'tooltip'=> (object)['trigger' => 'item'],
+            'toolbox'=> [
+              'show'=> true,
+              'feature'=> (object)[
+                'mark'=> [ 'show'=> true ],
+                'dataView'=> [ 'show'=> true, 'readOnly'=> true ],
+                'saveAsImage'=> [ 'show'=> true ]
+              ]
+            ],
+            'legend'=> [
+                'data'=> ['90 dias','60 dias','30 dias','vencido']
+            ],
+            'yAxis'=> (object)[
+                'type'=> 'category',
+                'data'=> ['90 dias','60 dias','30 dias','vencido']
+            ],
+            'xAxis'=> (object)['type'=> 'value'],
+            'series'=> [
+                (object)[
+                    'name'=> 'Contratos',
+                    'type'=> 'bar',
+                    'data'=> [$dataset['90 dias'], $dataset['60 dias'], $dataset['30 dias'], $dataset['vencido']]
+                ]
+            ]
+        ];
 
         //$grafico->setXAxis($dataset['labels']);
         // $grafico->stacked = true;

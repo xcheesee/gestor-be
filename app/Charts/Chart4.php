@@ -2,19 +2,12 @@
 
 namespace App\Charts;
 
-use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Illuminate\Support\Facades\DB;
 
 class Chart4
 {
-    protected $chart;
 
-    public function __construct(LarapexChart $chart)
-    {
-        $this->chart = $chart;
-    }
-
-    public function build($filtros)
+    public static function build($filtros)
     {
         $eixos = $dados = array();
 
@@ -25,9 +18,9 @@ class Chart4
             ->when($filtros['departamento'], function ($query, $val) {
                 return $query->where('contratos.departamento_id','=',$val);
             })
-            ->where(function($query) use ($filtros){
-                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$filtros['ano_pesquisa'])
-                      ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$filtros['ano_pesquisa']);
+            ->when($filtros['ano_pesquisa'], function ($query, $val) {
+                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$val)
+                    ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$val);
             })
             ->groupBy(DB::raw('local_servico'))
             ->orderBy(DB::raw('local_servico'))
@@ -35,17 +28,44 @@ class Chart4
 
         foreach($data as $reg){
             $eixos []= $reg->local_servico;
-            $dados []= $reg->t_valor_contrato;
+            //$dados []= number_format((float)($reg->t_valor_contrato ? $reg->t_valor_contrato : 0), 2, '.', '');
+            $dados []= $reg->t_valor_contrato ? $reg->t_valor_contrato : 0;
         }
-        //dd($eixos);
+        // dd($dados);
 
-        return $this->chart->areaChart()
-            ->setTitle('Contratos por Local - '.$filtros['ano_pesquisa'])
-            ->setSubtitle('Valores em R$')
-            ->setXAxis($eixos)
-            ->addData('valores',$dados)
-            ->setToolbar(true)
-            ->setHeight(380)
-            ;
+        // return $this->chart->areaChart()
+        //     ->setTitle('Contratos por Local - '.$filtros['ano_pesquisa'])
+        //     ->setSubtitle('Valores em R$')
+        //     ->setXAxis($eixos)
+        //     ->addData('valores',$dados)
+        //     ->setToolbar(true)
+        //     ->setHeight(380)
+        //     ;
+
+
+        $grafico = [
+            'title' => ['text' => 'Contratos por Local', 'left' => 'center'],
+            'toolbox'=> [
+              'show'=> true,
+              'feature'=> (object)[
+                'mark'=> [ 'show'=> true ],
+                'dataView'=> [ 'show'=> true, 'readOnly'=> true ],
+                'saveAsImage'=> [ 'show'=> true ]
+              ]
+            ],
+            'legend'=> (object)['data'=> $eixos],
+            'yAxis'=> (object)[],
+            'xAxis'=> (object)['data'=> $eixos],
+            'series'=> [
+                (object)[
+                    'name'=> 'Contratos',
+                    'type'=> 'line',
+                    'data'=> $dados,
+                    'areaStyle'=> []
+                ]
+            ]
+        ];
+
+        return $grafico;
     }
 }

@@ -62,40 +62,36 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function dashboard(Request $request,
-        Chart1 $chart1, Chart2 $chart2, Chart3 $chart3,
-        Chart4 $chart4, Chart5 $chart5
-    )
+    public function dashboard(Request $request)
     {
         //dd($request);
         $filtros = array();
         $filtros['ano_pesquisa'] = $request->query('f-ano_pesquisa');
         $filtros['departamento'] = $request->query('f-departamento');
-        if(!$filtros['ano_pesquisa']) $filtros['ano_pesquisa'] = idate("Y");
+        //if(!$filtros['ano_pesquisa']) $filtros['ano_pesquisa'] = idate("Y");
         $departamentos = Departamento::pluck('nome', 'id')->all();
 
         //contar totais de: contratos no sistema, contratos em homologação, contratos iniciados, e contratos vencidos
         $contratos['total'] = ContratoHelper::contador($filtros,'total');
         $contratos['obra'] = ContratoHelper::contador($filtros,'obra');
-        $contratos['projeto'] = ContratoHelper::contador($filtros,'projeto');
         $contratos['serviço'] = ContratoHelper::contador($filtros,'serviço');
         $contratos['aquisição'] = ContratoHelper::contador($filtros,'aquisição');
         $contratos['iniciados'] = ContratoHelper::contador($filtros,'iniciados');
         $contratos['vencidos'] = ContratoHelper::contador($filtros,'vencidos');
+        $contratos['finalizados'] = ContratoHelper::contador($filtros,'finalizados');
 
         $mensagem = $request->session()->get('mensagem');
-        // dd($contratos);
 
         return view('dashboard.index', [
             'mensagem'=>$mensagem,
             'filtros' => $filtros,
             'contratos' => $contratos,
             'departamentos' => $departamentos,
-            'chart1'=>$chart1->build($filtros),
-            'chart2'=>$chart2->build($filtros),
-            'chart3'=>$chart3->build($filtros),
-            'chart4'=>$chart4->build($filtros),
-            'chart5'=>$chart5->build($filtros)
+            'chart1'=>Chart1::build($filtros),
+            'chart2'=>Chart2::build($filtros),
+            'chart3'=>Chart3::build($filtros),
+            'chart4'=>Chart4::build($filtros),
+            'chart5'=>Chart5::build($filtros)
         ]);
     }
 }

@@ -4,20 +4,13 @@ namespace App\Charts;
 
 use App\Models\Contrato;
 use App\Models\ExecucaoFinanceira;
-use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Illuminate\Support\Facades\DB;
 
 //média do tempo gasto para avançar o contrato
+//TODO: podemos criar stacked bar para este caso, usando as categorias como eixo X e os modelos de licitação como serie
 class Chart2
 {
-    protected $chart;
-
-    public function __construct(LarapexChart $chart)
-    {
-        $this->chart = $chart;
-    }
-
-    public function build($filtros)
+    public static function build($filtros)
     {
         $dados = Contrato::query()
             ->select('licitacao_modelo_id','licitacao_modelos.nome as label',
@@ -28,10 +21,11 @@ class Chart2
                 return $query->where('departamento_id','=',$val);
             })
             ->whereRaw('licitacao_modelo_id IS NOT NULL')
-            ->where(function($query) use ($filtros){
-                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$filtros['ano_pesquisa'])
-                      ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$filtros['ano_pesquisa']);
+            ->when($filtros['ano_pesquisa'], function ($query, $val) {
+                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$val)
+                    ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$val);
             })
+            ->where('contratos.ativo','=','1')
             ->groupBy('licitacao_modelo_id','licitacao_modelos.nome')
             ->get();
 
@@ -39,34 +33,52 @@ class Chart2
             'labels' => array(),
             'valores' => array(),
         );
-
-        $grafico = $this->chart->horizontalBarChart()
-            ->setTitle('Média de dias gastos na contratação')
-            ->setSubtitle('Ano de referência: '.$filtros['ano_pesquisa'])
-            ->setHeight(380)
-            ->setToolbar(true,true);
-
         foreach($dados as $dado){
             if (!in_array($dado->label,$dataset['labels'])) $dataset['labels'][]=$dado->label;
-            $dataset['valores'][$dado->label] = [$dado->dias];
-            $grafico->addData($dado->label, $dataset['valores'][$dado->label]);
+            $dataset['valores'][] = $dado->dias;
         }
+        // dd($dataset);
 
-        $grafico->setXAxis($dataset['labels']);
+        $grafico = [
+            'title' => ['text' => 'Média de dias gastos na contratação', 'left' => 'center'],
+            'tooltip'=> (object)['trigger' => 'item'],
+            'toolbox'=> [
+              'show'=> true,
+              'feature'=> (object)[
+                'mark'=> [ 'show'=> true ],
+                'dataView'=> [ 'show'=> true, 'readOnly'=> true ],
+                'saveAsImage'=> [ 'show'=> true ]
+              ]
+            ],
+            'legend'=> [
+                'data'=> $dataset['labels']
+            ],
+            'xAxis'=> (object)[
+                'data'=> $dataset['labels']
+            ],
+            'yAxis'=> (object)[],
+            'series'=> [
+                (object)[
+                    'name'=> 'Dias',
+                    'type'=> 'bar',
+                    'data'=> $dataset['valores']
+                ]
+            ]
+        ];
+
+        // $grafico = $this->chart->horizontalBarChart()
+        //     ->setTitle('Média de dias gastos na contratação')
+        //     ->setSubtitle('Ano de referência: '.$filtros['ano_pesquisa'])
+        //     ->setHeight(380)
+        //     ->setToolbar(true,true);
+        // foreach($dados as $dado){
+        //     if (!in_array($dado->label,$dataset['labels'])) $dataset['labels'][]=$dado->label;
+        //     $dataset['valores'][$dado->label] = [$dado->dias];
+        //     $grafico->addData($dado->label, $dataset['valores'][$dado->label]);
+        // }
+        // $grafico->setXAxis($dataset['labels']);
+
+
         return $grafico;
-
-        // $chart = $this->chart->horizontalBarChart()
-        //     ->setTitle('Execução Financeira por Departamento - '.$filtros['ano_pesquisa'])
-        //     ->setSubtitle('Comparativo entre os valores de planejado, contratado, empenhado e executado')
-        //     //->setColors(['#FFC107', '#D32F2F'])
-        //     ->addData('Planejado', $dataEpD['planejado'])
-        //     ->addData('Contratado', $dataEpD['contratado'])
-        //     ->addData('Empenhado', $dataEpD['empenhado'])
-        //     ->addData('Executado', $dataEpD['executado'])
-        //     ->addData('Saldo', $dataEpD['saldo'])
-        //     ->setXAxis($dataEpD['departamentos'])
-        //     ->setHeight(380);
-
-        // return $chart;
     }
 }

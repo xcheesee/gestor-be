@@ -62,15 +62,7 @@
             </div>
         </div>
         <div class="col d-grid gap-2">
-            <div class="card bg-secondary mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Projetos</h5>
-                    <p class="card-text">{{ $contratos['projeto'] }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col d-grid gap-2">
-            <div class="card bg-info mb-3">
+            <div class="card bg-light mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Iniciados</h5>
                     <p class="card-text">{{ $contratos['iniciados'] }}</p>
@@ -85,26 +77,29 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row d-flex justify-content-center m-3" style="height: 400px;">
-        <div class="col d-grid gap-2" style="height: 400px;">
-            {!! $chart1->container() !!}
-        </div>
-        <div class="col d-grid gap-2" style="height: 400px;">
-            {!! $chart2->container() !!}
-        </div>
-        <div class="col d-grid gap-2" style="height: 400px;">
-            {!! $chart3->container() !!}
+        <div class="col d-grid gap-2">
+            <div class="card bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Finalizados</h5>
+                    <p class="card-text">{{ $contratos['finalizados'] }}</p>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row d-flex justify-content-center m-3" style="height: 400px;">
-        <div class="col col-10 d-grid gap-2" style="height: 400px;">
-            {!! $chart4->container() !!}
+        <div id="chart1" class="col d-grid gap-2" style="width: 600px; height: 400px;">
+        </div>
+        <div id="chart2" class="col d-grid gap-2" style="height: 400px;">
+        </div>
+        <div id="chart3" class="col d-grid gap-2" style="height: 400px;">
         </div>
     </div>
     <div class="row d-flex justify-content-center m-3" style="height: 400px;">
-        <div class="col col-10 d-grid gap-2" style="height: 400px;">
-            {!! $chart5->container() !!}
+        <div id="chart4" class="col col-10 d-grid gap-2" style="height: 400px;">
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center m-3" style="height: 400px;">
+        <div id="chart5" class="col col-10 d-grid gap-2" style="height: 400px;">
         </div>
     </div>
 </div>
@@ -112,10 +107,12 @@
 
 <script src="{{ asset('js/apexcharts.js') }}"></script>
 
-{{ $chart1->script() }}
-{{ $chart4->script() }}
+@include('utilitarios.scripts')
 
-@include('utilitarios.charts', ['chart' => $chart2])
-@include('utilitarios.charts', ['chart' => $chart3])
-@include('utilitarios.charts_multi', ['chart' => $chart5])
+@include('dashboard.charts.chart_basic', ['div_id'=>'chart1','options' => $chart1])
+@include('dashboard.charts.chart_basic', ['div_id'=>'chart2','options' => $chart2])
+@include('dashboard.charts.chart_basic', ['div_id'=>'chart3','options' => $chart3])
+@include('dashboard.charts.chart_money', ['div_id'=>'chart4','options' => $chart4])
+@include('dashboard.charts.chart_basic', ['div_id'=>'chart5','options' => $chart5])
+
 @endsection

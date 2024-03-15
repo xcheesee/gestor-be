@@ -11,32 +11,37 @@ class ContratoHelper
     public static function contador($filtros, $modo = 'total'){
         $retorno = Contrato::query()
             ->when($modo == 'iniciados', function ($query, $val) {
-                return $query->whereNotNull('data_inicio_vigencia');
+                return $query->whereNotNull('data_inicio_vigencia')
+                    ->whereRaw('DATEDIFF(data_vencimento_aditada, NOW()) >= 0');
             })
             ->when($modo == 'obra', function ($query) {
-                return $query->where('tipo_objeto','=','obra');
-            })
-            ->when($modo == 'projeto', function ($query) {
-                return $query->where('tipo_objeto','=','projeto');
+                return $query->where('categoria_id','=','1');
             })
             ->when($modo == 'serviço', function ($query) {
-                return $query->where('tipo_objeto','=','serviço');
+                return $query->where('categoria_id','=','2');
             })
             ->when($modo == 'aquisição', function ($query) {
-                return $query->where('tipo_objeto','=','aquisição');
+                return $query->where('categoria_id','=','3');
             })
             ->when($modo == 'vencidos', function ($query) {
-                return $query->whereNotNull('data_vencimento')->whereRaw('DATEDIFF(data_vencimento, NOW()) < 0');
+                return $query->whereNotNull('data_vencimento')
+                    ->whereRaw('DATEDIFF(data_vencimento_aditada, NOW()) < 0')
+                    ->whereNotIn('estado_id',[4,5]); //removendo contratos finalizados e suspensos
+            })
+            ->when($modo == 'finalizados', function ($query) {
+                return $query->where('estado_id','=',4);
             })
             ->when($filtros['departamento'], function ($query, $val) {
                 return $query->where('departamento_id','=',$val);
             })
-            ->where(function($query) use ($filtros){
-                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$filtros['ano_pesquisa'])
-                      ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$filtros['ano_pesquisa']);
+            ->when($filtros['ano_pesquisa'], function ($query, $val) {
+                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$val)
+                    ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$val);
             })
+            ->where('ativo','=','1')
             ->count();
 
+        // dd($retorno);
         return $retorno;
     }
 

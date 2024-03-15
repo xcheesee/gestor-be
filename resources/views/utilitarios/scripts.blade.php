@@ -73,4 +73,11 @@
     };
 
     //$("select").bsMultiSelect();
+
+    function formataDinheiro(data)
+    {
+        console.log(data);
+        data = parseFloat(data);
+        return data.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+    }
   </script>
