@@ -11,8 +11,10 @@ class ContratoHelper
     public static function contador($filtros, $modo = 'total'){
         $retorno = Contrato::query()
             ->when($modo == 'iniciados', function ($query, $val) {
+                //TODO: verificar se faz mais sentido usar o estado_id = 3 (Status "Em Execução")
                 return $query->whereNotNull('data_inicio_vigencia')
-                    ->whereRaw('DATEDIFF(data_vencimento_aditada, NOW()) >= 0');
+                    ->whereRaw('DATEDIFF(data_inicio_vigencia, NOW()) <= 0')
+                    ->whereNotIn('estado_id',[4,5]);
             })
             ->when($modo == 'obra', function ($query) {
                 return $query->where('categoria_id','=','1');
@@ -40,6 +42,7 @@ class ContratoHelper
             })
             ->where('ativo','=','1')
             ->count();
+            // ->dump();
 
         // dd($retorno);
         return $retorno;

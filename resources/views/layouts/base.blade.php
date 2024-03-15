@@ -20,6 +20,7 @@
     <script src="{{ asset('js/FileSaver.js') }}"></script>
     <script src="{{ asset('js/tableexport.js') }}"></script>
     <script src="{{ asset('js/tools.js') }}"></script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
     <script src="{{ asset('js/echarts.js') }}"></script>
     <title>{{ config('app.name', 'NDTIC WEB App') }}</title>
 </head>

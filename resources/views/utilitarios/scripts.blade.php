@@ -62,6 +62,10 @@
             this.qs2.cache();
             }
         });
+
+
+        //habilita tooltips (bootstrap)
+        $('[data-toggle="tooltip"]').tooltip();
     });
 
     var loadPreviewFoto = function(event) {
@@ -80,4 +84,4 @@
         data = parseFloat(data);
         return data.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
     }
-  </script>
+</script>

@@ -30,7 +30,7 @@
     </form>
     <div class="row d-flex justify-content-center m-3" style="height: 120px;">
         <div class="col d-grid gap-2">
-            <div class="card text-white bg-primary mb-3">
+            <div data-toggle="tooltip" data-placement="top" title="Total de Contratos registrados no sistema" class="card text-white bg-primary mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Total Contratos</h5>
                     <p class="card-text">{{ $contratos['total'] }}</p>
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="col d-grid gap-2">
-            <div class="card bg-secondary mb-3">
+            <div data-toggle="tooltip" data-placement="top" title="Total de Contratos na categoria Aquisições" class="card bg-secondary mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Aquisições</h5>
                     <p class="card-text">{{ $contratos['aquisição'] }}</p>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="col d-grid gap-2">
-            <div class="card bg-secondary mb-3">
+            <div data-toggle="tooltip" data-placement="top" title="Total de Contratos na categoria Serviços" class="card bg-secondary mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Serviços</h5>
                     <p class="card-text">{{ $contratos['serviço'] }}</p>
@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="col d-grid gap-2">
-            <div class="card bg-secondary mb-3">
+            <div data-toggle="tooltip" data-placement="top" title="Total de Contratos na categoria Obras" class="card bg-secondary mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Obras</h5>
                     <p class="card-text">{{ $contratos['obra'] }}</p>
@@ -62,15 +62,15 @@
             </div>
         </div>
         <div class="col d-grid gap-2">
-            <div class="card bg-light mb-3">
+            <div data-toggle="tooltip" data-placement="top" title="Contratos que iniciam hoje ou já iniciaram a vigência (contratos sem data de início de vigência não são contabilizados)" class="card bg-light mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Iniciados</h5>
+                    <h5 class="card-title">Ativos</h5>
                     <p class="card-text">{{ $contratos['iniciados'] }}</p>
                 </div>
             </div>
         </div>
         <div class="col d-grid gap-2">
-            <div class="card text-white bg-danger mb-3">
+            <div data-toggle="tooltip" data-placement="top" title="Contratos ativos e que expiraram a data de vencimento" class="card text-white bg-danger mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Vencidos</h5>
                     <p class="card-text">{{ $contratos['vencidos'] }}</p>
@@ -78,7 +78,7 @@
             </div>
         </div>
         <div class="col d-grid gap-2">
-            <div class="card bg-success mb-3">
+            <div data-toggle="tooltip" data-placement="top" title="Contratos com Status marcado como Finalizado" class="card bg-success mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Finalizados</h5>
                     <p class="card-text">{{ $contratos['finalizados'] }}</p>
@@ -103,9 +103,6 @@
         </div>
     </div>
 </div>
-
-
-<script src="{{ asset('js/apexcharts.js') }}"></script>
 
 @include('utilitarios.scripts')
 
