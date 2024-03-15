@@ -20,8 +20,10 @@ class Chart1
                 return $query->where('departamento_id','=',$val);
             })
             ->when($filtros['ano_pesquisa'], function ($query, $val) {
-                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$val)
-                    ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$val);
+                $query->where(function($query) use ($val){
+                    $query->where(DB::raw('YEAR(minuta_edital)'),'=',$val)
+                          ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$val);
+                });
             })
             ->where('contratos.ativo','=','1')
             ->first();
