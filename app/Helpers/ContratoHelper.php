@@ -57,6 +57,10 @@ class ContratoHelper
             ->when($modo == 'aquisição', function ($query) {
                 return $query->where('categoria_id','=','3');
             })
+            ->when($modo == 'empresas', function ($query, $val) {
+                return $query->selectRaw('DISTINCT empresa_id')
+                    ->whereNotIn('estado_id',[4,5]);
+            })
             ->where('ativo','=','1')
             ->count();
             // ->dump();

@@ -34,6 +34,10 @@ Route::prefix(env('APP_FOLDER', 'contratos'))->group(function () { //considerand
     Route::group(['middleware' => ['autenticador']], function() {
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
         Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
+        Route::get('/dashboard_geral', [App\Http\Controllers\DashboardController::class, 'dashboard_geral'])->name('dashboard-geral');
+        // Route::get('/dashboard_financeiro', [App\Http\Controllers\DashboardController::class, 'dashboard_financeiro'])->name('dashboard-financeiro');
+        //Route::get('/dashboard_unidades', [App\Http\Controllers\DashboardController::class, 'dashboard_unidades'])->name('dashboard-unidades');
+        Route::get('/dashboard_empresas', [App\Http\Controllers\DashboardController::class, 'dashboard_empresas'])->name('dashboard-empresas');
 
         //Cadastros auxiliares
         Route::get('/cadaux', [App\Http\Controllers\HomeController::class, 'cadaux'])->name('cadaux');
