@@ -37,6 +37,7 @@ class Contrato extends JsonResource
             'tipo_objeto' => $this->tipo_objeto,
             'categoria_id' => $this->categoria_id,
             'categoria' => $this->categoria ? $this->categoria->nome : null,
+            'subcategoria' => $this->subcategoria ? $this->subcategoria->nome : null,
             'subcategoria_id' => $this->subcategoria_id,
             'subcategoria' => $this->subcategoria ? $this->subcategoria->nome : null,
             'objeto' => $this->objeto,
