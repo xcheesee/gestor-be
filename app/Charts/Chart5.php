@@ -26,8 +26,10 @@ class Chart5
                 return $query->where('contratos.departamento_id','=',$val);
             })
             ->when($filtros['ano_pesquisa'], function ($query, $val) {
-                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$val)
-                    ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$val);
+                $query->where(function($query) use ($val){
+                    $query->where(DB::raw('YEAR(minuta_edital)'),'=',$val)
+                          ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$val);
+                });
             })
             ->whereNotNull('contratos.empresa_id')
             ->groupBy('departamentos.nome','empresas.nome')

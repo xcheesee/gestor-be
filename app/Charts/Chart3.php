@@ -12,15 +12,17 @@ class Chart3
     public static function build($filtros)
     {
         $dados = Contrato::query()
-            ->select('contratos.id',DB::raw('DATEDIFF(data_vencimento, NOW()) AS dias_vencimento'))
+            ->select('contratos.id',DB::raw('DATEDIFF(data_vencimento_aditada, NOW()) AS dias_vencimento'))
             ->leftJoin("departamentos",'contratos.departamento_id','=','departamentos.id')
             ->when($filtros['departamento'], function ($query, $val) {
                 return $query->where('departamento_id','=',$val);
             })
             ->whereRaw('data_vencimento IS NOT NULL')
             ->when($filtros['ano_pesquisa'], function ($query, $val) {
-                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$val)
-                    ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$val);
+                $query->where(function($query) use ($val){
+                    $query->where(DB::raw('YEAR(minuta_edital)'),'=',$val)
+                          ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$val);
+                });
             })
             ->where('contratos.ativo','=','1')
             ->whereNotIn('contratos.estado_id',[4,5]) //removendo contratos finalizados e suspensos
@@ -46,9 +48,9 @@ class Chart3
                 $dataset['90 dias'] += 1;
             }elseif ($dado->dias_vencimento <= 60 && $dado->dias_vencimento > 30){
                 $dataset['60 dias'] += 1;
-            }elseif ($dado->dias_vencimento <= 30 && $dado->dias_vencimento > 0){
+            }elseif ($dado->dias_vencimento <= 30 && $dado->dias_vencimento >= 0){
                 $dataset['30 dias'] += 1;
-            }elseif ($dado->dias_vencimento <= 0){
+            }elseif ($dado->dias_vencimento < 0){
                 $dataset['vencido'] += 1;
             }
         }

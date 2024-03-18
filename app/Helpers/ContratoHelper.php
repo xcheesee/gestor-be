@@ -11,17 +11,25 @@ class ContratoHelper
     public static function contador($filtros, $modo = 'total'){
         $retorno = Contrato::query()
             ->when($modo == 'iniciados', function ($query, $val) {
+                //TODO: verificar se faz mais sentido usar o estado_id = 3 (Status "Em Execução")
                 return $query->whereNotNull('data_inicio_vigencia')
-                    ->whereRaw('DATEDIFF(data_vencimento_aditada, NOW()) >= 0');
+                    ->whereRaw('DATEDIFF(data_inicio_vigencia, NOW()) <= 0')
+                    ->whereNotIn('estado_id',[4,5]);
             })
-            ->when($modo == 'obra', function ($query) {
-                return $query->where('categoria_id','=','1');
+            ->when($modo == 'recentes', function ($query, $val) {
+                return $query->whereNotNull('data_inicio_vigencia')
+                    ->whereRaw('MONTH(data_inicio_vigencia) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)')
+                    ->whereNotIn('estado_id',[4,5]);
             })
-            ->when($modo == 'serviço', function ($query) {
-                return $query->where('categoria_id','=','2');
+            ->when($modo == 'venc90', function ($query) {
+                return $query->whereNotNull('data_vencimento')
+                    ->whereRaw('DATEDIFF(data_vencimento_aditada, NOW()) <= 90 AND DATEDIFF(data_vencimento_aditada, NOW()) > 30')
+                    ->whereNotIn('estado_id',[4,5]); //removendo contratos finalizados e suspensos
             })
-            ->when($modo == 'aquisição', function ($query) {
-                return $query->where('categoria_id','=','3');
+            ->when($modo == 'venc30', function ($query) {
+                return $query->whereNotNull('data_vencimento')
+                    ->whereRaw('DATEDIFF(data_vencimento_aditada, NOW()) <= 30 AND DATEDIFF(data_vencimento_aditada, NOW()) >= 0')
+                    ->whereNotIn('estado_id',[4,5]); //removendo contratos finalizados e suspensos
             })
             ->when($modo == 'vencidos', function ($query) {
                 return $query->whereNotNull('data_vencimento')
@@ -35,11 +43,23 @@ class ContratoHelper
                 return $query->where('departamento_id','=',$val);
             })
             ->when($filtros['ano_pesquisa'], function ($query, $val) {
-                $query->where(DB::raw('YEAR(minuta_edital)'),'=',$val)
-                    ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$val);
+                $query->where(function($query) use ($val){
+                    $query->where(DB::raw('YEAR(minuta_edital)'),'=',$val)
+                          ->orWhere(DB::raw('YEAR(data_inicio_vigencia)'),'=',$val);
+                });
+            })
+            ->when($modo == 'obra', function ($query) {
+                return $query->where('categoria_id','=','1');
+            })
+            ->when($modo == 'serviço', function ($query) {
+                return $query->where('categoria_id','=','2');
+            })
+            ->when($modo == 'aquisição', function ($query) {
+                return $query->where('categoria_id','=','3');
             })
             ->where('ativo','=','1')
             ->count();
+            // ->dump();
 
         // dd($retorno);
         return $retorno;
