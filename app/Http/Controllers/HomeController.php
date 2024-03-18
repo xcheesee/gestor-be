@@ -72,12 +72,12 @@ class HomeController extends Controller
         $departamentos = Departamento::pluck('nome', 'id')->all();
 
         //contar totais de: contratos no sistema, contratos em homologação, contratos iniciados, e contratos vencidos
-        $contratos['total'] = ContratoHelper::contador($filtros,'total');
-        $contratos['obra'] = ContratoHelper::contador($filtros,'obra');
-        $contratos['serviço'] = ContratoHelper::contador($filtros,'serviço');
-        $contratos['aquisição'] = ContratoHelper::contador($filtros,'aquisição');
-        $contratos['iniciados'] = ContratoHelper::contador($filtros,'iniciados');
+        $contratos['ativos'] = ContratoHelper::contador($filtros,'ativos');
+        $contratos['venc90'] = ContratoHelper::contador($filtros,'venc90');
+        $contratos['venc30'] = ContratoHelper::contador($filtros,'venc30');
         $contratos['vencidos'] = ContratoHelper::contador($filtros,'vencidos');
+        $contratos['iniciados'] = ContratoHelper::contador($filtros,'iniciados');
+        $contratos['recentes'] = ContratoHelper::contador($filtros,'recentes');
         $contratos['finalizados'] = ContratoHelper::contador($filtros,'finalizados');
 
         $mensagem = $request->session()->get('mensagem');
