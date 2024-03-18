@@ -36,6 +36,8 @@ class Contrato extends JsonResource
             'cnpj_cpf' => $this->cnpj_cpf,
             'tipo_objeto' => $this->tipo_objeto,
             'categoria_id' => $this->categoria_id,
+            'categoria' => $this->categoria ? $this->categoria->nome : null,
+            'subcategoria' => $this->subcategoria ? $this->subcategoria->nome : null,
             'subcategoria_id' => $this->subcategoria_id,
             'objeto' => $this->objeto,
             'numero_contrato' => $this->numero_contrato,
