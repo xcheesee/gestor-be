@@ -25,13 +25,17 @@ class CertidaoFormRequest extends FormRequest
     {
         return [
             'contrato_id' => 'required',
+            'certidoes' => 'required',
+            'validade_certidoes' => 'required'
         ];
     }
 
     public function messages()
     {
         return [
-            'required' => "O campo ':attribute' é obrigatório",
+            'required' => "O campo ':attribute' é obrigatório.",
+            'certidoes.required' => "O campo de certidão é obrigatório.",
+            'validade_certidoes.required' => "O campo validade de certidão é obrigatório."
         ];
     }
 }
