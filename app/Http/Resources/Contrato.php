@@ -66,6 +66,8 @@ class Contrato extends JsonResource
             'diferenca_homologacao_vigencia' => $this->diferenca_homologacao_vigencia ? $this->diferenca_homologacao_vigencia['days'] : null,
             'diferenca_vigencia_vencimento' => $this->diferenca_vigencia_vencimento ? $this->diferenca_vigencia_vencimento['days'] : null,
             'adt_valor_corrigido' => $this->adt_valor_corrigido ? $this->adt_valor_corrigido : null,
+            'data_recebimento_definitivo' => $this->data_recebimento_definitivo,
+            'data_recebimento_provisorio' => $this->data_recebimento_provisorio,
         ];
     }
 }

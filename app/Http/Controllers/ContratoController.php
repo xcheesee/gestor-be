@@ -412,6 +412,8 @@ class ContratoController extends Controller
 		$contrato->nome_empresa = $request->input('nome_empresa') ? $request->input('nome_empresa') : null;
         $contrato->telefone_empresa = $request->input('telefone_empresa') ? $request->input('telefone_empresa') : null;
         $contrato->email_empresa = $request->input('email_empresa') ? $request->input('email_empresa') : null;
+        $contrato->data_recebimento_provisorio = $request->input('data_recebimento_provisorio') ? $request->input('data_recebimento_provisorio') : null;
+        $contrato->data_recebimento_definitivo = $request->input('data_recebimento_definitivo') ? $request->input('data_recebimento_definitivo') : null;
         $contrato->user_id = auth()->user()->id;
 
         //temporário, posteriormente o tipo_objeto não será mais usado:
