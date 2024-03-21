@@ -40,7 +40,9 @@ class Contrato extends Model
         'email_empresa',
         'outras_informacoes',
         'data_recebimento_definitivo',
-        'data_recebimento_provisorio'
+        'data_recebimento_provisorio',
+        'termo_recebimento_definitivo',
+        'termo_recebimento_provisorio'
     ];
 
     public function departamento()

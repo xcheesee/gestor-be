@@ -414,7 +414,13 @@ class ContratoController extends Controller
         $contrato->email_empresa = $request->input('email_empresa') ? $request->input('email_empresa') : null;
         $contrato->data_recebimento_provisorio = $request->input('data_recebimento_provisorio') ? $request->input('data_recebimento_provisorio') : null;
         $contrato->data_recebimento_definitivo = $request->input('data_recebimento_definitivo') ? $request->input('data_recebimento_definitivo') : null;
+        $contrato->termo_recebimento_definitivo = $request->input('termo_recebimento_definitivo') ? $request->input('termo_recebimento_definitivo') : null;
+        $contrato->termo_recebimento_provisorio = $request->input('termo_recebimento_provisorio') ? $request->input('termo_recebimento_provisorio') : null;
         $contrato->user_id = auth()->user()->id;
+
+        if($request->termo_recebimento_definitivo || $request->termo_recebimento_provisorio){
+            $contrato->estado_id = 4;
+        }
 
         //temporário, posteriormente o tipo_objeto não será mais usado:
         if ($request->input('categoria_id') && $request->input('categoria_id') != 'null'){
