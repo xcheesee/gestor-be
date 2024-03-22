@@ -68,6 +68,8 @@ class Contrato extends JsonResource
             'adt_valor_corrigido' => $this->adt_valor_corrigido ? $this->adt_valor_corrigido : null,
             'data_recebimento_definitivo' => $this->data_recebimento_definitivo,
             'data_recebimento_provisorio' => $this->data_recebimento_provisorio,
+            'termo_recebimento_definitivo' => $this->termo_recebimento_definitivo,
+            'termo_recebimento_provisorio' => $this->termo_recebimento_provisorio
         ];
     }
 }
